@@ -4,10 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>erin scott | lunarspired</title>
-    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- Smooth Glass Filter for Precise Curvature -->
+    <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+      <defs>
+        <filter id="smoothGlass" x="-10%" y="-10%" width="120%" height="120%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" result="blur"/>
+          <feOffset in="blur" dx="0" dy="1" result="offset"/>
+        </filter>
+      </defs>
+    </svg>
+
     <div class="reactive-bg"></div>
     
     <!-- Modern floating accent elements -->
@@ -20,11 +30,14 @@
 
     <div class="main-columns">
       <div class="left-column">
-        <div class="greeting-block" id="greeting-block">
+        <div class="left-column-container">
+          <div class="greeting-block" id="greeting-block">
           <div class="hero-icon left-star">★</div>
+          <h1 class="hero-name">hi, i'm erin</h1>
+          <p class="hero-title">lead UI UX designer</p>
           <div class="profile-photo"><img src="assets/images/profile/profile.webp" alt="erin scott profile photo"></div>
           <p class="hero-desc">
-            <span class="hero-desc-line hero-desc-intro">hi, i’m erin. i design to feel something, code to feel nothing, and live somewhere in between.</span><br>
+            <span class="hero-desc-line hero-desc-intro">i design to feel something, code to feel nothing, and live somewhere in between.</span><br>
             <span class="hero-desc-line hero-desc-location">currently vibing in north carolina.</span><br>
             <span class="hero-desc-line hero-desc-shabby">working to make you feel even 1% more human</span>
           </p>
@@ -61,11 +74,12 @@
             <textarea name="message" placeholder="your message" required></textarea>
             <button type="submit">send</button>
           </form>
-        </div>
-        <div class="toggle-bar">
-          <button id="toggle-greeting" class="toggle-btn active">hi</button>
-          <button id="toggle-skills" class="toggle-btn">skills</button>
-          <button id="toggle-contact" class="toggle-btn">contact</button>
+                 </div>
+          <div class="toggle-bar">
+            <button id="toggle-greeting" class="toggle-btn active">hi</button>
+            <button id="toggle-skills" class="toggle-btn">skills</button>
+            <button id="toggle-contact" class="toggle-btn">contact</button>
+          </div>
         </div>
       </div>
       <div class="right-column">
@@ -81,8 +95,8 @@
             <span class="tag-filter" data-tag="website">Website</span>
           </div>
           <div class="work-cards-grid">
-            <div class="work-card-link" data-project="flologic"><div class="work-card" data-tags="ux focus,mobile,website">
-              <div class="work-card-image"><img src="assets/images/projects/flologic/team3.png" alt="work screenshot"></div>
+            <div class="work-card-link" data-project="flologic"><div class="work-card" data-tags="ux focus,mobile">
+              <div class="work-card-image"><img src="assets/images/projects/flologic.png" alt="work screenshot"></div>
               <div class="work-card-content">
                 <h3 class="work-card-title">Complete App Modernization</h3>
                 <p class="work-card-desc">Led the end-to-end redesign of FloLogic’s legacy mobile app, working cross-functionally to deliver a sleek, modern user experience. I built a custom design system from scratch to ensure visual consistency, accelerate development, and support long-term scalability across platforms.</p>
@@ -93,26 +107,62 @@
                 </div>
               </div>
             </div></div>
-            <div class="work-card-link" data-project="project4"><div class="work-card" data-tags="ux focus,website">
-              <div class="work-card-image"><img src="assets/images/projects/flologic/team3.png" alt="work screenshot"></div>
+            <div class="work-card-link" data-project="teamu"><div class="work-card" data-tags="ux focus,mobile">
+              <div class="work-card-image"><img src="assets/images/projects/teamu.png" alt="Teamu app mockup"></div>
               <div class="work-card-content">
-                <h3 class="work-card-title">Privacy-First Community Platform</h3>
-                <p class="work-card-desc">A safe space for artist fandoms to connect, post, and chat with privacy controls.</p>
+                <h3 class="work-card-title">Teamu</h3>
+                <p class="work-card-desc">AI social media platform looking into closing the increasing isolation, solving the loneliness epidemic. Conducted UX research, competitive analysis.</p>
                 <div class="work-card-stats">
                   <div class="work-card-stat"><span>● 8k+</span><span class="work-card-stat-label">members</span></div>
                   <div class="work-card-stat"><span>■ 24/7</span><span class="work-card-stat-label">moderation</span></div>
                 </div>
               </div>
             </div></div>
-            <div class="work-card-link" data-project="project5"><div class="work-card" data-tags="ux focus,website">
-              <div class="work-card-image"><img src="assets/images/projects/flologic/team3.png" alt="work screenshot"></div>
+            <div class="work-card-link" data-project="circadia"><div class="work-card" data-tags="mobile">
+              <div class="work-card-image"><img src="assets/images/projects/circadia.png" alt="Circadia app mockup"></div>
               <div class="work-card-content">
-                <h3 class="work-card-title">Another Project</h3>
-                <p class="work-card-desc">Short description for another project. Replace with real content as needed.</p>
+                <h3 class="work-card-title">Circadia</h3>
+                <p class="work-card-desc">A bedtime app that helps you wind down with astrology, dream journaling, and manifestation rituals, all synced to the moon.</p>
                 <div class="work-card-stats">
-                  <div class="work-card-stat"><span>● 5k+</span><span class="work-card-stat-label">parties hosted</span></div>
-                  <div class="work-card-stat"><span>■ 1.2m</span><span class="work-card-stat-label">songs played</span></div>
-                  <div class="work-card-stat"><span>▼ 30k+</span><span class="work-card-stat-label">messages sent</span></div>
+                  <div class="work-card-stat"><span>● Ongoing</span><span class="work-card-stat-label">development status</span></div>
+                  <div class="work-card-stat"><span>■ Custom</span><span class="work-card-stat-label">Rive animations</span></div>
+                  <div class="work-card-stat"><span>▼ Flexible</span><span class="work-card-stat-label">design system</span></div>
+                </div>
+              </div>
+            </div></div>
+            <div class="work-card-link" data-project="provisioning"><div class="work-card" data-tags="ux focus">
+              <div class="work-card-image"><img src="assets/images/projects/flologic.png" alt="Provisioning redesign"></div>
+              <div class="work-card-content">
+                <h3 class="work-card-title">End-to-End Provisioning Reimagined</h3>
+                <p class="work-card-desc">A complete overhaul of the device provisioning process—from connection to onboarding—focusing on reliability, speed, and user clarity. Designed to reduce customer confusion, streamline backend communication, and future-proof new hardware integrations.</p>
+                <div class="work-card-stats">
+                  <div class="work-card-stat"><span>● 63%</span><span class="work-card-stat-label">cut provisioning support tickets</span></div>
+                  <div class="work-card-stat"><span>■ 42%</span><span class="work-card-stat-label">improved first-time connection success</span></div>
+                  <div class="work-card-stat"><span>▼ 3.1min</span><span class="work-card-stat-label">reduced setup time</span></div>
+                </div>
+              </div>
+            </div></div>
+            <div class="work-card-link" data-project="dashboard"><div class="work-card" data-tags="ux focus,website">
+              <div class="work-card-image"><img src="assets/images/projects/teamu.png" alt="Dashboard design"></div>
+              <div class="work-card-content">
+                <h3 class="work-card-title">A Unified UI for Complex Systems</h3>
+                <p class="work-card-desc">Designed a scalable, intuitive dashboard enabling real-time control and monitoring of multiple connected devices across properties or zones. Tailored for technicians and end-users to quickly assess network health, device states, and remote actions—all in one place.</p>
+                <div class="work-card-stats">
+                  <div class="work-card-stat"><span>● 88%</span><span class="work-card-stat-label">increased system visibility</span></div>
+                  <div class="work-card-stat"><span>■ 41%</span><span class="work-card-stat-label">cut troubleshooting time</span></div>
+                  <div class="work-card-stat"><span>▼ 76%</span><span class="work-card-stat-label">boosted user satisfaction</span></div>
+                </div>
+              </div>
+            </div></div>
+            <div class="work-card-link" data-project="project6"><div class="work-card" data-tags="website">
+              <div class="work-card-image"><img src="assets/images/projects/circadia.png" alt="Embedded systems marketing site"></div>
+              <div class="work-card-content">
+                <h3 class="work-card-title">A Clean Digital Presence for Embedded Systems</h3>
+                <p class="work-card-desc">Created a lightweight, fast-loading static marketing site for a firmware-focused company, highlighting their real-time solutions, documentation access, and service offerings. Optimized for SEO and developer-first usability.</p>
+                <div class="work-card-stats">
+                  <div class="work-card-stat"><span>● 39%</span><span class="work-card-stat-label">decreased bounce rate after launch</span></div>
+                  <div class="work-card-stat"><span>■ 1.2s</span><span class="work-card-stat-label">improved page load time globally</span></div>
+                  <div class="work-card-stat"><span>▼ 2.3x</span><span class="work-card-stat-label">more inbound leads within 60 days</span></div>
                 </div>
               </div>
             </div></div>

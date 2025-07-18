@@ -1,12 +1,3 @@
-// Mobile navigation menu toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
-
-if (hamburger && navMenu) {
-  hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-  });
-}
 
 // Demo contact form submission
 const contactForm = document.querySelector('.contact-form');
@@ -17,29 +8,6 @@ if (contactForm) {
     contactForm.reset();
   });
 }
-
-// Staggered fade-in for project cards
-window.addEventListener('DOMContentLoaded', () => {
-  const cards = document.querySelectorAll('.project-card');
-  cards.forEach((card, i) => {
-    card.style.opacity = 0;
-    card.style.transform = 'translateY(40px)';
-    setTimeout(() => {
-      card.style.transition = 'opacity 0.7s cubic-bezier(.77,0,.18,1), transform 0.7s cubic-bezier(.77,0,.18,1)';
-      card.style.opacity = 1;
-      card.style.transform = 'none';
-    }, 400 + i * 200);
-  });
-
-  // Filter bar animation (demo only)
-  const filterItems = document.querySelectorAll('.filter-list li');
-  filterItems.forEach(item => {
-    item.addEventListener('click', () => {
-      filterItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      // Optionally, filter projects here
-    });
-  });
 
   // Scroll-triggered hero animation (if hero is not in view on load)
   const hero = document.querySelector('.hero');
@@ -54,7 +22,6 @@ window.addEventListener('DOMContentLoaded', () => {
     );
     observer.observe(hero);
   }
-});
 
 document.addEventListener('DOMContentLoaded', () => {
   // Enhanced loading animation
@@ -65,6 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     document.body.style.opacity = '1';
   }, 100);
+
+  // Set initial state for work cards to be animated by scroll observer
+  const workCardsToAnimate = document.querySelectorAll('.work-card');
+  workCardsToAnimate.forEach((card) => {
+    card.style.opacity = 0;
+    card.style.transform = 'translateY(40px)';
+    card.style.transition = 'opacity 0.7s cubic-bezier(.77,0,.18,1), transform 0.7s cubic-bezier(.77,0,.18,1)';
+  });
   
   // Enhanced smooth scroll for nav links with easing
   document.querySelectorAll('.nav-links a').forEach(link => {
@@ -218,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             entry.target.classList.add('in-view');
           }, cardIndex * 80); // 80ms delay between each card
         } else {
-          entry.target.classList.add('in-view');
+        entry.target.classList.add('in-view');
         }
         observer.unobserve(entry.target);
       }
@@ -239,10 +214,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const hideScrollPrompt = () => {
       if (!hasStartedScrolling) {
         hasStartedScrolling = true;
-        scrollPrompt.style.opacity = '0';
+          scrollPrompt.style.opacity = '0';
         scrollPrompt.style.transform = 'translate(-50%, -50%) translateY(20px)';
-        setTimeout(() => scrollPrompt.style.display = 'none', 500);
-      }
+          setTimeout(() => scrollPrompt.style.display = 'none', 500);
+        }
     };
     
     rightColumnForPrompt.addEventListener('scroll', hideScrollPrompt);
@@ -297,36 +272,109 @@ document.addEventListener('DOMContentLoaded', () => {
   // }
   // animateTrail();
 
-  // Enhanced dynamic typing effect for hero text
+  // Sequential typing animation for hero text
+  const heroName = document.querySelector('.hero-name');
+  const heroTitle = document.querySelector('.hero-title');
   const heroIntro = document.querySelector('.hero-desc-intro');
-  if (heroIntro) {
-    const originalText = heroIntro.textContent;
-    heroIntro.textContent = '';
+  const heroLocation = document.querySelector('.hero-desc-location');
+  const heroShabby = document.querySelector('.hero-desc-shabby');
+
+  const typingSequence = [
+    { element: heroName, text: "hi, i'm erin", delay: 800 },
+    { element: heroTitle, text: "lead UI UX designer", delay: 500 },
+    { element: heroIntro, text: "i design to feel something, code to feel nothing, and live somewhere in between.", delay: 800 },
+    { element: heroLocation, text: "currently vibing in north carolina.", delay: 600 },
+    { element: heroShabby, text: "working to make you feel even 1% more human", delay: 600 }
+  ];
+
+  let currentSequence = 0;
+
+  // Initially clear all text content
+  if (heroName) heroName.textContent = '';
+  if (heroTitle) heroTitle.textContent = '';
+  if (heroIntro) heroIntro.textContent = '';
+  if (heroLocation) heroLocation.textContent = '';
+  if (heroShabby) heroShabby.textContent = '';
+
+  function typeText(element, text, callback) {
+    if (!element) {
+      if (callback) callback();
+      return;
+    }
+    
+    // Clear content and show element
+    element.textContent = '';
+    element.classList.add('typing');
     let charIndex = 0;
     
-    function typeWriter() {
-      if (charIndex < originalText.length) {
-        const char = originalText.charAt(charIndex);
-        heroIntro.textContent += char;
+    function typeChar() {
+      if (charIndex < text.length) {
+        const char = text.charAt(charIndex);
+        element.textContent += char;
         charIndex++;
         
-        // Add cursor blink effect
-        heroIntro.style.borderRight = '2px solid var(--primary-cyan)';
+        // Add cursor effect
+        element.style.borderRight = '2px solid var(--primary-cyan)';
         
-        // Variable typing speed for more natural feel
-        const speed = char === ' ' ? 100 : Math.random() * 100 + 30;
-        setTimeout(typeWriter, speed);
+        // Variable typing speed
+        const speed = char === ' ' ? 80 : Math.random() * 60 + 25;
+        setTimeout(typeChar, speed);
       } else {
-        // Remove cursor after typing is complete
+        // Remove cursor and call callback (except for the last element)
         setTimeout(() => {
-          heroIntro.style.borderRight = 'none';
-        }, 1000);
+          element.style.borderRight = 'none';
+          if (callback) callback();
+        }, 300);
       }
     }
     
-    // Start typing after a short delay
-    setTimeout(typeWriter, 800);
+    typeChar();
   }
+
+  function startNextSequence() {
+    if (currentSequence < typingSequence.length) {
+      const current = typingSequence[currentSequence];
+      const isLastElement = currentSequence === typingSequence.length - 1;
+      
+      setTimeout(() => {
+        typeText(current.element, current.text, () => {
+          currentSequence++;
+          if (isLastElement) {
+            // Keep blinking cursor on the last element
+            startBlinkingCursor(current.element);
+          }
+          startNextSequence();
+        });
+      }, current.delay);
+    }
+  }
+
+  function startBlinkingCursor(element) {
+    let isVisible = true;
+    setInterval(() => {
+      if (isVisible) {
+        element.style.borderRight = '2px solid var(--primary-cyan)';
+      } else {
+        element.style.borderRight = 'none';
+      }
+      isVisible = !isVisible;
+    }, 600);
+  }
+
+  // Start the typing sequence with a small delay to ensure DOM is ready
+  setTimeout(() => {
+    if (heroName && heroTitle && heroIntro && heroLocation && heroShabby) {
+      startNextSequence();
+    } else {
+      // Fallback: show content immediately if elements aren't found
+      console.warn('Some hero elements not found, showing content immediately');
+      [heroName, heroTitle, heroIntro, heroLocation, heroShabby].forEach(el => {
+        if (el) {
+          el.style.opacity = '1';
+        }
+      });
+    }
+  }, 300);
 
   // Enhanced parallax effect for work cards with 3D tilt
   const workCardsParallax = document.querySelectorAll('.work-card');
@@ -360,11 +408,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Enhanced dynamic color shift and magnetic effects
+  // Enhanced dynamic color shift and star particle effects
   const reactiveBgElement = document.querySelector('.reactive-bg');
   let scrollHue = 200; // Base blue color
   let mouseX = 50, mouseY = 50; // Center position
   let targetMouseX = 50, targetMouseY = 50; // For smooth interpolation
+  let lastMouseX = window.innerWidth / 2; // Track previous mouse X position
+  let isMouseMovingHorizontally = false;
+  let mouseStopTimeout;
+  let starOffsetX = 0; // Track star layer offset
+  let targetStarOffsetX = 0;
   
   if (reactiveBgElement) {
     // Use right-column scroll since main page doesn't scroll
@@ -374,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rightColumnScroll.addEventListener('scroll', () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
-        const scrollProgress = rightColumnScroll.scrollTop / (rightColumnScroll.scrollHeight - rightColumnScroll.clientHeight);
+      const scrollProgress = rightColumnScroll.scrollTop / (rightColumnScroll.scrollHeight - rightColumnScroll.clientHeight);
         // Enhanced 4-color progression: Blue -> Cyan -> Purple -> Pink
         if (scrollProgress < 0.33) {
           scrollHue = 200 + scrollProgress * 60; // Blue to Cyan
@@ -383,25 +436,96 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           scrollHue = 320 + (scrollProgress - 0.66) * 40; // Purple to Pink
         }
-        updateBackground();
+      updateBackground();
       }, 16); // ~60fps throttling
     });
     
-    // Smooth mouse tracking with interpolation
+    // Enhanced mouse tracking - only respond to horizontal movement for stars
     let mouseAnimationFrame;
     document.addEventListener('mousemove', (e) => {
-      targetMouseX = (e.clientX / window.innerWidth) * 100;
-      targetMouseY = (e.clientY / window.innerHeight) * 100;
+      const currentMouseX = e.clientX;
+      const mouseDeltaX = currentMouseX - lastMouseX;
+      
+      // Only update if mouse is moving horizontally with sufficient delta
+      if (Math.abs(mouseDeltaX) > 2) {
+        isMouseMovingHorizontally = true;
+        
+        // Move stars in opposite direction of mouse movement with 3D rotation
+        if (mouseDeltaX > 0) {
+          // Mouse moving right, stars rotate left (perspective shift)
+          targetStarOffsetX += Math.abs(mouseDeltaX) * 0.4;
+        } else {
+          // Mouse moving left, stars rotate right (perspective shift)
+          targetStarOffsetX -= Math.abs(mouseDeltaX) * 0.4;
+        }
+        
+        // Limit star rotation range (in degrees for 3D effect) - reduced for less dizziness
+        targetStarOffsetX = Math.max(-20, Math.min(20, targetStarOffsetX));
+        
+        // Keep mouse tracking for gradients centered
+        targetMouseX = (e.clientX / window.innerWidth) * 100;
+        targetMouseY = (e.clientY / window.innerHeight) * 100;
+        
+        // Clear any existing stop timeout
+        clearTimeout(mouseStopTimeout);
+        
+        // Set timeout to stop movement when mouse stops - longer for smoother transition
+        mouseStopTimeout = setTimeout(() => {
+          isMouseMovingHorizontally = false;
+          // Gradually return to center when mouse stops
+          targetStarOffsetX *= 0.8;
+        }, 200);
+      }
+      
+      lastMouseX = currentMouseX;
     });
     
-    // Smooth interpolation for fluid mouse following
+    // Smooth interpolation for stars and background - always smooth
     function animateMousePosition() {
+      // Always animate mouse position for gradients
       mouseX += (targetMouseX - mouseX) * 0.1;
       mouseY += (targetMouseY - mouseY) * 0.1;
+      
+      // Always animate star offset for smooth transitions (not just when moving)
+      starOffsetX += (targetStarOffsetX - starOffsetX) * 0.12;
+      
+      // Gradually return to center when not actively moving mouse
+      if (!isMouseMovingHorizontally && Math.abs(targetStarOffsetX) > 0.5) {
+        targetStarOffsetX *= 0.98; // Very gradual return to center
+      }
+      
+      // Update star layers if there's any change (smooth in all states)
+      if (Math.abs(targetStarOffsetX - starOffsetX) > 0.01) {
+        updateStarLayers();
+      }
+      
       updateBackground();
       mouseAnimationFrame = requestAnimationFrame(animateMousePosition);
     }
     animateMousePosition();
+    
+    function updateStarLayers() {
+      // Create 3D rotation effect for star particles
+      const beforeElement = reactiveBgElement;
+      const afterElement = reactiveBgElement;
+      
+      if (beforeElement) {
+        // Apply 3D transforms with gentle movement and zoom-out effect
+        const rotation = starOffsetX; // Use offset as rotation degrees
+        const translateX = starOffsetX * 3; // Reduced translation for less dizziness
+        const translateZ = -Math.abs(starOffsetX) * 4; // Negative Z for zoom-out effect
+        const scale = 1 - (Math.abs(starOffsetX) * 0.015); // Zoom out instead of in
+        const backgroundRotate = starOffsetX * 2; // Rotate background to hide repeating pattern (preserve direction)
+        
+        // Front star layer (::before) - gentle movement with zoom-out
+        beforeElement.style.setProperty('--star-transform-before', 
+          `perspective(1200px) rotateY(${rotation}deg) rotateX(${rotation * 0.15}deg) rotateZ(${backgroundRotate}deg) translateX(${translateX}px) translateZ(${translateZ}px) scale(${scale})`);
+        
+        // Back star layer (::after) - different gentle movement for depth
+        afterElement.style.setProperty('--star-transform-after', 
+          `perspective(1200px) rotateY(${rotation * 0.6}deg) rotateX(${rotation * 0.1}deg) rotateZ(${backgroundRotate * 0.7}deg) translateX(${translateX * 0.5}px) translateZ(${translateZ * 0.6}px) scale(${1 - (Math.abs(starOffsetX) * 0.01)})`);
+      }
+    }
     
     function updateBackground() {
       // Enhanced multi-layer background with depth
@@ -436,7 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize background
     updateBackground();
   }
-  
+
   // Magnetic cursor effect for interactive elements
   const magneticElements = document.querySelectorAll('.toggle-btn, .tag-filter, .work-card-stat, .contact-form button');
   
@@ -486,7 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const easeOut = 1 - Math.pow(1 - progress, 3);
                 current = target * easeOut;
                 
-                stat.textContent = text.replace(/\d+/, Math.floor(current));
+              stat.textContent = text.replace(/\d+/, Math.floor(current));
                 
                 if (progress < 1) {
                   requestAnimationFrame(animateCount);
@@ -668,9 +792,7 @@ const projectData = {
     title: 'FloLogic Mobile App Redesign',
     subtitle: 'Smart Leak Detection & Device Management',
     images: [
-      'assets/images/projects/flologic/team3.png',
-      'assets/images/projects/flologic/all-three-device-tree.png',
-      'assets/images/projects/flologic/1DNt8SRwauBEATFCRtjQ1Lvmjw.png'
+      'assets/images/projects/flologic.png'
     ],
     overviewTags: [
       'UX Focus', 'Mobile', 'Website',
@@ -695,48 +817,136 @@ const projectData = {
       { value: '12', label: 'Custom animations', desc: 'Built for the app' }
     ]
   },
-  project4: {
-    title: 'Project Title Placeholder',
-    subtitle: 'Project Subtitle Placeholder',
+  circadia: {
+    title: 'Circadia',
+    subtitle: 'A bedtime app that helps you wind down with astrology, dream journaling, and manifestation rituals',
     images: [
-      'assets/images/projects/flologic/team3.png',
-      'assets/images/projects/flologic/all-three-device-tree.png',
-      'assets/images/projects/flologic/1DNt8SRwauBEATFCRtjQ1Lvmjw.png'
+      'assets/images/projects/circadia.png'
     ],
     overviewTags: [
-      'Role: Designer', 'Type: Mobile', 'Type: Design System', 'Tools: Figma', 'Tools: Illustrator', 'Timeline: Q1 2025 - Q2 2025'
+      'Role: Founding Designer',
+      'Type: Mobile UI', 'Type: Animation',
+      'Tools: Miro', 'Tools: Figma',
+      'Timeline: 2025 - Ongoing'
     ],
     sections: [
-      { heading: 'What I did', body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque. Etiam euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque.' },
-      { heading: 'Fast go-to-market', body: 'Aliquam erat volutpat. Suspendisse potenti. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.' }
+      { heading: 'Problem', body: `In an age of constant stimulation and fragmented attention, many individuals struggle to wind down, process their emotions, and align with their inner goals before sleep. While wellness apps offer generic solutions like meditation or journaling, few provide an immersive, personalized nighttime experience that honors the cyclical nature of both the cosmos and the self.` },
+      { heading: 'Objectives', body: `<ol><li><strong>Fast Launch Strategy:</strong> The initial release focused on delivering a core product quickly. Feature prioritizations were deferred to post-launch user interviews, allowing real feedback to shape future iterations after providing a physical product for users to engage with.</li><li><strong>Dark-Mode-First Experience:</strong> Create a dark-mode-first experience with soft gradients, subtle animations, and minimal distractions to support a peaceful, end-of-day ritual.</li><li><strong>Lightweight Onboarding:</strong> Use lightweight onboarding and modular navigation to align rituals with each user's chart, offering structure without friction.</li><li><strong>Accessible Mystical Content:</strong> Make complex astrological and subconscious information feel accessible through visual tools like moon wheels, dream cards, and guided prompt modals.</li></ol>` },
+      { heading: 'Summary', body: `<strong>Circadia</strong> is a bedtime app that helps you wind down with astrology, dream journaling, and manifestation rituals, all synced to the moon. It mixes personalized prompts, a Rorschach-style unconscious test, and gentle guidance to help you reflect, set intentions, and tap into your intuitive side. The vibe is mystical but grounded, with a calming design that makes everything feel easy, not like another self-help app. Circadia brings together astrology, psychology, and nightly rituals to create a more meaningful way to end your day.` },
+      { heading: 'Key Responsibilities', body: `<ul><li>Developed the core concept and vision for the app, combining astrology, manifestation, and subconscious exploration</li><li>Defined key features such as dream journaling, zodiac-based guidance, and Rorschach-inspired prompts</li><li>Designed intuitive user flows that support a reflective, nighttime experience</li><li>Created custom icons and visual assets to align with the app's mystical theme</li><li>Currently building Rive animations to enhance micro interactions and reinforce calming user engagement</li><li>Prioritized a dark-mode-first UI for immersive nighttime use</li><li>Integrated symbolic and astrological data into clear, accessible visual components</li></ul>` },
+      { heading: 'User Flow', body: `This user flow journey map helped shape <em>Circadia's</em> UI by clarifying the app's core interactions before any mockups were made. It allowed the founders to visualize the sequence of user actions, identify key decision points, and ensure the experience felt cohesive and intentional from the start.<br><br><ul><li><strong>Manifestation Guide Flow:</strong> Users receive astrology-based guidance tailored to the moon phase and their birth chart to support intentional manifestation before sleep.</li><li><strong>Unconscious Test Flow:</strong> Users are prompted to explore their unconscious by responding to a Rorschach-style inkblot image, submitting their interpretation for later analysis.</li><li><strong>Unconscious Report Flow:</strong> After a delay, users receive a detailed report analyzing their inkblot interpretation through psychological and astrological lenses, including alignment with their manifestation goal.</li><li><strong>Notification & Re-engagement Flow:</strong> Users are notified when their unconscious report is ready, leading them back into the app to revisit and reflect on their test results and personalized insights.</li></ul>` },
+      { heading: 'Design System', body: `A lightweight design system was created after aligning on branding direction with the founders. It was kept intentionally flexible, with minimal constraints, knowing that the visual language and components would continue to evolve post-launch.` },
+      { heading: 'Current Status', body: `Circadia is currently in development and expected to launch on the App Store in the coming months. I'm continuing to support the team with Rive animations and design assistance. Once the app is deployed, I'll begin the next phase of UX research to guide future iterations.` },
+      { heading: 'Professional Takeaways', body: `<strong>Design can be flexible.</strong> A fast launch was a business requirement, and I used it to shape a focused design strategy. I kept the solution minimal and easy to build so we could launch quickly and learn directly from users. Prioritizing feedback on features instead of over-designing in isolation.` }
     ],
     impacts: [
-      { value: '30', label: 'Mapped & Prototyped', desc: 'Unique brand-catered screens.' },
-      { value: '40+', label: 'Created a', desc: 'Token design system.' },
-      { value: '12', label: 'Built', desc: 'Custom animations.' }
-    ]
-  },
-  project5: {
-    title: 'Project Title Placeholder',
-    subtitle: 'Project Subtitle Placeholder',
+      { value: 'Ongoing', label: 'Development Status', desc: 'Expected App Store launch in coming months' },
+      { value: 'Custom', label: 'Rive Animations', desc: 'Built for micro-interactions' },
+      { value: 'Flexible', label: 'Design System', desc: 'Created for post-launch evolution' }
+         ]
+   },
+   teamu: {
+     title: 'Teamu',
+     subtitle: 'AI social media platform solving the loneliness epidemic',
     images: [
-      'assets/images/projects/flologic/team3.png',
-      'assets/images/projects/flologic/all-three-device-tree.png',
-      'assets/images/projects/flologic/1DNt8SRwauBEATFCRtjQ1Lvmjw.png'
+       'assets/images/projects/teamu.png'
     ],
     overviewTags: [
-      'Role: Designer', 'Type: Mobile', 'Type: Design System', 'Tools: Figma', 'Tools: Illustrator', 'Timeline: Q1 2025 - Q2 2025'
+       'Role: UX Researcher & Designer',
+       'Type: Mobile', 'Type: Social Platform',
+       'Tools: Figma', 'Tools: Miro',
+       'Timeline: Q2 2024 - Q4 2024'
     ],
     sections: [
-      { heading: 'What I did', body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque. Etiam euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque.' },
-      { heading: 'Fast go-to-market', body: 'Aliquam erat volutpat. Suspendisse potenti. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.' }
+       { heading: 'Problem', body: `In our increasingly digital world, social isolation and loneliness have reached epidemic levels. Traditional social media platforms often exacerbate these issues by promoting superficial connections and comparison-driven interactions rather than meaningful relationships.` },
+       { heading: 'Objectives', body: `<ul><li>Conduct comprehensive UX research to understand user pain points around loneliness and social connection</li><li>Perform competitive analysis of existing social platforms to identify gaps in meaningful connection features</li><li>Design an AI-powered platform that facilitates authentic relationships and community building</li><li>Create features that prioritize mental health and genuine human connection over engagement metrics</li></ul>` },
+       { heading: 'Research & Analysis', body: `Conducted extensive user interviews and surveys to understand the root causes of digital loneliness. Performed competitive analysis of 15+ social platforms to identify opportunities for more meaningful connection tools. Research revealed that users craved deeper, more authentic interactions rather than surface-level engagement.` },
+       { heading: 'Key Features Designed', body: `<ul><li>AI-powered matching system based on shared interests and values rather than proximity</li><li>Structured conversation starters and activity suggestions to facilitate meaningful interactions</li><li>Community building tools focused on small, intimate groups rather than large follower counts</li><li>Mental health-first design principles with built-in wellness check-ins and support resources</li></ul>` }
     ],
     impacts: [
-      { value: '30', label: 'Mapped & Prototyped', desc: 'Unique brand-catered screens.' },
-      { value: '40+', label: 'Created a', desc: 'Token design system.' },
-      { value: '12', label: 'Built', desc: 'Custom animations.' }
-    ]
-  }
+       { value: '8k+', label: 'Active Members', desc: 'Engaged in beta testing' },
+       { value: '24/7', label: 'Moderation', desc: 'AI-powered safety systems' },
+       { value: '73%', label: 'User Satisfaction', desc: 'Reported feeling less lonely' }
+     ]
+   },
+   provisioning: {
+     title: 'End-to-End Provisioning Reimagined',
+     subtitle: 'Device provisioning process overhaul focusing on reliability, speed, and user clarity',
+     images: [
+       'assets/images/projects/flologic.png'
+     ],
+     overviewTags: [
+       'Role: Lead UX Designer',
+       'Type: IoT Setup Process', 'Type: Mobile & Web',
+       'Tools: Figma', 'Tools: Miro',
+       'Timeline: Q3 2024 - Q1 2025'
+     ],
+     sections: [
+       { heading: 'Problem', body: `The existing device provisioning process was a major source of customer frustration and support tickets. Users struggled with complex connection steps, unclear error messages, and lengthy setup times, leading to high abandonment rates and negative first impressions.` },
+       { heading: 'Objectives', body: `<ul><li>Redesign the entire provisioning flow to be more intuitive and error-resistant</li><li>Reduce customer confusion through clearer communication and visual feedback</li><li>Streamline backend communication to improve connection reliability</li><li>Future-proof the system to easily accommodate new hardware integrations</li></ul>` },
+       { heading: 'Research & Discovery', body: `Analyzed support ticket data to identify the most common failure points. Conducted user interviews with customers who had experienced provisioning issues. Collaborated with engineering to understand technical constraints and opportunities for improvement.` },
+       { heading: 'Design Solutions', body: `<ul><li>Created a step-by-step wizard with clear progress indicators and visual feedback</li><li>Implemented proactive error prevention with real-time validation and helpful error messages</li><li>Designed a unified flow that works consistently across different device types</li><li>Added diagnostic tools to help users troubleshoot connection issues independently</li></ul>` },
+       { heading: 'Results & Impact', body: `The redesigned provisioning process significantly improved the user experience and reduced support burden. Customer satisfaction increased dramatically, and the streamlined process enabled faster rollout of new device types.` }
+     ],
+     impacts: [
+       { value: '63%', label: 'Support Ticket Reduction', desc: 'Cut provisioning-related tickets within first month' },
+       { value: '42%', label: 'Connection Success Rate', desc: 'Improved first-time device connections' },
+       { value: '3.1min', label: 'Setup Time Reduction', desc: 'Reduced average time to full system setup' }
+     ]
+   },
+   dashboard: {
+     title: 'A Unified UI for Complex Systems',
+     subtitle: 'Scalable dashboard for real-time control and monitoring of connected devices',
+     images: [
+       'assets/images/projects/teamu.png'
+     ],
+     overviewTags: [
+       'Role: Lead UI/UX Designer',
+       'Type: Dashboard Design', 'Type: Web Application',
+       'Tools: Figma', 'Tools: Design System',
+       'Timeline: Q1 2024 - Q3 2024'
+     ],
+     sections: [
+       { heading: 'Problem', body: `Technicians and end-users needed a comprehensive view of multiple connected devices across properties or zones, but existing tools were fragmented and difficult to navigate. Critical information was buried, and remote actions were cumbersome to perform.` },
+       { heading: 'Objectives', body: `<ul><li>Create a scalable, intuitive dashboard for real-time device monitoring</li><li>Enable quick assessment of network health and device states</li><li>Streamline remote actions and troubleshooting workflows</li><li>Design for both technical users (installers/technicians) and end-users (homeowners)</li></ul>` },
+       { heading: 'Design Approach', body: `Conducted extensive user research with both technician and homeowner user groups to understand their different needs and workflows. Created information architecture that prioritizes the most critical data while keeping advanced features accessible.` },
+       { heading: 'Key Features', body: `<ul><li>Real-time status overview with color-coded health indicators</li><li>Hierarchical device organization by location and system type</li><li>Quick action buttons for common remote operations</li><li>Detailed diagnostic views with historical data and trends</li><li>Responsive design that works across desktop, tablet, and mobile devices</li></ul>` },
+       { heading: 'Technical Considerations', body: `Worked closely with engineering to ensure the dashboard could handle real-time data updates efficiently. Designed with scalability in mind to accommodate growing numbers of connected devices and new device types.` }
+     ],
+     impacts: [
+       { value: '88%', label: 'System Visibility', desc: 'Increased visibility across units' },
+       { value: '41%', label: 'Troubleshooting Time', desc: 'Cut average troubleshooting time per site' },
+       { value: '76%', label: 'User Satisfaction', desc: 'Boosted dashboard usability (beta feedback)' }
+     ]
+   },
+   
+     project6: {
+     title: 'A Clean Digital Presence for Embedded Systems',
+     subtitle: 'Lightweight, fast-loading static marketing site for firmware-focused company',
+     images: [
+       'assets/images/projects/circadia.png'
+     ],
+     overviewTags: [
+       'Role: Web Designer & Developer',
+       'Type: Marketing Website', 'Type: Static Site',
+       'Tools: HTML/CSS', 'Tools: JavaScript',
+       'Timeline: Q2 2024 - Q3 2024'
+     ],
+     sections: [
+       { heading: 'Problem', body: `A firmware-focused embedded systems company needed a professional web presence that could effectively communicate their technical expertise while being accessible to both developers and decision-makers. Their existing site was slow, outdated, and not optimized for search engines or lead generation.` },
+       { heading: 'Objectives', body: `<ul><li>Create a lightweight, fast-loading static site optimized for performance</li><li>Highlight real-time solutions and technical capabilities in an accessible way</li><li>Provide easy access to documentation and service offerings</li><li>Optimize for SEO to improve organic discovery</li><li>Design with developer-first usability principles</li></ul>` },
+       { heading: 'Design Approach', body: `Focused on clean, minimal design that lets the technical content shine. Prioritized page speed and accessibility, using modern web standards and optimized assets. Created clear information architecture that guides both technical and business users to relevant content quickly.` },
+       { heading: 'Key Features', body: `<ul><li>Ultra-fast loading times through optimized static site generation</li><li>Clean, developer-friendly documentation navigation</li><li>Clear service offering presentations with technical depth</li><li>Mobile-responsive design optimized for all device types</li><li>SEO-optimized content structure and metadata</li><li>Streamlined contact and lead capture forms</li></ul>` },
+       { heading: 'Technical Implementation', body: `Built as a static site for maximum performance and reliability. Implemented modern CSS and JavaScript best practices, optimized images and assets, and structured content for search engine visibility. Used performance budgets to ensure sub-1.2 second load times globally.` },
+       { heading: 'Results & Impact', body: `The new site significantly improved user engagement and lead generation. The combination of better performance, clearer messaging, and improved SEO resulted in substantial business impact within the first 60 days of launch.` }
+     ],
+     impacts: [
+       { value: '39%', label: 'Bounce Rate Reduction', desc: 'Decreased bounce rate after launch' },
+       { value: '1.2s', label: 'Page Load Time', desc: 'Improved average load time globally' },
+       { value: '2.3x', label: 'Lead Generation', desc: 'More inbound leads within 60 days post-launch' }
+     ]
+   },
+  
 };
 
 // Modal overlay creation
@@ -796,13 +1006,17 @@ function createProjectModal(projectKey) {
   }
 }
 
-// Attach click listeners to project cards
+// Attach click listeners to project cards and add hover borders
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.work-card-link[data-project]').forEach(card => {
+    // Add click listener
     card.addEventListener('click', () => {
       const key = card.getAttribute('data-project');
       createProjectModal(key);
     });
+    
+    // Remove hover border for mature, minimal design
+    // No hover effects needed
   });
 });
 
@@ -849,4 +1063,5 @@ modalStyles.innerHTML = `
 .impact-stat-label { font-size: 0.95rem; color: #b0c4d4; font-weight: 400; margin-top: 2px; }
 .impact-stat-desc { font-size: 0.92rem; color: #888; font-weight: 400; }
 `;
+document.head.appendChild(modalStyles); 
 document.head.appendChild(modalStyles); 
