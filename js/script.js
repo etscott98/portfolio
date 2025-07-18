@@ -57,24 +57,52 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Old cursor effect disabled - replaced with new scroll-based system
-  // const reactiveBg = document.querySelector('.reactive-bg');
-  // document.addEventListener('mousemove', (e) => {
-  //   const x = (e.clientX / window.innerWidth) * 100;
-  //   const y = (e.clientY / window.innerHeight) * 100;
-  //   reactiveBg.style.background = `radial-gradient(circle at ${x}% ${y}%, #6eeaff55 0%, #181c24 80%)`;
-  // });
-
-  // Smooth scroll for nav links
+  // Enhanced loading animation
+  document.body.style.opacity = '0';
+  document.body.style.transition = 'opacity 0.6s ease-in-out';
+  
+  // Smooth reveal after load
+  setTimeout(() => {
+    document.body.style.opacity = '1';
+  }, 100);
+  
+  // Enhanced smooth scroll for nav links with easing
   document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
       if (href.startsWith('#')) {
         e.preventDefault();
-        document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          });
+          
+          // Add highlight effect to target
+          target.style.animation = 'highlightFlash 2s ease-out';
+          setTimeout(() => {
+            target.style.animation = '';
+          }, 2000);
+        }
       }
     });
   });
+  
+  // Add highlight flash animation
+  if (!document.querySelector('#highlight-flash')) {
+    const style = document.createElement('style');
+    style.id = 'highlight-flash';
+    style.textContent = `
+      @keyframes highlightFlash {
+        0% { box-shadow: 0 0 0 rgba(110, 234, 255, 0); }
+        20% { box-shadow: 0 0 30px rgba(110, 234, 255, 0.6); }
+        100% { box-shadow: 0 0 0 rgba(110, 234, 255, 0); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
   // Work Card Tag Filtering
   const tagFilters = document.querySelectorAll('.tag-filter');
@@ -269,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // }
   // animateTrail();
 
-  // Dynamic typing effect for hero text
+  // Enhanced dynamic typing effect for hero text
   const heroIntro = document.querySelector('.hero-desc-intro');
   if (heroIntro) {
     const originalText = heroIntro.textContent;
@@ -278,33 +306,65 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function typeWriter() {
       if (charIndex < originalText.length) {
-        heroIntro.textContent += originalText.charAt(charIndex);
+        const char = originalText.charAt(charIndex);
+        heroIntro.textContent += char;
         charIndex++;
-        setTimeout(typeWriter, 50);
+        
+        // Add cursor blink effect
+        heroIntro.style.borderRight = '2px solid var(--primary-cyan)';
+        
+        // Variable typing speed for more natural feel
+        const speed = char === ' ' ? 100 : Math.random() * 100 + 30;
+        setTimeout(typeWriter, speed);
+      } else {
+        // Remove cursor after typing is complete
+        setTimeout(() => {
+          heroIntro.style.borderRight = 'none';
+        }, 1000);
       }
     }
     
     // Start typing after a short delay
-    setTimeout(typeWriter, 500);
+    setTimeout(typeWriter, 800);
   }
 
-  // Dynamic parallax effect for work cards
+  // Enhanced parallax effect for work cards with 3D tilt
   const workCardsParallax = document.querySelectorAll('.work-card');
   workCardsParallax.forEach(card => {
     card.addEventListener('mouseenter', () => {
-      card.style.transform = 'translateY(-8px) scale(1.02)';
-      card.style.transition = 'transform 0.3s cubic-bezier(.77,0,.18,1)';
+      card.style.transition = 'transform 0.4s cubic-bezier(.77,0,.18,1)';
+    });
+    
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      card.style.transform = `
+        translateY(-12px) 
+        scale(1.02) 
+        rotateX(${rotateX}deg) 
+        rotateY(${rotateY}deg)
+        perspective(1000px)
+      `;
     });
     
     card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateY(0) scale(1)';
+      card.style.transform = 'translateY(0) scale(1) rotateX(0deg) rotateY(0deg)';
+      card.style.transition = 'transform 0.6s cubic-bezier(.77,0,.18,1)';
     });
   });
 
-  // Dynamic color shift on scroll with mouse interaction
+  // Enhanced dynamic color shift and magnetic effects
   const reactiveBgElement = document.querySelector('.reactive-bg');
   let scrollHue = 200; // Base blue color
   let mouseX = 50, mouseY = 50; // Center position
+  let targetMouseX = 50, targetMouseY = 50; // For smooth interpolation
   
   if (reactiveBgElement) {
     // Use right-column scroll since main page doesn't scroll
@@ -315,68 +375,96 @@ document.addEventListener('DOMContentLoaded', () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         const scrollProgress = rightColumnScroll.scrollTop / (rightColumnScroll.scrollHeight - rightColumnScroll.clientHeight);
-        // 3-color progression: Blue (200) -> Purple (260) -> Pink (320)
-        if (scrollProgress < 0.5) {
-          scrollHue = 200 + scrollProgress * 120; // Blue to Purple (first half)
+        // Enhanced 4-color progression: Blue -> Cyan -> Purple -> Pink
+        if (scrollProgress < 0.33) {
+          scrollHue = 200 + scrollProgress * 60; // Blue to Cyan
+        } else if (scrollProgress < 0.66) {
+          scrollHue = 260 + (scrollProgress - 0.33) * 60; // Cyan to Purple
         } else {
-          scrollHue = 260 + (scrollProgress - 0.5) * 120; // Purple to Pink (second half)
+          scrollHue = 320 + (scrollProgress - 0.66) * 40; // Purple to Pink
         }
         updateBackground();
       }, 16); // ~60fps throttling
     });
     
-    // Smooth mouse glow with heavy throttling
-    let mouseTimeout;
-    let lastMouseUpdate = 0;
+    // Smooth mouse tracking with interpolation
+    let mouseAnimationFrame;
     document.addEventListener('mousemove', (e) => {
-      const now = Date.now();
-      if (now - lastMouseUpdate < 50) return; // Only update every 50ms (20fps)
-      
-      lastMouseUpdate = now;
-      clearTimeout(mouseTimeout);
-      mouseTimeout = setTimeout(() => {
-        mouseX = (e.clientX / window.innerWidth) * 100;
-        mouseY = (e.clientY / window.innerHeight) * 100;
-        updateBackground();
-      }, 10); // Small delay for smoothness
+      targetMouseX = (e.clientX / window.innerWidth) * 100;
+      targetMouseY = (e.clientY / window.innerHeight) * 100;
     });
     
+    // Smooth interpolation for fluid mouse following
+    function animateMousePosition() {
+      mouseX += (targetMouseX - mouseX) * 0.1;
+      mouseY += (targetMouseY - mouseY) * 0.1;
+      updateBackground();
+      mouseAnimationFrame = requestAnimationFrame(animateMousePosition);
+    }
+    animateMousePosition();
+    
     function updateBackground() {
-      // Base color that matches page vibe - cooler tones
+      // Enhanced multi-layer background with depth
       const baseColor = `hsla(${scrollHue}, 50%, 25%, 0.4)`;
-      
-      // Cursor glow with page-matching colors (cyan/blue family)
       const glowColor = `hsla(${scrollHue}, 80%, 65%, 0.3)`;
+      const secondaryGlow = `hsla(${scrollHue + 40}, 70%, 60%, 0.15)`;
       
       const backgroundStyle = `
-        radial-gradient(circle 1000px at ${mouseX}% ${mouseY}%, ${glowColor} 0%, transparent 60%),
+        radial-gradient(circle 1200px at ${mouseX}% ${mouseY}%, ${glowColor} 0%, ${secondaryGlow} 40%, transparent 70%),
+        radial-gradient(circle 800px at ${100 - mouseX}% ${100 - mouseY}%, ${secondaryGlow} 0%, transparent 50%),
         linear-gradient(135deg, ${baseColor} 0%, #10182a 100%)
       `;
       
       // Apply the background
       reactiveBgElement.style.setProperty('background', backgroundStyle, 'important');
       
-      // Update text highlight colors to match scroll progression
-      // Create complementary colors for text that work well with the background
-      const primaryCyan = `hsl(${scrollHue + 30}, 85%, 75%)`; // Lighter, more saturated
-      const primaryBlue = `hsl(${scrollHue - 20}, 75%, 70%)`; // Slightly different hue
-      const primaryCyanShadow = `hsl(${scrollHue + 30}, 85%, 75%, 0.2)`; // Shadow version
-      const primaryCyanBg = `hsl(${scrollHue + 30}, 85%, 75%, 0.13)`; // Background version
+      // Dynamic color system that adapts to scroll
+      const primaryCyan = `hsl(${scrollHue + 30}, 85%, 75%)`;
+      const primaryBlue = `hsl(${scrollHue - 20}, 75%, 70%)`;
+      const primaryCyanShadow = `hsl(${scrollHue + 30}, 85%, 75%, 0.2)`;
+      const primaryCyanBg = `hsl(${scrollHue + 30}, 85%, 75%, 0.13)`;
+      const accentGradient = `linear-gradient(135deg, hsl(${scrollHue + 30}, 85%, 75%) 0%, hsl(${scrollHue - 20}, 75%, 70%) 50%, hsl(${scrollHue + 60}, 70%, 65%) 100%)`;
       
       // Update CSS custom properties
       document.documentElement.style.setProperty('--primary-cyan', primaryCyan);
       document.documentElement.style.setProperty('--primary-blue', primaryBlue);
       document.documentElement.style.setProperty('--primary-cyan-shadow', primaryCyanShadow);
       document.documentElement.style.setProperty('--primary-cyan-bg', primaryCyanBg);
+      document.documentElement.style.setProperty('--accent-gradient', accentGradient);
     }
     
     // Initialize background
     updateBackground();
   }
+  
+  // Magnetic cursor effect for interactive elements
+  const magneticElements = document.querySelectorAll('.toggle-btn, .tag-filter, .work-card-stat, .contact-form button');
+  
+  magneticElements.forEach(element => {
+    element.addEventListener('mouseenter', (e) => {
+      element.style.transition = 'transform 0.3s cubic-bezier(.77,0,.18,1)';
+    });
+    
+    element.addEventListener('mousemove', (e) => {
+      const rect = element.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      const moveX = x * 0.1;
+      const moveY = y * 0.1;
+      
+      element.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+    
+    element.addEventListener('mouseleave', () => {
+      element.style.transform = 'translate(0px, 0px)';
+      element.style.transition = 'transform 0.5s cubic-bezier(.77,0,.18,1)';
+    });
+  });
 
-  // Dynamic stat counter animation
+  // Enhanced stat counter animation with easing
   const statValues = document.querySelectorAll('.work-card-stat > span:first-child');
-  statValues.forEach(stat => {
+  statValues.forEach((stat, index) => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -385,15 +473,29 @@ document.addEventListener('DOMContentLoaded', () => {
           if (number) {
             const target = parseInt(number[0]);
             let current = 0;
-            const increment = target / 30;
-            const timer = setInterval(() => {
-              current += increment;
-              if (current >= target) {
-                current = target;
-                clearInterval(timer);
+            const duration = 2000; // 2 seconds
+            const startTime = Date.now();
+            
+            // Add staggered delay for multiple stats
+            setTimeout(() => {
+              function animateCount() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function for smooth animation
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                current = target * easeOut;
+                
+                stat.textContent = text.replace(/\d+/, Math.floor(current));
+                
+                if (progress < 1) {
+                  requestAnimationFrame(animateCount);
+                } else {
+                  stat.textContent = text.replace(/\d+/, target);
+                }
               }
-              stat.textContent = text.replace(/\d+/, Math.floor(current));
-            }, 50);
+              animateCount();
+            }, index * 200); // Stagger by 200ms
           }
           observer.unobserve(entry.target);
         }
@@ -421,13 +523,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Card click outline pulse animation
-  document.querySelectorAll('.work-card').forEach(card => {
-    card.addEventListener('mousedown', () => {
-      card.classList.add('pulse-outline');
-      setTimeout(() => card.classList.remove('pulse-outline'), 700);
-    });
+  // Enhanced card entrance animations
+  document.querySelectorAll('.work-card').forEach((card, index) => {
+    // Click animations removed per user request
+    
+    // Add entrance animation with stagger
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.animation = 'bounceInUp 0.8s cubic-bezier(.77,0,.18,1) forwards';
+          }, index * 150); // Stagger entrance
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(card);
   });
+  
+  // Add shake animation to CSS dynamically
+  if (!document.querySelector('#shake-animation')) {
+    const style = document.createElement('style');
+    style.id = 'shake-animation';
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-2px) rotate(-0.5deg); }
+        75% { transform: translateX(2px) rotate(0.5deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
   // --- Star follows mouse on hover ---
   (function() {
