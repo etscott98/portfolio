@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>erin scott | lunarspired</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="reactive-bg"></div>
+    <!-- Remove nav bar -->
+
+    <div class="main-columns">
+      <div class="left-column">
+        <div class="greeting-block" id="greeting-block">
+          <div class="hero-icon left-star">★</div>
+          <div class="profile-photo"><img src="assets/images/profile/profile.webp" alt="erin scott profile photo"></div>
+          <p class="hero-desc">
+            <span class="hero-desc-line hero-desc-intro">hi, i’m erin. i design to feel something, code to feel nothing, and live somewhere in between.</span><br>
+            <span class="hero-desc-line hero-desc-location">currently vibing in north carolina.</span><br>
+            <span class="hero-desc-line hero-desc-shabby">working to make you feel even 1% more human</span>
+          </p>
+        </div>
+        <div class="skills-block" id="skills-block" style="display:none;">
+          <h2>skills</h2>
+          <div class="skills-section">
+            <h3>ui/ux design</h3>
+            <ul class="skills-list">
+              <li>user research & interviews</li>
+              <li>wireframing & prototyping</li>
+              <li>interaction design</li>
+              <li>design systems</li>
+              <li>visual design</li>
+              <li>usability testing</li>
+              <li>figma, adobe cc, miro</li>
+            </ul>
+            <h3>coding</h3>
+            <ul class="skills-list">
+              <li>html, css, javascript</li>
+              <li>react, vue</li>
+              <li>framer motion, gsap</li>
+              <li>web animations</li>
+              <li>responsive design</li>
+              <li>node.js basics</li>
+            </ul>
+          </div>
+        </div>
+        <div class="contact-block" id="contact-block" style="display:none;">
+          <h2>contact</h2>
+          <form class="contact-form">
+            <input type="text" name="name" placeholder="your name" required>
+            <input type="email" name="email" placeholder="your email" required>
+            <textarea name="message" placeholder="your message" required></textarea>
+            <button type="submit">send</button>
+          </form>
+        </div>
+        <div class="toggle-bar">
+          <button id="toggle-greeting" class="toggle-btn active">hi</button>
+          <button id="toggle-skills" class="toggle-btn">skills</button>
+          <button id="toggle-contact" class="toggle-btn">contact</button>
+        </div>
+      </div>
+      <div class="right-column">
+        <div class="scroll-prompt">
+          <div>↓</div>
+          <div class="scroll-prompt-text">scroll for work</div>
+        </div>
+        <section class="work-section">
+          <div class="tag-filter-bar">
+            <span class="tag-filter active" data-tag="all">all</span>
+            <span class="tag-filter" data-tag="ux focus">UX Focus</span>
+            <span class="tag-filter" data-tag="mobile">Mobile</span>
+            <span class="tag-filter" data-tag="website">Website</span>
+          </div>
+          <div class="work-cards-grid">
+            <div class="work-card-link" data-project="flologic"><div class="work-card" data-tags="ux focus,mobile,website">
+              <div class="work-card-image"><img src="assets/images/projects/flologic/team3.png" alt="work screenshot"></div>
+              <div class="work-card-content">
+                <h3 class="work-card-title">Complete App Modernization</h3>
+                <p class="work-card-desc">Led the end-to-end redesign of FloLogic’s legacy mobile app, working cross-functionally to deliver a sleek, modern user experience. I built a custom design system from scratch to ensure visual consistency, accelerate development, and support long-term scalability across platforms.</p>
+                <div class="work-card-stats">
+                  <div class="work-card-stat"><span>● 90%</span><span class="work-card-stat-label">improvement in design consistency</span></div>
+                  <div class="work-card-stat"><span>■ 100%</span><span class="work-card-stat-label">beta testers rated UI as more intuitive</span></div>
+                  <div class="work-card-stat"><span>▼ drop</span><span class="work-card-stat-label">in support tickets after launch</span></div>
+                </div>
+              </div>
+            </div></div>
+            <div class="work-card-link" data-project="project4"><div class="work-card" data-tags="ux focus,website">
+              <div class="work-card-image"><img src="assets/images/projects/flologic/team3.png" alt="work screenshot"></div>
+              <div class="work-card-content">
+                <h3 class="work-card-title">Privacy-First Community Platform</h3>
+                <p class="work-card-desc">A safe space for artist fandoms to connect, post, and chat with privacy controls.</p>
+                <div class="work-card-stats">
+                  <div class="work-card-stat"><span>● 8k+</span><span class="work-card-stat-label">members</span></div>
+                  <div class="work-card-stat"><span>■ 24/7</span><span class="work-card-stat-label">moderation</span></div>
+                </div>
+              </div>
+            </div></div>
+            <div class="work-card-link" data-project="project5"><div class="work-card" data-tags="ux focus,website">
+              <div class="work-card-image"><img src="assets/images/projects/flologic/team3.png" alt="work screenshot"></div>
+              <div class="work-card-content">
+                <h3 class="work-card-title">Another Project</h3>
+                <p class="work-card-desc">Short description for another project. Replace with real content as needed.</p>
+                <div class="work-card-stats">
+                  <div class="work-card-stat"><span>● 5k+</span><span class="work-card-stat-label">parties hosted</span></div>
+                  <div class="work-card-stat"><span>■ 1.2m</span><span class="work-card-stat-label">songs played</span></div>
+                  <div class="work-card-stat"><span>▼ 30k+</span><span class="work-card-stat-label">messages sent</span></div>
+                </div>
+              </div>
+            </div></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Minimal Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <span>user tested: humanity increased (slightly)</span>
+        <span class="footer-copyright">designed by lunarspired</span>
+      </div>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html> 
