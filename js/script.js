@@ -33,12 +33,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.opacity = '1';
   }, 100);
 
-  // Set initial state for work cards to be animated by scroll observer
+  // Set initial state for work cards to be animated by scroll observer (desktop only)
   const workCardsToAnimate = document.querySelectorAll('.work-card');
   workCardsToAnimate.forEach((card) => {
-    card.style.opacity = 0;
-    card.style.transform = 'translateY(40px)';
-    card.style.transition = 'opacity 0.7s cubic-bezier(.77,0,.18,1), transform 0.7s cubic-bezier(.77,0,.18,1)';
+    // Only apply scroll animations on desktop (1024px and above)
+    if (window.innerWidth >= 1024) {
+      card.style.opacity = 0;
+      card.style.transform = 'translateY(40px)';
+      card.style.transition = 'opacity 0.7s cubic-bezier(.77,0,.18,1), transform 0.7s cubic-bezier(.77,0,.18,1)';
+    } else {
+      // On mobile, ensure cards are visible and stable
+      card.style.opacity = 1;
+      card.style.transform = 'none';
+      card.style.transition = 'none';
+    }
   });
   
   // Enhanced smooth scroll for nav links with easing
@@ -174,6 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const animateOnScroll = (entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
+        // Skip animations on mobile to prevent layout shifts
+        if (window.innerWidth < 1024) {
+          entry.target.classList.add('in-view');
+          return;
+        }
+        
         // Only animate work content after user has scrolled
         const isWorkContent = entry.target.classList.contains('work-section') || 
                              entry.target.classList.contains('section-title') ||
@@ -275,15 +289,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // Sequential typing animation for hero text
   const heroName = document.querySelector('.hero-name');
   const heroTitle = document.querySelector('.hero-title');
-  const heroIntro = document.querySelector('.hero-desc-intro');
+  const heroLine1 = document.querySelector('.hero-desc-line1');
+  const heroLine2 = document.querySelector('.hero-desc-line2');
+  const heroLine3 = document.querySelector('.hero-desc-line3');
   const heroLocation = document.querySelector('.hero-desc-location');
   const heroShabby = document.querySelector('.hero-desc-shabby');
 
   const typingSequence = [
-    { element: heroName, text: "hi, i'm erin", delay: 800 },
+    { element: heroName, text: "i'm erin", delay: 800 },
     { element: heroTitle, text: "lead UI UX designer", delay: 500 },
-    { element: heroIntro, text: "i design to feel something, code to feel nothing, and live somewhere in between.", delay: 800 },
-    { element: heroLocation, text: "currently vibing in north carolina.", delay: 600 },
+    { element: heroLine1, text: "i design to feel something,", delay: 800 },
+    { element: heroLine2, text: "code to feel nothing,", delay: 600 },
+    { element: heroLine3, text: "and live somewhere in between.", delay: 600 },
+    { element: heroLocation, text: "currently vibing in north carolina.", delay: 800 },
     { element: heroShabby, text: "working to make you feel even 1% more human", delay: 600 }
   ];
 
@@ -292,7 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initially clear all text content
   if (heroName) heroName.textContent = '';
   if (heroTitle) heroTitle.textContent = '';
-  if (heroIntro) heroIntro.textContent = '';
+  if (heroLine1) heroLine1.textContent = '';
+  if (heroLine2) heroLine2.textContent = '';
+  if (heroLine3) heroLine3.textContent = '';
   if (heroLocation) heroLocation.textContent = '';
   if (heroShabby) heroShabby.textContent = '';
 
@@ -363,12 +383,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Start the typing sequence with a small delay to ensure DOM is ready
   setTimeout(() => {
-    if (heroName && heroTitle && heroIntro && heroLocation && heroShabby) {
+    if (heroName && heroTitle && heroLine1 && heroLine2 && heroLine3 && heroLocation && heroShabby) {
       startNextSequence();
     } else {
       // Fallback: show content immediately if elements aren't found
       console.warn('Some hero elements not found, showing content immediately');
-      [heroName, heroTitle, heroIntro, heroLocation, heroShabby].forEach(el => {
+      [heroName, heroTitle, heroLine1, heroLine2, heroLine3, heroLocation, heroShabby].forEach(el => {
         if (el) {
           el.style.opacity = '1';
         }
@@ -549,12 +569,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const primaryCyanBg = `hsl(${scrollHue + 30}, 85%, 75%, 0.13)`;
       const accentGradient = `linear-gradient(135deg, hsl(${scrollHue + 30}, 85%, 75%) 0%, hsl(${scrollHue - 20}, 75%, 70%) 50%, hsl(${scrollHue + 60}, 70%, 65%) 100%)`;
       
-      // Update CSS custom properties
-      document.documentElement.style.setProperty('--primary-cyan', primaryCyan);
-      document.documentElement.style.setProperty('--primary-blue', primaryBlue);
-      document.documentElement.style.setProperty('--primary-cyan-shadow', primaryCyanShadow);
-      document.documentElement.style.setProperty('--primary-cyan-bg', primaryCyanBg);
-      document.documentElement.style.setProperty('--accent-gradient', accentGradient);
+      // Update CSS custom properties with higher priority
+      document.documentElement.style.setProperty('--primary-cyan', primaryCyan, 'important');
+      document.documentElement.style.setProperty('--primary-blue', primaryBlue, 'important');
+      document.documentElement.style.setProperty('--primary-cyan-shadow', primaryCyanShadow, 'important');
+      document.documentElement.style.setProperty('--primary-cyan-bg', primaryCyanBg, 'important');
+      document.documentElement.style.setProperty('--accent-gradient', accentGradient, 'important');
+      document.documentElement.style.setProperty('--gradient-primary', accentGradient, 'important');
     }
     
     // Initialize background
