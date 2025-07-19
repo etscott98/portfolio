@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only apply scroll animations on desktop (1024px and above)
     if (window.innerWidth >= 1024) {
       card.style.opacity = 0;
-      card.style.transform = 'translateY(40px)';
-      card.style.transition = 'opacity 0.7s cubic-bezier(.77,0,.18,1), transform 0.7s cubic-bezier(.77,0,.18,1)';
+      card.style.transform = 'translateY(80px) scale(0.8) rotate(5deg)';
+      card.style.transition = 'opacity 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), transform 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
     } else {
       // On mobile, ensure cards are visible and stable
       card.style.opacity = 1;
@@ -87,22 +87,42 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(style);
   }
 
-  // Work Card Tag Filtering
+  // Work Card Tag Filtering with animations
   const tagFilters = document.querySelectorAll('.tag-filter');
-  const workCards = document.querySelectorAll('.work-card');
+  const workCardLinks = document.querySelectorAll('.work-card-link');
 
   tagFilters.forEach(tag => {
     tag.addEventListener('click', () => {
       tagFilters.forEach(t => t.classList.remove('active'));
       tag.classList.add('active');
       const selected = tag.dataset.tag;
-      workCards.forEach(card => {
-        if (selected === 'all' || card.dataset.tags.includes(selected)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
+      
+      // First, playfully fade out all cards
+      workCardLinks.forEach((cardLink, index) => {
+        setTimeout(() => {
+          cardLink.style.opacity = '0';
+          cardLink.style.transform = 'translateY(30px) scale(0.9) rotate(-3deg)';
+        }, index * 40); // Stagger the fade-out too!
       });
+      
+      // After a longer delay, show/hide cards and animate them in playfully
+      setTimeout(() => {
+        let visibleIndex = 0;
+        workCardLinks.forEach(cardLink => {
+          const card = cardLink.querySelector('.work-card');
+          if (selected === 'all' || card.dataset.tags.includes(selected)) {
+            cardLink.style.display = '';
+            // Stagger the bounce-in animation
+            setTimeout(() => {
+              cardLink.style.opacity = '1';
+              cardLink.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+            }, visibleIndex * 150); // 150ms delay between each card for more dramatic effect
+            visibleIndex++;
+          } else {
+            cardLink.style.display = 'none';
+          }
+        });
+      }, 400); // Wait longer for fade-out to complete
     });
   });
 
@@ -141,8 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Scroll-triggered entrance animations ---
   const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px'
+    threshold: 0.05,
+    rootMargin: '0px 0px -10% 0px'
   };
   
   let userHasScrolled = false;
@@ -205,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const cardIndex = Array.from(cards).indexOf(entry.target);
           setTimeout(() => {
             entry.target.classList.add('in-view');
-          }, cardIndex * 80); // 80ms delay between each card
+          }, cardIndex * 200); // 200ms delay between each card for more playful stagger
         } else {
         entry.target.classList.add('in-view');
         }

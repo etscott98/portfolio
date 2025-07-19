@@ -52,7 +52,7 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
-  --shadow-glow: 0 0 40px rgba(110, 234, 255, 0.3);
+  --shadow-glow: 0 0 20px rgba(110, 234, 255, 0.15);
   
   /* Transitions */
   --transition-fast: 0.15s ease;
@@ -67,7 +67,7 @@
   --glass-border: rgba(255,255,255,0.2);
   --accent-gradient: var(--gradient-primary);
   --glow-primary: var(--shadow-glow);
-  --glow-secondary: 0 0 60px rgba(78, 140, 255, 0.2);
+  --glow-secondary: 0 0 30px rgba(78, 140, 255, 0.1);
 }
 
 * {
@@ -610,16 +610,16 @@ body > *:not(.reactive-bg):not(.modern-accent) {
 @keyframes starSpinGlow {
   0% { 
     transform: rotate(0deg); 
-    filter: drop-shadow(0 0 10px rgba(110, 234, 255, 0.3)) drop-shadow(0 0 20px rgba(78, 140, 255, 0.2)); 
+    filter: drop-shadow(0 0 5px rgba(110, 234, 255, 0.2)) drop-shadow(0 0 10px rgba(78, 140, 255, 0.1)); 
   }
   25% { 
-    filter: drop-shadow(0 0 20px rgba(110, 234, 255, 0.6)) drop-shadow(0 0 40px rgba(78, 140, 255, 0.4)); 
+    filter: drop-shadow(0 0 8px rgba(110, 234, 255, 0.3)) drop-shadow(0 0 15px rgba(78, 140, 255, 0.2)); 
   }
   50% { 
-    filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.5)) drop-shadow(0 0 60px rgba(110, 234, 255, 0.3)); 
+    filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.25)) drop-shadow(0 0 20px rgba(110, 234, 255, 0.15)); 
   }
   75% { 
-    filter: drop-shadow(0 0 20px rgba(78, 140, 255, 0.6)) drop-shadow(0 0 40px rgba(110, 234, 255, 0.4)); 
+    filter: drop-shadow(0 0 8px rgba(78, 140, 255, 0.3)) drop-shadow(0 0 15px rgba(110, 234, 255, 0.2)); 
   }
   100% { 
     transform: rotate(360deg); 
@@ -6190,8 +6190,7 @@ body, html {
   padding: 16px 32px;
   cursor: pointer;
   box-shadow: 
-    0 4px 20px rgba(110, 234, 255, 0.3),
-    0 2px 10px rgba(0,0,0,0.1);
+    0 2px 10px rgba(0,0,0,0.15);
   transition: all 0.4s cubic-bezier(.77,0,.18,1);
   position: relative;
   overflow: hidden;
@@ -6216,8 +6215,7 @@ body, html {
 .contact-form button:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 
-    0 8px 30px rgba(110, 234, 255, 0.4),
-    0 4px 20px rgba(0,0,0,0.15);
+    0 4px 20px rgba(0,0,0,0.2);
 }
 
 .contact-form button:active {
@@ -8648,4 +8646,50 @@ h1.hero-name,
   -webkit-background-clip: initial !important;
   -webkit-text-fill-color: initial !important;
   background-clip: initial !important;
+}
+
+/* Playful work card animations - scroll and filter animations */
+.work-card.in-view {
+  animation: playfulBounceUp 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) both !important;
+  transition-delay: 0.15s !important;
+}
+
+.work-card-link {
+  transition: opacity 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+              transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+}
+
+.work-card-link[style*="display: none"] {
+  opacity: 0 !important;
+  transform: translateY(30px) scale(0.9) rotate(-3deg) !important;
+  transition: opacity 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+              transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+}
+
+.work-card-link:not([style*="display: none"]) {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) rotate(0deg) !important;
+}
+
+@keyframes playfulBounceUp {
+  0% { 
+    opacity: 0; 
+    transform: translateY(80px) scale(0.8) rotate(5deg); 
+  }
+  30% { 
+    opacity: 0.6; 
+    transform: translateY(-20px) scale(1.1) rotate(-2deg); 
+  }
+  60% { 
+    opacity: 0.9; 
+    transform: translateY(8px) scale(0.95) rotate(1deg); 
+  }
+  80% { 
+    opacity: 1; 
+    transform: translateY(-4px) scale(1.02) rotate(-0.5deg); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1) rotate(0deg); 
+  }
 }
