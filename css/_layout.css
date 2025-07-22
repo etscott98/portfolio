@@ -10,6 +10,8 @@
   overflow: hidden;
   position: relative;
   z-index: 1;
+  flex-direction: row !important;
+  align-items: stretch !important;
 }
 
 .main-columns::before {
@@ -18,7 +20,8 @@
 
 .left-column {
   flex: 1 1 0;
-  width: 50vw;
+  width: 50vw !important;
+  max-width: 50vw !important;
   min-width: 0;
   max-width: none;
   height: auto; /* allow natural height */
@@ -32,6 +35,7 @@
   overflow: visible; /* show full content */
   background: transparent;
   z-index: 2;
+  flex-shrink: 0 !important;
 }
 
 /* New container for left column content */
@@ -55,6 +59,7 @@
   isolation: isolate;
   transform: translateZ(0);
   backface-visibility: hidden;
+  flex-shrink: 0 !important;
 }
 
 /* Remove glass effects from left column */
@@ -68,7 +73,8 @@
 
 .right-column {
   flex: 1 1 0;
-  width: 50vw;
+  width: 50vw !important;
+  max-width: 50vw !important;
   min-width: 0;
   max-width: none;
   height: 100vh;
@@ -81,6 +87,7 @@
   align-items: stretch;
   overflow-y: auto;
   overflow-x: hidden;
+  flex-shrink: 0 !important;
 }
 
 body, html {
