@@ -564,7 +564,306 @@ document.addEventListener('DOMContentLoaded', () => {
   // Magnetic cursor effect for interactive elements
   const magneticElements = document.querySelectorAll('.toggle-btn, .tag-filter, .work-card-stat, .contact-form button');
   
+<<<<<<< Updated upstream
   magneticElements.forEach(element => {
+=======
+  // Text Scramble Effect
+  class TextScramble {
+    constructor(el) {
+      this.el = el;
+      this.chars = '!<>-_\\/[]{}—=+*^?#█▓▒░';
+      this.update = this.update.bind(this);
+    }
+    
+    setText(newText) {
+      const oldText = this.el.innerText;
+      const length = Math.max(oldText.length, newText.length);
+      const promise = new Promise((resolve) => this.resolve = resolve);
+      this.queue = [];
+      
+      for (let i = 0; i < length; i++) {
+        const from = oldText[i] || '';
+        const to = newText[i] || '';
+        const start = Math.floor(Math.random() * 20) + 5; // Start between 5-25 frames
+        const end = start + Math.floor(Math.random() * 20) + 10; // End 10-30 frames after start
+        this.queue.push({ from, to, start, end });
+      }
+      
+      cancelAnimationFrame(this.frameRequest);
+      this.frame = 0;
+      this.update();
+      return promise;
+    }
+    
+    update() {
+      let output = '';
+      let complete = 0;
+      
+      for (let i = 0, n = this.queue.length; i < n; i++) {
+        let { from, to, start, end, char } = this.queue[i];
+        
+        if (this.frame >= end) {
+          complete++;
+          output += to || from; // Always show something, never empty
+        } else if (this.frame >= start) {
+          if (!char || Math.random() < 0.28) {
+            char = this.getRandomChar();
+            this.queue[i].char = char;
+          }
+          output += `<span class="scramble">${char}</span>`;
+        } else {
+          output += from || to; // Always show something, never empty
+        }
+      }
+      
+      this.el.innerHTML = output;
+      
+      if (complete === this.queue.length) {
+        // Ensure final text is exactly the target text
+        this.el.innerHTML = this.queue.map(q => q.to).join('');
+        this.resolve();
+      } else {
+        this.frameRequest = requestAnimationFrame(this.update);
+        this.frame++;
+      }
+    }
+    
+    getRandomChar() {
+      return this.chars[Math.floor(Math.random() * this.chars.length)];
+    }
+  }
+  
+  // Initialize text scramble effects
+  const heroNameEl = document.querySelector('.hero-name');
+  const heroTitleEl = document.querySelector('.hero-title');
+  
+  if (heroNameEl && heroTitleEl) {
+    const nameScramble = new TextScramble(heroNameEl);
+    const titleScramble = new TextScramble(heroTitleEl);
+    
+    const originalName = heroNameEl.innerText;
+    const originalTitle = heroTitleEl.innerText;
+    
+    let nameScrambling = false;
+    let titleScrambling = false;
+    
+    heroNameEl.addEventListener('mouseenter', () => {
+      if (nameScrambling) return;
+      nameScrambling = true;
+      nameScramble.setText(originalName).then(() => {
+        nameScrambling = false;
+        // Ensure text is correct after animation
+        heroNameEl.innerHTML = originalName;
+      });
+    });
+    
+    heroTitleEl.addEventListener('mouseenter', () => {
+      if (titleScrambling) return;
+      titleScrambling = true;
+      titleScramble.setText(originalTitle).then(() => {
+        titleScrambling = false;
+        // Ensure text is correct after animation
+        heroTitleEl.innerHTML = originalTitle;
+      });
+    });
+  }
+  
+  // Profile Image Carousel
+  const profileImages = [
+    'assets/images/profile/profile.webp',
+    'assets/images/profile/profile2.png',
+    'assets/images/profile/profile3.png',
+    'assets/images/profile/profile4.png'
+  ];
+  
+  let currentImageIndex = 0;
+  const profileImg = document.querySelector('.profile-photo img');
+  const profileContainer = document.querySelector('.profile-photo');
+  
+  if (profileImg && profileContainer) {
+    // Add click to cycle through images
+    profileContainer.addEventListener('click', () => {
+      currentImageIndex = (currentImageIndex + 1) % profileImages.length;
+      
+      // Add transition effect
+      profileImg.style.transform = 'scale(0.8) rotate(5deg)';
+      profileImg.style.opacity = '0.7';
+      
+      setTimeout(() => {
+        profileImg.src = profileImages[currentImageIndex];
+        profileImg.style.transform = 'scale(1) rotate(0deg)';
+        profileImg.style.opacity = '1';
+      }, 200);
+    });
+    
+    // Enhanced hover effect with particles
+    profileContainer.addEventListener('mouseenter', () => {
+      createProfileParticles();
+    });
+  }
+  
+  // Create floating particles around profile
+  function createProfileParticles() {
+    const container = document.querySelector('.profile-photo');
+    if (!container) return;
+    
+    for (let i = 0; i < 6; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'profile-particle';
+      particle.style.cssText = `
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--color-primary);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 10px var(--color-primary);
+      `;
+      
+      container.appendChild(particle);
+      
+      // Animate particle
+      const angle = (i / 6) * Math.PI * 2;
+      const distance = 100 + Math.random() * 50;
+      const duration = 1000 + Math.random() * 500;
+      
+      particle.animate([
+        { 
+          transform: 'translate(-50%, -50%) scale(0)',
+          opacity: 0 
+        },
+        { 
+          transform: `translate(-50%, -50%) translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(1)`,
+          opacity: 1,
+          offset: 0.3
+        },
+        { 
+          transform: `translate(-50%, -50%) translate(${Math.cos(angle) * distance * 1.5}px, ${Math.sin(angle) * distance * 1.5}px) scale(0)`,
+          opacity: 0 
+        }
+      ], {
+        duration: duration,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      }).onfinish = () => particle.remove();
+    }
+  }
+  
+  // Interactive Description Lines
+  const descLines = document.querySelectorAll('.hero-desc-line');
+  descLines.forEach((line, index) => {
+    line.addEventListener('mouseenter', () => {
+      // Ripple effect
+      const ripple = document.createElement('div');
+      ripple.style.cssText = `
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(110, 234, 255, 0.1), transparent);
+        border-radius: 8px;
+        z-index: -1;
+        animation: slideRipple 0.6s ease-out;
+      `;
+      
+      line.style.position = 'relative';
+      line.appendChild(ripple);
+      
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+  
+  // Enhanced Star Interactions
+  const star = document.querySelector('.left-star');
+  if (star) {
+    star.addEventListener('click', () => {
+      // Star explosion effect
+      createStarExplosion();
+      
+      // Trigger typing animation restart
+      setTimeout(() => {
+        const typingElements = document.querySelectorAll('.typing');
+        typingElements.forEach(el => {
+          el.style.animation = 'none';
+          setTimeout(() => {
+            el.style.animation = '';
+          }, 10);
+        });
+      }, 500);
+    });
+  }
+  
+  function createStarExplosion() {
+    const star = document.querySelector('.left-star');
+    if (!star) return;
+    
+    const rect = star.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 12; i++) {
+      const miniStar = document.createElement('div');
+      miniStar.textContent = '✦';
+      miniStar.style.cssText = `
+        position: fixed;
+        left: ${centerX}px;
+        top: ${centerY}px;
+        color: var(--color-primary);
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 1000;
+        text-shadow: 0 0 10px currentColor;
+      `;
+      
+      document.body.appendChild(miniStar);
+      
+      const angle = (i / 12) * Math.PI * 2;
+      const distance = 80 + Math.random() * 40;
+      
+      miniStar.animate([
+        { 
+          transform: 'translate(-50%, -50%) scale(0) rotate(0deg)',
+          opacity: 1 
+        },
+        { 
+          transform: `translate(-50%, -50%) translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(1) rotate(360deg)`,
+          opacity: 0 
+        }
+      ], {
+        duration: 800 + Math.random() * 400,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      }).onfinish = () => miniStar.remove();
+    }
+  }
+
+  // Optimized magnetic cursor effect with cached rect calculations
+  const magneticStates = new Map();
+  
+  forEachCached(cachedElements.magneticElements, (element) => {
+    // Cache element bounds on resize and initially
+    let cachedRect = null;
+    let isHovering = false;
+    
+    const updateCachedRect = () => {
+      cachedRect = element.getBoundingClientRect();
+    };
+    
+    // Initial rect caching
+    updateCachedRect();
+    
+    // Update cached rect on window resize (throttled)
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateCachedRect, 100);
+    };
+    window.addEventListener('resize', handleResize);
+    
+>>>>>>> Stashed changes
     element.addEventListener('mouseenter', (e) => {
       element.style.transition = 'transform 0.3s cubic-bezier(.77,0,.18,1)';
     });
