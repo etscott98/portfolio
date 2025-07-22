@@ -1,0 +1,421 @@
+/* =============================================================================
+   NAVIGATION COMPONENTS - Toggle bars and topbar navigation
+   ============================================================================= */
+
+/* Clean Liquid Glass Toggle Bars */
+.toggle-bar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  gap: 16px;
+  padding: 8px 20px;
+  margin-top: auto;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  z-index: 10;
+  align-items: center;
+  min-height: 60px;
+  border-radius: 20px;
+  
+  /* Container for layered glass effect */
+  position: relative;
+  background: transparent;
+  
+  /* Performance */
+  transform: translateZ(0);
+  transition: all 0.3s ease;
+}
+
+/* Smooth glass background layer with precise curvature */
+.toggle-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  
+  /* Layered glass with smooth transparency */
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 100%);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  
+  /* Clean borders with thickness and refraction */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 -1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  
+  filter: url(#smoothGlass);
+  z-index: -1;
+}
+
+/* Inner glass layer for enhanced depth */
+.toggle-bar::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  border-radius: 19px;
+  
+  /* Subtle inner highlights for glass thickness */
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    transparent 70%);
+  
+  /* Inner shadow for depth */
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.2) inset;
+  
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Clean text layer above glass layers */
+.toggle-bar .toggle-btn {
+  position: relative;
+  z-index: 2;
+  /* Ensure text is not affected by filters */
+  filter: none;
+}
+
+.toggle-bar:hover {
+  box-shadow: 
+    0 12px 40px rgba(110, 234, 255, 0.1),
+    0 8px 32px rgba(0,0,0,0.2),
+    0 2px 8px rgba(255,255,255,0.15) inset;
+  transform: translateY(-2px);
+}
+
+/* Enhanced glass background on hover */
+.toggle-bar:hover::before {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.12) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    0 -1px 0 rgba(255, 255, 255, 0.3) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+/* Enhanced inner layer on hover */
+.toggle-bar:hover::after {
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.15) 30%,
+    transparent 70%);
+  box-shadow: 0 1px 4px rgba(255, 255, 255, 0.3) inset;
+}
+
+.left-column-container .toggle-bar {
+  margin-top: auto;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 4;
+  width: fit-content;
+  height: auto !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  flex-shrink: 0;
+}
+
+.greeting-block, .skills-block, .contact-block {
+  margin-top: 0;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: var(--primary-cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(.77,0,.18,1);
+  position: relative;
+  box-shadow: none;
+  text-align: center;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+}
+
+.toggle-btn::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(.77,0,.18,1);
+  transform: translateX(-50%);
+  box-shadow: var(--glow-primary);
+}
+
+.toggle-btn.active::before {
+  width: 80%;
+}
+
+.toggle-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(110, 234, 255, 0.1) 0%, rgba(78, 140, 255, 0.05) 100%);
+  backdrop-filter: var(--glass-blur-light);
+  box-shadow: 0 4px 20px rgba(110, 234, 255, 0.1);
+}
+
+.toggle-btn:hover {
+  color: #fff;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(110, 234, 255, 0.15);
+}
+
+/* Clean Liquid Glass Tag Filter Bar - Right Column Toggle */
+.tag-filter-bar {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-start;
+  margin-bottom: 32px;
+  margin-top: 0;
+  position: sticky;
+  top: 20px;
+  border-radius: 20px;
+  z-index: 100;
+  padding: 16px 24px;
+  
+  /* Glass effect - transparent so projects show through */
+  background: var(--glass-bg-light);
+  backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.tag-filter {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(.77,0,.18,1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+}
+
+.tag-filter::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  border-radius: 1px;
+  transition: all 0.4s cubic-bezier(.77,0,.18,1);
+  transform: translateX(-50%);
+}
+
+.tag-filter.active::before {
+  width: 80%;
+}
+
+.tag-filter.active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(110, 234, 255, 0.1) 0%, rgba(78, 140, 255, 0.05) 100%);
+}
+
+.tag-filter:hover {
+  color: #fff;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(110, 234, 255, 0.2);
+}
+
+/* Project Topbar Navigation */
+.project-topbar {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur-heavy);
+  border-bottom: 1.5px solid #4e8cff33;
+  box-shadow: 0 2px 16px #0004;
+  z-index: 100;
+  flex-direction: column;
+  transition: max-height 0.35s cubic-bezier(.77,0,.18,1);
+  max-height: 70px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.topbar-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 18px 5vw 12px 5vw;
+  width: 100%;
+}
+
+.project-topbar.open {
+  max-height: 420px;
+}
+
+.topbar-home {
+  color: #4e8cff;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  padding: 6px 18px;
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.topbar-home:hover {
+  background: #4e8cff22;
+  color: #fff;
+}
+
+.topbar-projects-toggle {
+  background: none;
+  border: none;
+  color: #eaf6fb;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 18px;
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.topbar-projects-toggle:hover {
+  background: #4e8cff22;
+  color: #4e8cff;
+}
+
+.topbar-projects-list {
+  position: absolute;
+  top: 54px;
+  left: 5vw;
+  background: #162040ee;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #0008;
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px) scale(0.98);
+  transition: opacity 0.22s, transform 0.22s;
+  min-width: 180px;
+}
+
+.topbar-projects-list.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.topbar-projects-list a {
+  color: #eaf6fb;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 6px 0;
+  border-radius: 6px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.topbar-projects-list a:hover {
+  background: #4e8cff22;
+  color: #4e8cff;
+}
+
+.project-container {
+  margin-top: 80px;
+}
+
+.topbar-projects-cards {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  opacity: 0;
+  pointer-events: none;
+  max-height: 0;
+  transition: opacity 0.22s, max-height 0.35s cubic-bezier(.77,0,.18,1);
+  margin-top: 0;
+  padding: 0 5vw 18px 5vw;
+}
+
+.project-topbar.open .topbar-projects-cards {
+  opacity: 1;
+  pointer-events: auto;
+  max-height: 300px;
+  margin-top: 0;
+}
+
+.topbar-project-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #eaf6fb;
+  background: #1a2540;
+  border-radius: 10px;
+  box-shadow: 0 1.5px 4px #0003;
+  padding: 10px 8px 8px 8px;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
+  font-size: 0.98rem;
+  min-width: 100px;
+}
+
+.topbar-project-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px #4e8cff44;
+}
+
+.topbar-project-card:hover {
+  background: #4e8cff22;
+  color: #4e8cff;
+  box-shadow: 0 2.5px 8px #4e8cff22;
+  transform: translateY(-4px) scale(1.04);
+} 

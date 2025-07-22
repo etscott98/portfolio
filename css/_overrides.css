@@ -1,0 +1,395 @@
+/* =============================================================================
+   REFACTORED OVERRIDES - Clean, modern styles that override all duplicates
+   Uses !important strategically to override the 22+ duplicate definitions
+   ============================================================================= */
+
+/* Work Card System Override - Enhanced glass morphism like left column */
+.work-card,
+.work-card-link .work-card {
+  /* Same glass morphism as left column */
+  background: var(--glass-bg-light) !important;
+  backdrop-filter: var(--glass-blur-ultra) !important;
+  -webkit-backdrop-filter: var(--glass-blur-ultra) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: var(--radius-xl) !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 -1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+  overflow: hidden !important;
+  transition: transform var(--transition-base) !important;
+  position: relative !important;
+  /* Remove display: flex !important to allow JS filtering to work */
+  flex-direction: column !important;
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+/* Default display for work cards - allows JS filtering with inline styles */
+.work-card,
+.work-card-link .work-card {
+  display: flex;
+}
+
+.work-card:hover,
+.work-card-link .work-card:hover {
+  /* Stripped - no hover transforms */
+  box-shadow: var(--shadow-lg), var(--shadow-glow) !important;
+  border-radius: var(--radius-xl) !important;
+}
+
+/* Enhanced glass morphism layers for work cards - same as left column */
+.work-card::before,
+.work-card-link .work-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 255, 255, 0.12) 60%,
+    rgba(255, 255, 255, 0.04) 100%) !important;
+  border-radius: var(--radius-xl) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+.work-card::after,
+.work-card-link .work-card::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 1px !important;
+  left: 1px !important;
+  right: 1px !important;
+  bottom: 1px !important;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    transparent 60%) !important;
+  border-radius: calc(var(--radius-xl) - 1px) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* Ensure work card content is above glass layers */
+.work-card > *,
+.work-card-link .work-card > * {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+
+
+/* Work Cards Grid Override */
+.work-cards-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--space-xl) !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-top: var(--space-2xl) !important;
+  background: unset !important;
+  box-shadow: unset !important;
+}
+
+/* Work Card Content Override */
+.work-card-content {
+  padding: var(--space-lg) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: unset !important;
+  box-shadow: unset !important;
+}
+
+.work-card-content::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: var(--space-xl) !important;
+  right: var(--space-xl) !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0.2) 80%, transparent 100%) !important;
+  opacity: 0.6 !important;
+}
+
+/* Work Card Image Override */
+.work-card-image {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+  height: 220px !important;
+  overflow: hidden !important;
+  background: unset !important;
+}
+
+.work-card-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+}
+
+/* Work Card Typography Override */
+.work-card-title {
+  font-size: var(--text-xl) !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  margin: 0 0 var(--space-sm) 0 !important;
+  line-height: 1.3 !important;
+}
+
+.work-card-desc {
+  font-size: var(--text-sm) !important;
+  color: var(--text-secondary) !important;
+  margin: 0 0 var(--space-lg) 0 !important;
+  line-height: 1.6 !important;
+}
+
+/* Work Card Stats Override - Smart responsive layout */
+.work-card-stats {
+  display: flex !important;
+  gap: var(--space-md) !important;
+  margin: var(--space-lg) 0 0 0 !important;
+  padding: 0 var(--space-xl) var(--space-sm) var(--space-xl) !important;
+  flex-wrap: wrap !important;
+  background: unset !important;
+  /* Default: horizontal layout for larger cards */
+  flex-direction: row !important;
+  justify-content: space-between !important;
+}
+
+.work-card-stat {
+  background: var(--bg-glass) !important;
+  backdrop-filter: var(--glass-blur-ultra) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: var(--space-lg) var(--space-md) var(--space-md) !important;
+  text-align: center !important;
+  /* Better flex sizing for horizontal layout */
+  flex: 1 1 calc(33.333% - var(--space-md)) !important;
+  min-width: 160px !important;
+  max-width: none !important;
+  transition: all var(--transition-base) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.work-card-stat:hover {
+  background: linear-gradient(135deg, rgba(110, 234, 255, 0.15) 0%, rgba(78, 140, 255, 0.1) 100%) !important;
+  transform: translateY(-4px) scale(1.05) !important;
+}
+
+.work-card-stat > span:first-child {
+  font-size: var(--text-2xl) !important;
+  font-weight: 800 !important;
+  background: var(--gradient-primary) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  margin-bottom: var(--space-xs) !important;
+}
+
+.work-card-stat-label {
+  font-size: var(--text-sm) !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.4 !important;
+}
+
+/* Filter Bar Override */
+.tag-filter-bar {
+  gap: var(--space-lg) !important;
+  margin-bottom: var(--space-xl) !important;
+  border-radius: var(--radius-xl) !important;
+  padding: var(--space-md) var(--space-lg) !important;
+  background: var(--bg-glass) !important;
+  backdrop-filter: var(--glass-blur-heavy) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.tag-filter {
+  color: #ffffff !important;
+  font-size: var(--text-base) !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border-radius: var(--radius-md) !important;
+  transition: all var(--transition-base) !important;
+  font-weight: 600 !important;
+}
+
+.tag-filter:hover:not(.active) {
+  color: var(--color-white) !important;
+  background: var(--bg-glass) !important;
+  transform: translateY(-2px) !important;
+}
+
+.tag-filter.active {
+  background: var(--gradient-primary) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+.tag-filter.active:hover {
+  background: var(--gradient-primary) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Clean up sections and ensure width for larger cards */
+.work-section,
+.right-column {
+  background: transparent !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.right-column {
+  padding: 20px 2vw 60px 2vw !important;
+}
+
+/* =============================================================================
+   LIQUID GLASS EFFECTS SYSTEM - Advanced visual effects
+   ============================================================================= */
+
+/* Liquid Glass Effects System */
+.liquid-glass {
+  position: relative;
+  background: var(--bg-glass);
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Edge distortion effect */
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.2) 25%, 
+    transparent 50%, 
+    rgba(255, 255, 255, 0.2) 75%, 
+    transparent 100%);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0.6;
+  filter: blur(1px);
+  transform: scale(1.01);
+}
+
+/* Light caustics and refraction highlights */
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    rgba(255,255,255,0.1) 50%, 
+    transparent 100%);
+  border-radius: inherit;
+  opacity: 0.3;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Refraction simulation */
+.liquid-glass-refraction {
+  position: relative;
+  transform: translateZ(0);
+}
+
+.liquid-glass-refraction::before {
+  content: '';
+  position: absolute;
+  top: var(--refraction-offset, 2px);
+  left: var(--refraction-offset, 2px);
+  right: calc(-1 * var(--refraction-offset, 2px));
+  bottom: calc(-1 * var(--refraction-offset, 2px));
+  background: inherit;
+  border-radius: inherit;
+  opacity: 0.3;
+  z-index: -2;
+  filter: blur(3px) hue-rotate(10deg);
+  transform: scale(0.98);
+}
+
+/* Shimmer effect */
+.liquid-glass-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    transparent 100%);
+  animation: liquidShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+/* Edge ripple distortion */
+.liquid-glass-ripple {
+  position: relative;
+}
+
+.liquid-glass-ripple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at top left, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    transparent 30%),
+    radial-gradient(ellipse at top right, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    transparent 30%),
+    radial-gradient(ellipse at bottom left, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    transparent 30%),
+    radial-gradient(ellipse at bottom right, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    transparent 30%);
+  opacity: 0.4;
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(2px);
+  mix-blend-mode: soft-light;
+}
+
+/* Performance optimizations */
+.liquid-glass,
+.liquid-glass-refraction,
+.liquid-glass-shimmer,
+.liquid-glass-ripple {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+} 

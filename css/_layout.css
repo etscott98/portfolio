@@ -1,0 +1,100 @@
+/* =============================================================================
+   LAYOUT SYSTEM - Two-column responsive layout
+   ============================================================================= */
+
+/***** Enhanced Two Column Layout *****/
+.main-columns {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.main-columns::before {
+  display: none; /* Remove column divider */
+}
+
+.left-column {
+  flex: 1 1 0;
+  width: 50vw;
+  min-width: 0;
+  max-width: none;
+  height: auto; /* allow natural height */
+  box-sizing: border-box;
+  position: relative;
+  padding: 60px 4vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: visible; /* show full content */
+  background: transparent;
+  z-index: 2;
+}
+
+/* New container for left column content */
+.left-column-container {
+  width: 500px;
+  height: 850px;
+  background: var(--glass-bg-ultra);
+  backdrop-filter: var(--glass-blur-light);
+  border: none;
+  border-radius: 24px;
+  padding: 32px 36px 28px 36px;
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Remove glass effects from left column */
+.left-column-container::before {
+  display: none;
+}
+
+.left-column-container::after {
+  display: none;
+}
+
+
+
+.right-column {
+  flex: 1 1 0;
+  width: 50vw;
+  min-width: 0;
+  max-width: none;
+  height: 100vh;
+  box-sizing: border-box;
+  position: relative;
+  padding: 20px 4vw 60px 4vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body, html {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Content blocks */
+.greeting-block, .aboutme-block {
+  text-align: center;
+  margin-bottom: 0;
+} 

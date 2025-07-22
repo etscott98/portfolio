@@ -1,0 +1,286 @@
+/* =============================================================================
+   ANIMATIONS & KEYFRAMES
+   ============================================================================= */
+
+/* Enhanced Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Enhanced Section/Card Entrance Animation */
+@keyframes bounceInUp {
+  0% { 
+    opacity: 0; 
+    transform: translateY(80px) scale(0.9) rotateX(10deg); 
+  }
+  60% { 
+    opacity: 1; 
+    transform: translateY(-12px) scale(1.02) rotateX(-2deg); 
+  }
+  80% { 
+    transform: translateY(6px) scale(0.99) rotateX(1deg); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1) rotateX(0deg); 
+  }
+}
+
+/* Floating animation for enhanced elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(-5px) rotate(-0.5deg); }
+}
+
+/* Shimmer effect for special elements */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Pulse glow for interactive elements */
+@keyframes pulseGlowSoft {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(110, 234, 255, 0.2); 
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(110, 234, 255, 0.4), 0 0 60px rgba(78, 140, 255, 0.2); 
+  }
+}
+
+/* Star spin glow animation */
+@keyframes starSpinGlow {
+  0% { 
+    transform: rotate(0deg); 
+    filter: drop-shadow(0 0 5px rgba(110, 234, 255, 0.2)) drop-shadow(0 0 10px rgba(78, 140, 255, 0.1)); 
+  }
+  25% { 
+    filter: drop-shadow(0 0 8px rgba(110, 234, 255, 0.3)) drop-shadow(0 0 15px rgba(78, 140, 255, 0.2)); 
+  }
+  50% { 
+    filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.25)) drop-shadow(0 0 20px rgba(110, 234, 255, 0.15)); 
+  }
+  75% { 
+    filter: drop-shadow(0 0 8px rgba(78, 140, 255, 0.3)) drop-shadow(0 0 15px rgba(110, 234, 255, 0.2)); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+    filter: drop-shadow(0 0 10px rgba(110, 234, 255, 0.3)) drop-shadow(0 0 20px rgba(78, 140, 255, 0.2)); 
+  }
+}
+
+/* Fade in bar animation */
+@keyframes fadeInBar {
+  from { width: 0; opacity: 0; transform: scaleX(0); }
+  to { width: 50px; opacity: 0.8; transform: scaleX(1); }
+}
+
+/* Profile gradient rotation animation */
+@keyframes profileGradientRotate {
+  0% { 
+    background: conic-gradient(from 0deg, 
+      #6eeaff 0deg, 
+      #4e8cff 90deg, 
+      #7c3aed 180deg, 
+      #6eeaff 270deg, 
+      #6eeaff 360deg);
+  }
+  25% { 
+    background: conic-gradient(from 90deg, 
+      #6eeaff 0deg, 
+      #4e8cff 90deg, 
+      #7c3aed 180deg, 
+      #6eeaff 270deg, 
+      #6eeaff 360deg);
+  }
+  50% { 
+    background: conic-gradient(from 180deg, 
+      #6eeaff 0deg, 
+      #4e8cff 90deg, 
+      #7c3aed 180deg, 
+      #6eeaff 270deg, 
+      #6eeaff 360deg);
+  }
+  75% { 
+    background: conic-gradient(from 270deg, 
+      #6eeaff 0deg, 
+      #4e8cff 90deg, 
+      #7c3aed 180deg, 
+      #6eeaff 270deg, 
+      #6eeaff 360deg);
+  }
+  100% { 
+    background: conic-gradient(from 360deg, 
+      #6eeaff 0deg, 
+      #4e8cff 90deg, 
+      #7c3aed 180deg, 
+      #6eeaff 270deg, 
+      #6eeaff 360deg);
+  }
+}
+
+/* Glass shimmer effect */
+@keyframes glassShimmer {
+  0%, 100% { 
+    opacity: 0.8; 
+    transform: scale(1.02) rotate(0deg); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.025) rotate(0.5deg); 
+  }
+}
+
+/* Sleek spatial card entrance animation */
+@keyframes spatialCardEntry {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) translateZ(-100px) rotateX(15deg) scale(0.85);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateZ(0) rotateX(0deg) scale(1);
+  }
+}
+
+/* =============================================================================
+   ANIMATION UTILITIES & ENTRANCE ANIMATIONS
+   ============================================================================= */
+
+/* Entrance and Scroll Animations */
+.centered-section, .work-card, [data-animate] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform-style: preserve-3d;
+  /* Stripped - no initial transform */
+  /* Stripped - no transitions */
+}
+
+/* Ensure all work card content is hidden initially */
+.work-card * {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.centered-section.in-view {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1);
+  transition-delay: 0.05s;
+}
+
+.work-card.in-view {
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: spatialCardEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-style: preserve-3d;
+}
+
+/* Show all work card content when in view */
+.work-card.in-view * {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+[data-animate].in-view {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.2s;
+}
+
+/* Project specific animations */
+.project-image-huge {
+  animation: bounceInUp 1s cubic-bezier(.77,0,.18,1) both;
+}
+
+/* Case study entrance delays */
+.case-study:nth-child(1) { animation-delay: 0.2s; }
+.case-study:nth-child(2) { animation-delay: 0.4s; }
+.case-study:nth-child(3) { animation-delay: 0.6s; }
+
+/* Centered section entrance delays */
+.centered-section:nth-child(2) { animation-delay: 0.2s; }
+.centered-section:nth-child(3) { animation-delay: 0.4s; }
+.centered-section:nth-child(4) { animation-delay: 0.6s; }
+
+/* Liquid glass shimmer animation */
+@keyframes liquidShimmer {
+  0% { 
+    transform: translateX(-100%) skewX(-15deg); 
+    opacity: 0;
+  }
+  50% { 
+    opacity: 0.8;
+  }
+  100% { 
+    transform: translateX(200%) skewX(-15deg); 
+    opacity: 0;
+  }
+}
+
+/* Card shimmer animation */
+@keyframes cardShimmer {
+  0%, 100% { 
+    opacity: 0.7; 
+    transform: scale(1.01) rotate(0deg); 
+  }
+  33% { 
+    opacity: 0.9; 
+    transform: scale(1.015) rotate(0.3deg); 
+  }
+  66% { 
+    opacity: 0.8; 
+    transform: scale(1.012) rotate(-0.2deg); 
+  }
+}
+
+/* Ripple effect animation */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* =============================================================================
+   SCROLL-TRIGGERED ANIMATIONS & VISIBILITY EFFECTS
+   ============================================================================= */
+
+/* Base scroll animation setup */
+.section-title, .tag-filter-bar, .work-cards-grid {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.99);
+  transition: opacity 0.4s cubic-bezier(.77,0,.18,1), transform 0.4s cubic-bezier(.77,0,.18,1), visibility 0.4s;
+}
+
+.section-title.in-view, .tag-filter-bar.in-view, .work-cards-grid.in-view {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  transition-delay: 0.05s;
+}
+
+.work-section {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(40px);
+  transition: opacity 0.4s cubic-bezier(.77,0,.18,1), transform 0.4s cubic-bezier(.77,0,.18,1), visibility 0.4s;
+  margin-top: 20px;
+}
+
+.work-section.in-view {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+} 
