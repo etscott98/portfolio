@@ -113,16 +113,54 @@
   }
   
   .hero-name {
-    font-size: 2.2rem;
+    font-size: 2.2rem !important;
   }
-  
+
   .hero-desc {
-    font-size: 0.95rem;
+    font-size: 1rem !important;
+  }
+
+  .profile-photo img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  /* Skills and Contact Mobile Styling */
+  .skills-block h2,
+  .contact-block h2 {
+    font-size: 1.6rem !important;
+    margin-bottom: 16px !important;
   }
   
-  .profile-photo img {
-    width: 140px;
-    height: 140px;
+  .skills-section {
+    max-width: 100% !important;
+    padding: 0 10px !important;
+  }
+  
+  .skills-section h3 {
+    font-size: 1.1rem !important;
+    margin: 16px 0 10px 0 !important;
+  }
+  
+  .skills-list li {
+    font-size: 0.9rem !important;
+    padding: 4px 0 !important;
+  }
+  
+  .contact-form {
+    max-width: 100% !important;
+    padding: 0 10px !important;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.9rem !important;
+    padding: 10px 14px !important;
+  }
+  
+  .contact-form button {
+    font-size: 0.9rem !important;
+    padding: 12px 20px !important;
   }
   
   .work-card-title {
@@ -259,47 +297,45 @@
     padding: 0 !important;
     overflow-y: visible !important;
     overflow-x: hidden !important;
-    max-height: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    box-sizing: border-box !important;
-    position: relative !important;
-  }
-  
-  .work-cards-grid {
-    gap: 24px !important;
-    width: 100% !important;
-    max-width: 750px !important;
-    margin: 0 auto !important;
-    box-sizing: border-box !important;
-    flex-shrink: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    overflow: visible !important;
-  }
-  
-  .work-card {
-    max-width: 700px !important;
-    width: 100% !important;
-    border-radius: 16px !important;
-    box-sizing: border-box !important;
     margin: 0 !important;
   }
+
+  /* Skills and Contact Tablet Styling */
+  .skills-block h2,
+  .contact-block h2 {
+    font-size: 1.8rem !important;
+    margin-bottom: 18px !important;
+  }
   
-  .tag-filter-bar {
-    position: relative !important;
-    top: auto !important;
-    margin-bottom: 25px;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 12px 20px;
-    background: var(--glass-bg-heavy);
-    border-radius: 16px;
-    width: 100%;
-    box-sizing: border-box;
-    flex-shrink: 0;
+  .skills-section {
+    max-width: 90% !important;
+    padding: 0 20px !important;
+  }
+  
+  .skills-section h3 {
+    font-size: 1.15rem !important;
+    margin: 18px 0 12px 0 !important;
+  }
+  
+  .skills-list li {
+    font-size: 0.95rem !important;
+    padding: 5px 0 !important;
+  }
+  
+  .contact-form {
+    max-width: 90% !important;
+    padding: 0 20px !important;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.95rem !important;
+    padding: 12px 16px !important;
+  }
+  
+  .contact-form button {
+    font-size: 0.95rem !important;
+    padding: 14px 24px !important;
   }
 }
 

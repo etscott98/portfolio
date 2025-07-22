@@ -6,7 +6,7 @@
 .hero-icon {
   font-size: 3rem;
   color: var(--color-primary);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: block;
   text-align: center;
 }
@@ -45,11 +45,8 @@
   font-family: 'Inter', sans-serif;
   font-size: var(--text-4xl);
   font-weight: 800;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0 0 var(--space-sm) 0;
+  color: #ffffff;
+  margin: 0 0 8px 0;
   letter-spacing: -0.025em;
   line-height: 1.1;
   text-align: center;
@@ -60,7 +57,7 @@
   font-size: var(--text-lg);
   font-weight: 500;
   color: var(--text-secondary);
-  margin: 0 0 var(--space-lg) 0;
+  margin: 0 0 20px 0;
   text-align: center;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -92,18 +89,49 @@
   color: var(--text-secondary);
   line-height: 1.6;
   text-align: center;
-  margin: 0 0 var(--space-xl) 0;
+  margin: 0 0 16px 0;
   max-width: 100%;
 }
 
-/* Tighter spacing for the main three lines to group them like a paragraph */
-.hero-desc-line1,
-.hero-desc-line2 {
-  margin-bottom: 2px !important; /* Force tight paragraph spacing */
+.hero-desc-line {
+  display: block;
+  margin-bottom: 0;
+  line-height: 1.4;
+  transition: all 0.4s cubic-bezier(.77,0,.18,1);
 }
 
-.hero-desc-line3 {
-  margin-bottom: 20px !important; /* Force space after the main group */
+/* Group the main description lines together by controlling br spacing */
+.hero-desc-main br {
+  display: none !important;
+}
+
+.hero-desc-main {
+  line-height: 1.2 !important;
+}
+
+/* Force the spans to display inline instead of block within main group */
+.hero-desc-main .hero-desc-line {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Add line breaks after first two lines for vertical stacking */
+.hero-desc-main .hero-desc-line1:after,
+.hero-desc-main .hero-desc-line2:after {
+  content: "\A";
+  white-space: pre;
+}
+
+/* Add space between line 3 and location */
+.hero-desc-main .hero-desc-line3 {
+  margin-bottom: 20px !important;
+  display: block !important;
+}
+
+/* Ensure proper spacing for the location line */
+.hero-desc-secondary {
+  margin-top: 20px !important;
 }
 
 .hero-desc-intro {
@@ -191,7 +219,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: var(--space-2xl) 0 var(--space-xl) 0;
+  margin: 10px 0 10px 0;
   position: static;
 }
 
@@ -242,4 +270,162 @@
   color: var(--text-secondary);
   line-height: 1.7;
   text-transform: none;
+} 
+
+/* =============================================================================
+   SKILLS & CONTACT BLOCKS STYLING
+   ============================================================================= */
+
+/* Skills Block Styling */
+.skills-block h2,
+.contact-block h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: lowercase;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.skills-section {
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+}
+
+.skills-section h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 20px 0 12px 0;
+  text-transform: lowercase;
+  letter-spacing: -0.01em;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 4px;
+  display: inline-block;
+}
+
+.skills-section h3:first-child {
+  margin-top: 0;
+}
+
+.skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.skills-list li {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  position: relative;
+  padding-left: 20px;
+  line-height: 1.5;
+  transition: all 0.3s cubic-bezier(.77,0,.18,1);
+}
+
+.skills-list li:before {
+  content: '●';
+  color: var(--color-primary);
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-size: 0.8rem;
+}
+
+.skills-list li:hover {
+  color: var(--text-primary);
+  transform: translateX(4px);
+}
+
+/* Contact Form Styling */
+.contact-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  border: 2px solid rgba(110, 234, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(110, 234, 255, 0.05);
+  color: var(--text-primary);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s cubic-bezier(.77,0,.18,1);
+  outline: none;
+  resize: vertical;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--color-primary);
+  background: rgba(110, 234, 255, 0.1);
+  box-shadow: 0 0 20px rgba(110, 234, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.contact-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.contact-form button {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  background: var(--gradient-primary);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(.77,0,.18,1);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(110, 234, 255, 0.4);
+}
+
+.contact-form button:active {
+  transform: translateY(0);
+}
+
+.contact-form button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s;
+}
+
+.contact-form button:hover:before {
+  left: 100%;
 } 
