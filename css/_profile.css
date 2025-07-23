@@ -50,6 +50,17 @@
   letter-spacing: -0.025em;
   line-height: 1.1;
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(.77,0,.18,1), text-shadow 0.3s ease;
+}
+
+.hero-name:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 4px 20px rgba(110, 234, 255, 0.3);
+}
+
+.hero-name.scrambling {
+  animation: letterScramble 0.1s infinite;
 }
 
 .hero-title {

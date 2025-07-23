@@ -295,6 +295,9 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleGreeting.classList.add('active');
     toggleSkills.classList.remove('active');
     toggleContact.classList.remove('active');
+    // Remove visible class when hiding
+    skillsBlock.classList.remove('visible');
+    contactBlock.classList.remove('visible');
   });
   toggleSkills.addEventListener('click', () => {
     greetingBlock.style.display = 'none';
@@ -303,6 +306,9 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleGreeting.classList.remove('active');
     toggleSkills.classList.add('active');
     toggleContact.classList.remove('active');
+    // Add visible class for animation
+    setTimeout(() => skillsBlock.classList.add('visible'), 10);
+    contactBlock.classList.remove('visible');
   });
   toggleContact.addEventListener('click', () => {
     greetingBlock.style.display = 'none';
@@ -311,6 +317,9 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleGreeting.classList.remove('active');
     toggleSkills.classList.remove('active');
     toggleContact.classList.add('active');
+    // Add visible class for animation
+    skillsBlock.classList.remove('visible');
+    setTimeout(() => contactBlock.classList.add('visible'), 10);
   });
 
   // --- Scroll-triggered entrance animations ---
@@ -936,6 +945,71 @@ document.addEventListener('DOMContentLoaded', () => {
     let fadeTimeout = null;
     let resetTimeout = null;
     let ease = 0.18;
+    
+    // Add click animation
+    star.addEventListener('click', function() {
+      star.classList.add('clicked');
+      setTimeout(() => {
+        star.classList.remove('clicked');
+      }, 600);
+    });
+  })();
+
+  // --- Text scramble effect for hero name ---
+  (function() {
+    const heroName = document.querySelector('.hero-name');
+    if (!heroName) return;
+    
+    const originalText = "i'm erin";
+    const scrambleChars = "!@#$%^&*()_+-=[]{}|;:,.<>?~`";
+    const glitchChars = "∃ɹïn3řîʼnǝɹᴉuєгїиερïηεrïɳεяîиєяiиeriň";
+    let scrambleInterval;
+    let isScrambling = false;
+    
+    function getRandomChar() {
+      const chars = Math.random() > 0.5 ? scrambleChars : glitchChars;
+      return chars[Math.floor(Math.random() * chars.length)];
+    }
+    
+    function scrambleText() {
+      let scrambled = '';
+      for (let i = 0; i < originalText.length; i++) {
+        if (originalText[i] === ' ' || originalText[i] === "'") {
+          scrambled += originalText[i];
+        } else {
+          scrambled += Math.random() > 0.7 ? originalText[i] : getRandomChar();
+        }
+      }
+      return scrambled;
+    }
+    
+    heroName.addEventListener('mouseenter', function() {
+      if (isScrambling) return;
+      isScrambling = true;
+      heroName.classList.add('scrambling');
+      
+      let iterations = 0;
+      scrambleInterval = setInterval(() => {
+        heroName.textContent = scrambleText();
+        iterations++;
+        
+        if (iterations > 15) {
+          heroName.textContent = originalText;
+          heroName.classList.remove('scrambling');
+          clearInterval(scrambleInterval);
+          isScrambling = false;
+        }
+      }, 100);
+    });
+    
+    heroName.addEventListener('mouseleave', function() {
+      if (scrambleInterval) {
+        clearInterval(scrambleInterval);
+        heroName.textContent = originalText;
+        heroName.classList.remove('scrambling');
+        isScrambling = false;
+      }
+    });
 
     function getStarCenter() {
       const rect = star.getBoundingClientRect();
