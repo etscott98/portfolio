@@ -953,6 +953,31 @@ document.addEventListener('DOMContentLoaded', () => {
         star.classList.remove('clicked');
       }, 600);
     });
+
+    function onMouseEnter() {
+      following = true;
+      star.style.opacity = '1';
+      star.style.animationPlayState = 'paused';
+      offset.x = 0;
+      offset.y = 0;
+      target.x = 0;
+      target.y = 0;
+      document.addEventListener('mousemove', onMouseMove);
+      animFrame = requestAnimationFrame(animate);
+      // After 1.5s, stop following and fade
+      followTimeout = setTimeout(stopFollowingAndFade, 1500);
+    }
+
+    function onMouseLeave() {
+      // If user leaves before 1.5s, still finish the effect
+      if (following) {
+        clearTimeout(followTimeout);
+        stopFollowingAndFade();
+      }
+    }
+
+    star.addEventListener('mouseenter', onMouseEnter);
+    star.addEventListener('mouseleave', onMouseLeave);
   })();
 
   // --- Text scramble effect for hero name ---
@@ -1072,50 +1097,40 @@ document.addEventListener('DOMContentLoaded', () => {
       target.y = 0;
     }
 
-    function onMouseEnter(e) {
-      // If already following, reset everything
-      clearTimeout(followTimeout);
-      clearTimeout(fadeTimeout);
-      clearTimeout(resetTimeout);
-      following = true;
-      star.style.opacity = '1';
-      star.style.animationPlayState = 'paused';
-      offset.x = 0;
-      offset.y = 0;
-      target.x = 0;
-      target.y = 0;
-      document.addEventListener('mousemove', onMouseMove);
-      animFrame = requestAnimationFrame(animate);
-      // After 1.5s, stop following and fade
-      followTimeout = setTimeout(stopFollowingAndFade, 1500);
-    }
-
-    function onMouseLeave() {
-      // If user leaves before 1.5s, still finish the effect
-      if (following) {
-        clearTimeout(followTimeout);
-        stopFollowingAndFade();
-      }
-    }
-
-    star.addEventListener('mouseenter', onMouseEnter);
-    star.addEventListener('mouseleave', onMouseLeave);
   })();
 
   // === PROJECT CARD INTERACTION HANDLERS ===
   
+  // Debug: Check if project data is loaded
+  console.log('Project data available:', window.projectData ? 'Yes' : 'No');
+  if (window.projectData) {
+    console.log('Available project keys:', Object.keys(window.projectData));
+  }
+  
   // Modern project card interaction handlers with error handling
   try {
     const projectCards = document.querySelectorAll('.work-card-link[data-project]');
+    console.log(`Found ${projectCards.length} project cards with data-project attributes`);
+    
+    // Log each card found
+    projectCards.forEach((card, index) => {
+      console.log(`Card ${index + 1}: data-project="${card.dataset.project}"`);
+    });
     
     projectCards.forEach(card => {
       // Modern click handler with destructuring
       card.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent any default link behavior
+        e.stopPropagation(); // Stop event bubbling
+        console.log('Click event triggered on project card');
+        
         try {
           const { dataset } = card;
           const projectKey = dataset.project;
+          console.log(`Clicked project card: ${projectKey}`);
           
           if (projectKey) {
+            console.log('Attempting to create modal...');
             createProjectModal(projectKey);
           } else {
             console.warn('Project card missing data-project attribute');
@@ -1124,6 +1139,11 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Error handling project card click:', error);
         }
       });
+      
+      // Also try adding a test click handler to see if events work at all
+      card.addEventListener('mouseenter', () => {
+        console.log('Mouse entered project card:', card.dataset.project);
+      });
     });
   } catch (error) {
     console.error('Error initializing project card handlers:', error);
@@ -1131,72 +1151,118 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+// Test if we can access project cards immediately (outside DOMContentLoaded)
+console.log('Testing immediate access to project cards...');
+setTimeout(() => {
+  const testCards = document.querySelectorAll('.work-card-link[data-project]');
+  console.log(`Test: Found ${testCards.length} project cards after 1 second`);
+  
+  testCards.forEach(card => {
+    console.log(`Test card: ${card.dataset.project}`);
+  });
+}, 1000);
+
 // --- Project Modal Overlay System ---
 // Project data is now loaded from external file for better maintainability
 
+// Test function for debugging (can be called from console)
+window.testModal = function(projectKey = 'flologic') {
+  console.log('Testing modal creation manually...');
+  createProjectModal(projectKey);
+};
+
 // Modal overlay creation with modern error handling
 const createProjectModal = (projectKey) => {
+  console.log(`createProjectModal called with key: ${projectKey}`);
+  
   try {
     // Access project data from global scope (loaded from external file)
     const data = window.projectData?.[projectKey];
+    console.log('Project data found:', data ? 'Yes' : 'No');
+    
     if (!data) {
       console.warn(`Project data not found for key: ${projectKey}`);
+      console.log('Available keys:', window.projectData ? Object.keys(window.projectData) : 'No projectData');
       return;
     }
     
     // Remove any existing modal with safe cleanup
-  const oldModal = document.getElementById('project-modal-overlay');
+    const oldModal = document.getElementById('project-modal-overlay');
     oldModal?.remove();
 
-  // Modal structure
-  const overlay = document.createElement('div');
-  overlay.id = 'project-modal-overlay';
-  overlay.innerHTML = `
-    <div class="project-modal-backdrop"></div>
-    <div class="project-modal-content">
-      <button class="project-modal-close" aria-label="Close">&times;</button>
-      <div class="project-modal-header">
-        <h1 class="project-modal-title">${data.title}</h1>
-        <h2 class="project-modal-subtitle">${data.subtitle}</h2>
-      </div>
-      <div class="project-modal-images">
-        ${data.images.map(src => `<img src="${src}" class="project-modal-img" alt="${data.title} image">`).join('')}
-      </div>
-      <div class="project-modal-tags">
-        ${data.overviewTags.map(tag => `<span class="project-modal-tag">${tag}</span>`).join('')}
-      </div>
-      <div class="project-modal-sections">
-        ${data.sections.map(sec => `<section><h3>${sec.heading}</h3><div>${sec.body}</div></section>`).join('')}
-      </div>
-      <div class="project-modal-impacts">
-        <h3>Impacts</h3>
-        <div class="project-modal-impacts-stats">
-          ${data.impacts.map(imp => `
-            <div class="project-modal-impact-stat">
-              <div class="impact-stat-value">${imp.value}</div>
-              <div class="impact-stat-label">${imp.label}<br><span class="impact-stat-desc">${imp.desc}</span></div>
+    // Close handler function defined first
+    const closeModal = () => {
+      overlay.classList.remove('open');
+      setTimeout(() => overlay.remove(), 400);
+    };
+
+    // Modal structure with updated layout
+    const overlay = document.createElement('div');
+    overlay.id = 'project-modal-overlay';
+    overlay.innerHTML = `
+      <div class="project-modal-backdrop"></div>
+      <div class="project-modal-content">
+        <button class="project-modal-close" aria-label="Close">&times;</button>
+        <div class="project-modal-header">
+          <h1 class="project-modal-title">${data.title}</h1>
+          <h2 class="project-modal-subtitle">${data.subtitle}</h2>
+          <div class="project-modal-tags">
+            ${data.overviewTags.map(tag => `<span class="project-modal-tag">${tag}</span>`).join('')}
+          </div>
+        </div>
+        <div class="project-modal-body">
+          <div class="project-modal-overview">
+            <div class="project-modal-gallery">
+              <div class="project-modal-images">
+                ${data.images.map(src => `<img src="${src}" class="project-modal-img" alt="${data.title} image">`).join('')}
+              </div>
             </div>
-          `).join('')}
+            <div class="project-modal-impacts">
+              <h3>Key Metrics</h3>
+              <div class="project-modal-impacts-stats">
+                ${data.impacts.map(imp => `
+                  <div class="project-modal-impact-stat">
+                    <div class="impact-stat-value">${imp.value}</div>
+                    <div class="impact-stat-label">${imp.label}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="project-modal-details">
+            <div class="project-modal-sections">
+              ${data.sections.map(sec => `
+                <div class="project-modal-section">
+                  <h3>${sec.heading}</h3>
+                  <div>${sec.body}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-
-  // Animate in
-  setTimeout(() => {
-    overlay.classList.add('open');
-  }, 10);
-
-  // Close logic
-  overlay.querySelector('.project-modal-close').onclick = closeModal;
-  overlay.querySelector('.project-modal-backdrop').onclick = closeModal;
+    `;
     
-    // Modern arrow function for close handler
-    const closeModal = () => {
-    overlay.classList.remove('open');
-    setTimeout(() => overlay.remove(), 350);
+    document.body.appendChild(overlay);
+
+    // Animate in
+    setTimeout(() => {
+      overlay.classList.add('open');
+    }, 10);
+
+    // Close logic
+    overlay.querySelector('.project-modal-close').onclick = closeModal;
+    overlay.querySelector('.project-modal-backdrop').onclick = closeModal;
+    
+    // ESC key to close
+    const handleEscKey = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        document.removeEventListener('keydown', handleEscKey);
+      }
     };
+    document.addEventListener('keydown', handleEscKey);
+    
   } catch (error) {
     console.error(`Error creating project modal for ${projectKey}:`, error);
   }
