@@ -58,8 +58,8 @@
   }
   
   .left-column-container {
-    width: 98vw !important;
-    max-width: 98vw !important;
+    width: 95vw !important;
+    max-width: 95vw !important;
     height: auto !important;
     min-height: auto !important;
     max-height: none !important;
@@ -235,7 +235,12 @@
   
   .skills-list li {
     font-size: 0.9rem !important;
-    padding: 4px 0 !important;
+    padding: 4px 0 4px 20px !important;
+  }
+  
+  .skills-list li:before {
+    left: 4px !important;
+    font-size: 0.7rem !important;
   }
   
   .contact-form {
@@ -541,7 +546,11 @@
   
   .skills-list li {
     font-size: 0.95rem !important;
-    padding: 5px 0 !important;
+    padding: 5px 0 5px 22px !important;
+  }
+  
+  .skills-list li:before {
+    left: 6px !important;
   }
   
   .contact-form {

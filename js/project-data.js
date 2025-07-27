@@ -21,6 +21,124 @@ const projectData = {
       'Role: Lead UI/UX Designer, Beta Program Lead',
       'Tools: Figma', 'Tools: Miro', 'Timeline: Q1 2024 – Q2 2025'
     ],
+    // New flexible content blocks for magazine-style layout
+    contentBlocks: [
+      {
+        type: 'hero',
+        image: 'assets/images/projects/flologic.png',
+        title: 'Beyond the Faucet',
+        description: 'A System, Not Just a Device',
+        alt: 'FloLogic app showing device ecosystem'
+      },
+      {
+        type: 'text',
+        heading: 'Introduction',
+        content: '<p>In the rapidly evolving landscape of smart home technology, the challenge often lies not just in creating innovative hardware, but in designing intuitive and scalable user experiences that can keep pace with technological advancements. This was precisely the scenario at FloLogic, a pioneer in water monitoring systems.</p><p>The company was undergoing a significant transformation:</p><ul><li><strong>From Legacy to Mesh:</strong> Transitioning from a single, Wi-Fi-connected shutoff valve to a sophisticated, multi-unit mesh network.</li><li><strong>The Core Dilemma:</strong> How to evolve an application originally conceived for a singular device to effectively manage a complex ecosystem of gateways, valves, and an array of sensors, potentially spread across multiple properties.</li></ul>'
+      },
+      {
+        type: 'two-col',
+        heading: 'My Role',
+        content: '<p>As the sole UI/UX designer at FloLogic, my responsibilities extended far beyond traditional interface design:</p><ul><li><strong>Comprehensive Design System Development:</strong> Building a robust foundation for consistent user experiences.</li><li><strong>Beta Feedback Integration:</strong> Incorporating real-world user insights directly into the design process.</li><li><strong>Cross-Functional Bridge:</strong> Acting as a crucial liaison between diverse internal teams—engineering, QA, marketing, and customer service.</li></ul><p>This case study delves into the organic, non-linear journey of redesigning the FloLogic mobile application.</p>',
+        image: 'assets/images/projects/flologic.png',
+        alt: 'FloLogic design process'
+      },
+      {
+        type: 'text',
+        heading: 'The Unfolding Challenge: Scaling Complexity, Not Just UI',
+        content: '<p>The initial impetus for the redesign was deceptively simple: the existing app needed to support new devices beyond its legacy system. Stakeholders, understandably focused on immediate product launches, initially favored minimal additions, expecting to simply "bolt on" support for the new hardware.</p><p>However, as we began to explore the implications of this approach, it quickly became evident that the existing structure was fundamentally inadequate. It wasn\'t merely a UI issue; it was a profound information architecture and usability problem that threatened to undermine the entire user experience.</p>'
+      },
+      {
+        type: 'text',
+        heading: 'Why the Old UI Failed',
+        content: '<p>The old UI, designed for a singular, directly controlled unit, had no inherent model for:</p><ul><li>Parent/child relationships between devices</li><li>Multiple units across different locations</li><li>Mesh-networked dependencies and communication flows</li><li>Non-controllable devices like the gateway</li><li>Branching capabilities of new sensors</li></ul><p>This architectural rigidity meant that a superficial UI update would only exacerbate user confusion, making a full structural redesign not just desirable, but essential.</p>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/flologic.png',
+        alt: 'Old vs. New UI Comparison showing the transformation from device-centric to location-centric design',
+        caption: 'The shift from cluttered, single-device view to clean, organized, location-based grouping'
+      },
+      {
+        type: 'text',
+        heading: 'The Strategic Pivot: From Device to Location-Centric Thinking',
+        content: '<p>Our initial design goal was to ensure users understood that both the legacy Wi-Fi valves and the new GConnect valves offered equivalent control features, despite the new system\'s underlying hierarchy.</p><p><strong>First Attempt: Visual Consistency</strong><br/>The first attempt focused on visual consistency, making both device types appear with the same color in the UI to signal functional parity. However, beta testing quickly revealed a critical flaw—users still struggled to understand the relationships and hierarchy within their system.</p>'
+      },
+      {
+        type: 'quote',
+        content: 'Visual parity alone proved insufficient to convey functional equivalence or the overall system structure.'
+      },
+      {
+        type: 'text',
+        heading: 'The UX Breakthrough: Location-Based Model',
+        content: '<p>This feedback prompted a significant UX pivot: a shift from a device-type framing to a location-based model. Instead of organizing by device type, each FloLogic system was now visually grouped within a distinct white container box, clearly labeled with the physical address associated with the provisioned gateway.</p><p><strong>Impact of the Change:</strong></p><ul><li><strong>Unified Grouping:</strong> All units appeared logically grouped under their respective physical location.</li><li><strong>Clear Mental Model:</strong> Created immediate understanding: "This is my house, and these are all the connected devices within it."</li><li><strong>Scalable Foundation:</strong> Laid crucial groundwork for supporting property managers.</li><li><strong>Logical Navigation:</strong> Settings, valve controls, and alerts felt logically grouped.</li></ul>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/flologic.png',
+        alt: 'Design System Components showing icons, UI patterns, and visual language',
+        caption: 'Key elements from the FloLogic design system establishing visual consistency'
+      },
+      {
+        type: 'two-col',
+        heading: 'Crafting the Experience: Design in Motion',
+        content: '<p>This redesign was not a linear, start-to-finish UX cycle, but rather an iterative and adaptive process, deeply informed by:</p><ul><li>Real-time feedback from field testers and installers</li><li>Ongoing conversations with engineering about technical limitations</li><li>Constant negotiation between design simplicity and system transparency</li></ul><p>While we referenced established smart home interfaces like Blink and Nest, FloLogic\'s unique challenges demanded more tailored solutions.</p>',
+        image: 'assets/images/projects/flologic.png',
+        alt: 'Iterative design process'
+      },
+      {
+        type: 'text',
+        heading: 'Architectural Innovations: Building for Scale and Clarity',
+        content: '<p>To bring the location-centric vision to life, several key architectural innovations were designed and implemented:</p><p><strong>Redesigned Main Device Listing</strong></p><ul><li>Complete restructuring away from cluttered, icon-heavy top section</li><li>Modernized navigation with bottom navigation bar (Jakob\'s Law)</li><li>Enhanced information access with tappable locations</li></ul><p><strong>Sophisticated Device Status Logic</strong></p><ul><li>Icon state changes for detailed feedback</li><li>Individual GConnect listings within each location</li><li>Grouped Pinpoint sensors (up to 64 per system)</li><li>Critical alert badges for immediate attention</li></ul>'
+      },
+      {
+        type: 'text',
+        heading: 'Recent Activity System',
+        content: '<p>Inspired by Google Nest and direct user feedback about the annoyance of digging for past notifications, we introduced a "Recent Activity" feed:</p><ul><li><strong>Centralized History:</strong> Summarized key events across all devices in one easily scannable location</li><li><strong>Reduced Alert Confusion:</strong> Provided a clear overview of system activity</li><li><strong>Valuable Diagnostic Tool:</strong> Served as a crucial resource for both users and customer support</li></ul>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/flologic.png',
+        alt: 'Key UI screens showing device listing, status indicators, and Recent Activity feed',
+        caption: 'The redesigned interface featuring bottom navigation, status indicators, and activity feed'
+      },
+      {
+        type: 'stats',
+        heading: 'Impact & Results',
+        stats: [
+          { value: '↓', label: 'Alert Confusion', desc: 'Dramatically reduced through grouped events' },
+          { value: '✓', label: 'Multi-Location Support', desc: 'Enabled property manager workflows' },
+          { value: '∞', label: 'Scalable Framework', desc: 'Ready for future sensor types' },
+          { value: '↑', label: 'User Clarity', desc: 'Clear system overview at a glance' }
+        ]
+      },
+      {
+        type: 'text',
+        heading: 'Lessons Learned',
+        content: '<p>Looking back, this project was a complex systems challenge disguised as a UI update. Several key learnings emerged:</p><ul><li><strong>Early Hierarchy Validation:</strong> The importance of validating hierarchy concepts even earlier in the process.</li><li><strong>Rigorous Documentation:</strong> Documenting mid-process decisions more rigorously would have facilitated faster stakeholder onboarding.</li><li><strong>Continuous Communication:</strong> This experience underscored the value of transparency when navigating significant architectural shifts.</li></ul>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/flologic.png',
+        alt: 'User flow diagram showing key interactions within the new system',
+        caption: 'Simplified user flow for checking sensor status and switching between properties'
+      },
+      {
+        type: 'text',
+        heading: 'The Unfinished Journey: Continuous Evolution',
+        content: '<p>The current version of the FloLogic application is live in beta and continues to evolve with each new hardware release and user feedback cycle. This project was never intended to be a static deliverable, but rather a strategic restructuring—a foundational shift in how FloLogic approaches its digital product experience.</p><p>As the smart home ecosystem continues to expand and user expectations become more sophisticated, the FloLogic app is now positioned to embrace these changes. The architectural decisions made during this redesign ensure that the system is built to adapt, providing users with:</p><ul><li><strong>Clarity and Control:</strong> Over every part of their water system</li><li><strong>Future-Proof Scalability:</strong> Seamless integration of future features</li></ul>'
+      },
+      {
+        type: 'quote',
+        content: 'The journey of product design is, by its very nature, an ongoing one, and the FloLogic case stands as a testament to the power of iterative design, strategic thinking, and a commitment to solving complex problems with user-centric solutions.'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/flologic.png',
+        alt: 'Future vision mockup showing potential features and expansions',
+        caption: 'Conceptual view of future FloLogic features: smart home integration, analytics, and new sensors'
+      }
+    ],
+    // Keep old structure for backward compatibility
     sections: [
       { heading: 'Problem', body: `The original FloLogic app wasn't designed to support both legacy and next-gen devices. To move forward with next-gen development, the app had to be restructured to visually reflect the new device system hierarchy while still functioning in a way that felt familiar to existing users.` },
       { heading: 'Objectives', body: `<ul><li>Redesign the interface to seamlessly support both next-gen and legacy devices.</li><li>Enhance real-time monitoring capabilities with clear navigation and status indicators.</li><li>Simplify the device management process for quicker user access and troubleshooting.</li><li>Ensure the app maintains brand consistency while introducing modern design principles.</li></ul>` },
@@ -41,32 +159,103 @@ const projectData = {
   },
   circadia: {
     title: 'Circadia',
-    subtitle: 'A bedtime app that helps you wind down with astrology, dream journaling, and manifestation rituals',
+    subtitle: 'Circadia module popup inside a manifestation app built for stillness, designed to guide, not instruct',
     images: [
       'assets/images/projects/circadia.png'
     ],
     overviewTags: [
-      'Role: Founding Designer',
+      'Role: Sole Designer',
       'Type: Mobile UI', 'Type: Animation',
-      'Tools: Miro', 'Tools: Figma',
-      'Timeline: 2025 - Ongoing'
+      'Tools: Illustrator', 'Tools: Rive',
+      'Timeline: Beta, 2024 – Ongoing'
     ],
+    // New flexible content blocks for magazine-style layout
+    contentBlocks: [
+      {
+        type: 'hero',
+        image: 'assets/images/projects/circadia 1.webp',
+        title: 'A Bedtime Ritual for the Digital Age',
+        description: 'More than a dream journal – Circadia is a pre-sleep experience designed to help users wind down and manifest intentionally, synced to the phases of the moon.',
+        alt: 'Circadia app showing moon phases and dream interface'
+      },
+      {
+        type: 'text',
+        heading: 'From Dream Journal to Digital Ritual',
+        content: '<p>Originally imagined as a simple dream journal, Circadia evolved into something more immersive and meaningful. It became a pre-sleep experience to help users wind down and manifest intentionally.</p><p>I joined as the sole designer and shaped the product\'s identity from the ground up, transforming a basic concept into a fully-realized digital ritual that respects the sacred transition from waking to sleeping.</p>'
+      },
+      {
+        type: 'two-col',
+        heading: '🌀 My Role & Approach',
+        content: '<ul><li>Created the entire visual system in Illustrator</li><li>Developed a 40+ token design system for scale and clarity</li><li>Designed all user flows, including manifestation guides, unconscious tests, and onboarding</li><li>Built 15+ custom Rive animations to support fluid, emotionally resonant transitions</li><li>Led UX strategy by replacing traditional login with a frictionless, immersive onboarding experience</li></ul>',
+        image: 'assets/images/projects/circadia-design-system.jpg',
+        alt: 'Circadia design system tokens and components'
+      },
+      {
+        type: 'gallery',
+        heading: 'Key Screens & Interactions',
+        images: [
+          { src: 'assets/images/projects/Teamu 1.png', alt: 'Onboarding flow' },
+          { src: 'assets/images/projects/Teamu 2.png', alt: 'Manifestation guide' },
+          { src: 'assets/images/projects/Teamu 3.png', alt: 'Dream journal entry' },
+          { src: 'assets/images/projects/Teamu 4.png', alt: 'Moon phase tracking' }
+        ]
+      },
+      {
+        type: 'quote',
+        content: 'With limited features, the UX had to carry emotional weight. I focused on subtle microinteractions, calm pacing, and seamless transitions. Everything needed to feel intentional.'
+      },
+      {
+        type: 'text',
+        heading: '✦ The Design Process',
+        content: '<p>Stakeholders wanted to move quickly with minimal research and tight timelines. The original scope included a manifestation guide, a Rorschach-inspired test, and a follow-up flow. As the product shifted direction, I focused on building trust through tone, animation, and intuitive flow rather than data collection.</p><p>Onboarding initially felt transactional – it asked users for information before letting them in. I reworked it to feel like part of the experience, with each question and interaction designed to draw the user in gently, like the beginning of a meditation.</p>'
+      },
+      {
+        type: 'stats',
+        heading: '📊 Impact & Results',
+        stats: [
+          { value: '40+', label: 'Token Design System', desc: 'Used across all product flows' },
+          { value: '15+', label: 'Custom Animations', desc: 'For immersive transitions' },
+          { value: '100%', label: 'Onboarding Completion', desc: 'During internal beta testing' },
+          { value: '0', label: 'Traditional Logins', desc: 'Replaced with seamless flow' }
+        ]
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/circadia-hero-wide.jpg',
+        alt: 'Circadia app ecosystem showing various screens and moon phases',
+        caption: 'Circadia transforms bedtime routines into meaningful rituals through thoughtful design and lunar synchronization'
+      },
+      {
+        type: 'timeline',
+        heading: 'Evolution of the Experience',
+        items: [
+          { title: 'Initial Concept', description: 'Simple dream journal app for recording nightly dreams' },
+          { title: 'Vision Expansion', description: 'Evolved to include manifestation and pre-sleep rituals' },
+          { title: 'Design System Creation', description: 'Built comprehensive token system in Illustrator' },
+          { title: 'Animation Development', description: 'Created 15+ custom Rive animations for fluid experience' },
+          { title: 'Beta Testing', description: 'Currently gathering feedback and iterating on the experience' }
+        ]
+      },
+      {
+        type: 'text',
+        heading: '⤿ Reflections & Next Steps',
+        content: '<p>If I had more time, I would have explored more conceptual directions early on and used AI tools to iterate faster. This was part-time work alongside a full-time role, but the goal remained clear: <strong>Build something that feels like a ritual, not just an app.</strong></p><p>The challenge was creating an experience that respects the liminal space between waking and sleeping – a digital tool that actually helps people disconnect from their digital lives.</p><p>We are currently in beta testing and continuing to iterate based on user feedback. The early response has been overwhelmingly positive, with users describing the app as "calming," "intuitive," and "unlike anything else."</p>'
+      }
+    ],
+    // Keep old structure for backward compatibility
     sections: [
-      { heading: 'Problem', body: `In an age of constant stimulation and fragmented attention, many individuals struggle to wind down, process their emotions, and align with their inner goals before sleep. While wellness apps offer generic solutions like meditation or journaling, few provide an immersive, personalized nighttime experience that honors the cyclical nature of both the cosmos and the self.` },
-      { heading: 'Objectives', body: `<ol><li><strong>Fast Launch Strategy:</strong> The initial release focused on delivering a core product quickly. Feature prioritizations were deferred to post-launch user interviews, allowing real feedback to shape future iterations after providing a physical product for users to engage with.</li><li><strong>Dark-Mode-First Experience:</strong> Create a dark-mode-first experience with soft gradients, subtle animations, and minimal distractions to support a peaceful, end-of-day ritual.</li><li><strong>Lightweight Onboarding:</strong> Use lightweight onboarding and modular navigation to align rituals with each user's chart, offering structure without friction.</li><li><strong>Accessible Mystical Content:</strong> Make complex astrological and subconscious information feel accessible through visual tools like moon wheels, dream cards, and guided prompt modals.</li></ol>` },
-      { heading: 'Summary', body: `<strong>Circadia</strong> is a bedtime app that helps you wind down with astrology, dream journaling, and manifestation rituals, all synced to the moon. It mixes personalized prompts, a Rorschach-style unconscious test, and gentle guidance to help you reflect, set intentions, and tap into your intuitive side. The vibe is mystical but grounded, with a calming design that makes everything feel easy, not like another self-help app. Circadia brings together astrology, psychology, and nightly rituals to create a more meaningful way to end your day.` },
-      { heading: 'Key Responsibilities', body: `<ul><li>Developed the core concept and vision for the app, combining astrology, manifestation, and subconscious exploration</li><li>Defined key features such as dream journaling, zodiac-based guidance, and Rorschach-inspired prompts</li><li>Designed intuitive user flows that support a reflective, nighttime experience</li><li>Created custom icons and visual assets to align with the app's mystical theme</li><li>Currently building Rive animations to enhance micro interactions and reinforce calming user engagement</li><li>Prioritized a dark-mode-first UI for immersive nighttime use</li><li>Integrated symbolic and astrological data into clear, accessible visual components</li></ul>` },
-      { heading: 'User Flow', body: `This user flow journey map helped shape <em>Circadia's</em> UI by clarifying the app's core interactions before any mockups were made. It allowed the founders to visualize the sequence of user actions, identify key decision points, and ensure the experience felt cohesive and intentional from the start.<br><br><ul><li><strong>Manifestation Guide Flow:</strong> Users receive astrology-based guidance tailored to the moon phase and their birth chart to support intentional manifestation before sleep.</li><li><strong>Unconscious Test Flow:</strong> Users are prompted to explore their unconscious by responding to a Rorschach-style inkblot image, submitting their interpretation for later analysis.</li><li><strong>Unconscious Report Flow:</strong> After a delay, users receive a detailed report analyzing their inkblot interpretation through psychological and astrological lenses, including alignment with their manifestation goal.</li><li><strong>Notification & Re-engagement Flow:</strong> Users are notified when their unconscious report is ready, leading them back into the app to revisit and reflect on their test results and personalized insights.</li></ul>` },
-      { heading: 'Design System', body: `A lightweight design system was created after aligning on branding direction with the founders. It was kept intentionally flexible, with minimal constraints, knowing that the visual language and components would continue to evolve post-launch.` },
-      { heading: 'Current Status', body: `Circadia is currently in development and expected to launch on the App Store in the coming months. I'm continuing to support the team with Rive animations and design assistance. Once the app is deployed, I'll begin the next phase of UX research to guide future iterations.` },
-      { heading: 'Professional Takeaways', body: `<strong>Design can be flexible.</strong> A fast launch was a business requirement, and I used it to shape a focused design strategy. I kept the solution minimal and easy to build so we could launch quickly and learn directly from users. Prioritizing feedback on features instead of over-designing in isolation.` }
+      { heading: 'Project Evolution', body: `Originally imagined as a dream journal, Circadia evolved into something more immersive. It became a pre-sleep experience to help users wind down and manifest intentionally. I joined as the sole designer and shaped the product's identity from the ground up.` },
+      { heading: '🌀 My Role', body: `<ul><li>Created the entire visual system in Illustrator</li><li>Developed a 40+ token design system for scale and clarity</li><li>Designed all user flows, including manifestation guides, unconscious tests, and onboarding</li><li>Built 15+ custom Rive animations to support fluid, emotionally resonant transitions</li><li>Led UX strategy by replacing traditional login with a frictionless, immersive onboarding experience</li></ul>` },
+      { heading: '✦ The Process', body: `Stakeholders wanted to move quickly with minimal research and tight timelines. The original scope included a manifestation guide, a Rorschach-inspired test, and a follow-up flow. As the product shifted direction, I focused on building trust through tone, animation, and intuitive flow rather than data collection.<br><br>Onboarding initially felt transactional. It asked users for information before letting them in. I reworked it to feel like part of the experience, with each question and interaction designed to draw the user in gently.<br><br>With limited features, the UX had to carry emotional weight. I focused on subtle microinteractions, calm pacing, and seamless transitions. Everything needed to feel intentional.` },
+      { heading: '📊 Impact', body: `<ul><li>Delivered a 40+ token design system used across all product flows</li><li>Created 15+ custom animations for immersive transitions and motion</li><li>Replaced traditional login with seamless onboarding that achieved a 100% completion rate during internal beta</li></ul>` },
+      { heading: '⤿ Looking Back', body: `If I had more time, I would have explored more conceptual directions early on and used AI tools to iterate faster. This was part-time work alongside a full-time role, but the goal remained clear. Build something that feels like a ritual, not just an app.<br><br>We are currently in beta testing and continuing to iterate. More to come.` }
     ],
     impacts: [
-      { value: 'Ongoing', label: 'Development Status', desc: 'Expected App Store launch in coming months' },
-      { value: 'Custom', label: 'Rive Animations', desc: 'Built for micro-interactions' },
-      { value: 'Flexible', label: 'Design System', desc: 'Created for post-launch evolution' }
-         ]
-   },
+      { value: '40+', label: 'Token design system', desc: 'Used across all product flows' },
+      { value: '15+', label: 'Custom animations', desc: 'For immersive transitions' },
+      { value: '100%', label: 'Onboarding completion', desc: 'Internal beta' }
+    ]
+  },
    teamu: {
      title: 'Teamu',
      subtitle: 'AI social media platform solving the loneliness epidemic',

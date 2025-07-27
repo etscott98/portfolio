@@ -365,8 +365,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // Also trigger on any interaction to ensure animations work
-  document.addEventListener('click', trackScrollStart);
-  document.addEventListener('touchstart', trackScrollStart);
+  document.addEventListener('click', (e) => {
+    // Don't trigger scroll animations when clicking toggle buttons
+    if (!e.target.closest('.toggle-btn') && !e.target.closest('.toggle-bar')) {
+      trackScrollStart();
+    }
+  });
+  document.addEventListener('touchstart', (e) => {
+    // Don't trigger scroll animations when touching toggle buttons
+    if (!e.target.closest('.toggle-btn') && !e.target.closest('.toggle-bar')) {
+      trackScrollStart();
+    }
+  });
   
   // Fallback: Check if we're already scrolled and allow animations immediately
   setTimeout(() => {
@@ -755,6 +765,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const primaryCyanShadow = `hsl(${scrollHue + 30}, 85%, 75%, 0.2)`;
       const primaryCyanBg = `hsl(${scrollHue + 30}, 85%, 75%, 0.13)`;
       const accentGradient = `linear-gradient(135deg, hsl(${scrollHue + 30}, 85%, 75%) 0%, hsl(${scrollHue - 20}, 75%, 70%) 50%, hsl(${scrollHue + 60}, 70%, 65%) 100%)`;
+      const profileGradient = `conic-gradient(from 0deg, 
+        hsl(${scrollHue + 30}, 85%, 75%) 0deg, 
+        hsl(${scrollHue - 20}, 75%, 70%) 90deg, 
+        hsl(${scrollHue + 60}, 70%, 65%) 180deg, 
+        hsl(${scrollHue + 30}, 85%, 75%) 270deg, 
+        hsl(${scrollHue + 30}, 85%, 75%) 360deg)`;
+      
+      // Individual profile colors for the rotating animation
+      const profileColor1 = `hsl(${scrollHue + 30}, 85%, 75%)`;
+      const profileColor2 = `hsl(${scrollHue - 20}, 75%, 70%)`;
+      const profileColor3 = `hsl(${scrollHue + 60}, 70%, 65%)`;
       
       // Update CSS custom properties with higher priority
       document.documentElement.style.setProperty('--primary-cyan', primaryCyan, 'important');
@@ -763,6 +784,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.style.setProperty('--primary-cyan-bg', primaryCyanBg, 'important');
       document.documentElement.style.setProperty('--accent-gradient', accentGradient, 'important');
       document.documentElement.style.setProperty('--gradient-primary', accentGradient, 'important');
+      document.documentElement.style.setProperty('--profile-gradient', profileGradient, 'important');
+      document.documentElement.style.setProperty('--profile-color-1', profileColor1, 'important');
+      document.documentElement.style.setProperty('--profile-color-2', profileColor2, 'important');
+      document.documentElement.style.setProperty('--profile-color-3', profileColor3, 'important');
     }
     
     // Initialize background
@@ -1196,7 +1221,7 @@ const createProjectModal = (projectKey) => {
       setTimeout(() => overlay.remove(), 400);
     };
 
-    // Modal structure with updated layout
+    // Modal structure with flexible content blocks
     const overlay = document.createElement('div');
     overlay.id = 'project-modal-overlay';
     overlay.innerHTML = `
@@ -1211,34 +1236,128 @@ const createProjectModal = (projectKey) => {
           </div>
         </div>
         <div class="project-modal-body">
-          <div class="project-modal-overview">
-            <div class="project-modal-gallery">
-              <div class="project-modal-images">
-                ${data.images.map(src => `<img src="${src}" class="project-modal-img" alt="${data.title} image">`).join('')}
+          ${data.contentBlocks ? data.contentBlocks.map(block => {
+            switch(block.type) {
+              case 'hero':
+                return `
+                  <div class="content-block content-block-hero">
+                    <img src="${block.image || 'assets/images/placeholder-hero.jpg'}" alt="${block.alt || 'Hero image'}" loading="lazy">
+                    <div class="content-block-hero-overlay">
+                      <h2>${block.title}</h2>
+                      <p>${block.description}</p>
+                    </div>
+                  </div>
+                `;
+              case 'text':
+                return `
+                  <div class="content-block content-block-text">
+                    <h3>${block.heading}</h3>
+                    ${block.content}
+                  </div>
+                `;
+              case 'two-col':
+                return `
+                  <div class="content-block content-block-two-col">
+                    <div class="content-block-two-col-text">
+                      <h3>${block.heading}</h3>
+                      ${block.content}
+                    </div>
+                    <div class="content-block-two-col-image">
+                      <img src="${block.image || 'assets/images/placeholder-square.jpg'}" alt="${block.alt || 'Feature image'}" loading="lazy">
+                    </div>
+                  </div>
+                `;
+              case 'gallery':
+                return `
+                  <div class="content-block">
+                    ${block.heading ? `<h3>${block.heading}</h3>` : ''}
+                    <div class="content-block-gallery">
+                      ${block.images.map(img => `
+                        <div class="content-block-gallery-item">
+                          <img src="${img.src || 'assets/images/placeholder-gallery.jpg'}" alt="${img.alt || 'Gallery image'}" loading="lazy">
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `;
+              case 'stats':
+                return `
+                  <div class="content-block content-block-stats">
+                    ${block.heading ? `<h3>${block.heading}</h3>` : ''}
+                    <div class="content-block-stats-grid">
+                      ${block.stats.map(stat => `
+                        <div class="stat-item">
+                          <div class="stat-value">${stat.value}</div>
+                          <div class="stat-label">${stat.label}</div>
+                          ${stat.desc ? `<div class="stat-desc">${stat.desc}</div>` : ''}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `;
+              case 'quote':
+                return `
+                  <div class="content-block content-block-quote">
+                    <p>${block.content}</p>
+                  </div>
+                `;
+              case 'timeline':
+                return `
+                  <div class="content-block">
+                    ${block.heading ? `<h3>${block.heading}</h3>` : ''}
+                    <div class="content-block-timeline">
+                      ${block.items.map(item => `
+                        <div class="timeline-item">
+                          <h4>${item.title}</h4>
+                          <p>${item.description}</p>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `;
+              case 'full-image':
+                return `
+                  <div class="content-block content-block-full-image">
+                    <figure>
+                      <img src="${block.image || 'assets/images/placeholder-wide.jpg'}" alt="${block.alt || 'Full width image'}" loading="lazy">
+                      ${block.caption ? `<figcaption>${block.caption}</figcaption>` : ''}
+                    </figure>
+                  </div>
+                `;
+              default:
+                return '';
+            }
+          }).join('') : `
+            <!-- Fallback to old structure if no contentBlocks -->
+            <div class="project-modal-overview">
+              <div class="project-modal-gallery">
+                <div class="project-modal-images">
+                  ${data.images.map(src => `<img src="${src}" class="project-modal-img" alt="${data.title} image" loading="lazy">`).join('')}
+                </div>
+              </div>
+              <div class="project-modal-impacts">
+                <h3>Key Metrics</h3>
+                <div class="project-modal-impacts-stats">
+                  ${data.impacts.map(imp => `
+                    <div class="project-modal-impact-stat">
+                      <div class="impact-stat-value">${imp.value}</div>
+                      <div class="impact-stat-label">${imp.label}</div>
+                    </div>
+                  `).join('')}
+                </div>
               </div>
             </div>
-            <div class="project-modal-impacts">
-              <h3>Key Metrics</h3>
-              <div class="project-modal-impacts-stats">
-                ${data.impacts.map(imp => `
-                  <div class="project-modal-impact-stat">
-                    <div class="impact-stat-value">${imp.value}</div>
-                    <div class="impact-stat-label">${imp.label}</div>
+            <div class="project-modal-details">
+              <div class="project-modal-sections">
+                ${data.sections.map(sec => `
+                  <div class="project-modal-section">
+                    <h3>${sec.heading}</h3>
+                    <div>${sec.body}</div>
                   </div>
                 `).join('')}
               </div>
             </div>
-          </div>
-          <div class="project-modal-details">
-            <div class="project-modal-sections">
-              ${data.sections.map(sec => `
-                <div class="project-modal-section">
-                  <h3>${sec.heading}</h3>
-                  <div>${sec.body}</div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
+          `}
         </div>
       </div>
     `;
@@ -1267,3 +1386,102 @@ const createProjectModal = (projectKey) => {
     console.error(`Error creating project modal for ${projectKey}:`, error);
   }
 };
+
+// === PROJECT MODAL IMAGE ZOOM & SWIPE ===
+function enableProjectModalImageZoom() {
+  document.body.addEventListener('click', function(e) {
+    // Check for any image within the modal content (new content blocks + old structure)
+    const clickedImg = e.target.closest('img');
+    if (!clickedImg) return;
+    
+    // Make sure it's inside a modal
+    const modal = clickedImg.closest('#project-modal-overlay');
+    if (!modal) return;
+    
+    // Get all images in the modal (both old and new structure)
+    const allImages = Array.from(modal.querySelectorAll('img')).filter(img => {
+      // Exclude small UI images like close buttons, only include content images
+      return !img.closest('.project-modal-close') && 
+             (img.classList.contains('project-modal-img') || 
+              img.closest('.content-block-gallery-item') ||
+              img.closest('.content-block-two-col-image') ||
+              img.closest('.content-block-hero') ||
+              img.closest('.content-block-full-image'));
+    });
+    
+    const startIndex = allImages.indexOf(clickedImg);
+    if (startIndex === -1) return;
+    
+    openImageZoomOverlay(allImages.map(i => i.src), startIndex);
+  });
+}
+
+enableProjectModalImageZoom();
+
+function openImageZoomOverlay(imageSrcs, startIndex) {
+  let currentIndex = startIndex;
+  // Remove any existing overlay
+  document.getElementById('image-zoom-overlay')?.remove();
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'image-zoom-overlay';
+  overlay.style.position = 'fixed';
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.background = 'rgba(10,16,32,0.92)';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.zIndex = 99999;
+  overlay.style.transition = 'opacity 0.3s';
+  overlay.tabIndex = 0;
+  overlay.innerHTML = `
+    <div class="image-zoom-content" style="position:relative;max-width:90vw;max-height:90vh;display:flex;align-items:center;">
+      <button class="image-zoom-close" aria-label="Close" style="position:absolute;top:16px;right:16px;font-size:2rem;background:none;border:none;color:#fff;z-index:2;cursor:pointer;">&times;</button>
+      <button class="image-zoom-arrow image-zoom-arrow-left" aria-label="Previous image" style="position:absolute;left:-48px;top:50%;transform:translateY(-50%);font-size:2.5rem;background:none;border:none;color:#fff;z-index:2;cursor:pointer;display:${imageSrcs.length>1?'block':'none'};">&#8592;</button>
+      <img src="${imageSrcs[currentIndex]}" class="image-zoom-img" style="max-width:80vw;max-height:80vh;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#222;" alt="Zoomed project image">
+      <button class="image-zoom-arrow image-zoom-arrow-right" aria-label="Next image" style="position:absolute;right:-48px;top:50%;transform:translateY(-50%);font-size:2.5rem;background:none;border:none;color:#fff;z-index:2;cursor:pointer;display:${imageSrcs.length>1?'block':'none'};">&#8594;</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.focus();
+
+  const close = () => overlay.remove();
+  overlay.querySelector('.image-zoom-close').onclick = close;
+  overlay.onclick = (e) => { if (e.target === overlay) close(); };
+  document.addEventListener('keydown', function escHandler(ev) {
+    if (!document.body.contains(overlay)) return document.removeEventListener('keydown', escHandler);
+    if (ev.key === 'Escape') close();
+    if (imageSrcs.length > 1 && (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight')) {
+      if (ev.key === 'ArrowLeft') showImage(currentIndex-1);
+      if (ev.key === 'ArrowRight') showImage(currentIndex+1);
+    }
+  });
+  overlay.querySelector('.image-zoom-arrow-left').onclick = (e) => { e.stopPropagation(); showImage(currentIndex-1); };
+  overlay.querySelector('.image-zoom-arrow-right').onclick = (e) => { e.stopPropagation(); showImage(currentIndex+1); };
+
+  // Touch swipe support
+  let touchStartX = null;
+  overlay.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) touchStartX = e.touches[0].clientX;
+  });
+  overlay.addEventListener('touchend', e => {
+    if (touchStartX !== null && e.changedTouches.length === 1) {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 50) {
+        if (dx > 0) showImage(currentIndex-1);
+        else showImage(currentIndex+1);
+      }
+      touchStartX = null;
+    }
+  });
+
+  function showImage(idx) {
+    if (idx < 0) idx = imageSrcs.length-1;
+    if (idx >= imageSrcs.length) idx = 0;
+    currentIndex = idx;
+    overlay.querySelector('.image-zoom-img').src = imageSrcs[currentIndex];
+  }
+}

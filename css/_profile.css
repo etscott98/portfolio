@@ -240,12 +240,12 @@
   object-fit: cover;
   border-radius: var(--radius-full);
   position: static;
-  background: conic-gradient(from 0deg, 
+  background: var(--profile-gradient, conic-gradient(from 0deg, 
     var(--color-primary) 0deg, 
     var(--color-secondary) 90deg, 
     var(--color-accent) 180deg, 
     var(--color-primary) 270deg, 
-    var(--color-primary) 360deg);
+    var(--color-primary) 360deg));
   padding: 2px;
   box-shadow: var(--shadow-glow);
   transition: all var(--transition-base);
@@ -336,20 +336,23 @@
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   color: var(--text-secondary);
-  padding: 6px 0;
+  padding: 6px 0 6px 24px;
   position: relative;
-  padding-left: 20px;
   line-height: 1.5;
   transition: all 0.3s cubic-bezier(.77,0,.18,1);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .skills-list li:before {
   content: '●';
   color: var(--color-primary);
   position: absolute;
-  left: 0;
-  top: 6px;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 0.8rem;
+  line-height: 1;
 }
 
 .skills-list li:hover {
