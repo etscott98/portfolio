@@ -348,3 +348,10 @@ body > *:not(.reactive-bg):not(.modern-accent) {
   letter-spacing: 0.02em;
   text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 } 
+
+/* Temporary: Hide specific projects for publishing */
+.work-card-link[data-project="teamu"],
+.work-card-link[data-project="provisioning"], 
+.work-card-link[data-project="project6"] {
+  display: none !important;
+} 
