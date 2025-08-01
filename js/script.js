@@ -111,82 +111,244 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // === MOUSE-RESPONSIVE BACKGROUND EFFECTS ===
   
-  // Parallax background movement on mouse move
-  let bgMouseX = 0, bgMouseY = 0;
-  let targetX = 0, targetY = 0;
+  // Detect if device is touch-enabled or mobile
+  const isTouchDevice = ('ontouchstart' in window) || 
+                       (navigator.maxTouchPoints > 0) || 
+                       (navigator.msMaxTouchPoints > 0);
   
-  document.addEventListener('mousemove', (e) => {
-    bgMouseX = (e.clientX / window.innerWidth) * 100;
-    bgMouseY = (e.clientY / window.innerHeight) * 100;
+  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  const isTablet = window.matchMedia('(min-width: 768px) and (max-width: 1199px)').matches;
+  
+  // Debug device detection
+  console.log('Device detection:', {
+    isTouchDevice,
+    isMobile,
+    isTablet,
+    windowWidth: window.innerWidth,
+    prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  });
+  
+  // Only enable mouse tracking on non-touch devices and larger screens
+  if (!isTouchDevice && !isMobile) {
+    // Parallax background movement on mouse move
+    let bgMouseX = 0, bgMouseY = 0;
+    let targetX = 0, targetY = 0;
     
-    // Update CSS custom properties for background positioning
-    document.documentElement.style.setProperty('--mouse-x', `${bgMouseX}%`);
-    document.documentElement.style.setProperty('--mouse-y', `${bgMouseY}%`);
+    // Throttle mousemove for better performance
+    let mouseThrottleTimer;
+    const throttleDelay = isTablet ? 50 : 16; // Slower updates on tablet
     
-    // Update star transform properties for the animated background
-    const starOffsetX = (bgMouseX - 50) * 0.2;
-    const starOffsetY = (bgMouseY - 50) * 0.2;
-    document.documentElement.style.setProperty('--star-transform-before', `translate(${starOffsetX}px, ${starOffsetY}px)`);
-    document.documentElement.style.setProperty('--star-transform-after', `translate(${-starOffsetX * 0.5}px, ${-starOffsetY * 0.5}px)`);
-    
-    // Smooth parallax for accent elements (using cached elements)
-    forEachCached(cachedElements.modernAccents, (accent, index) => {
-      const speed = 0.5 + (index * 0.2); // Different speeds for each accent
-      const xOffset = (bgMouseX - 50) * speed;
-      const yOffset = (bgMouseY - 50) * speed;
-      accent.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+    document.addEventListener('mousemove', (e) => {
+      if (!mouseThrottleTimer) {
+        mouseThrottleTimer = setTimeout(() => {
+          bgMouseX = (e.clientX / window.innerWidth) * 100;
+          bgMouseY = (e.clientY / window.innerHeight) * 100;
+          
+          // Update CSS custom properties for background positioning
+          document.documentElement.style.setProperty('--mouse-x', `${bgMouseX}%`);
+          document.documentElement.style.setProperty('--mouse-y', `${bgMouseY}%`);
+          
+          // Update star transform properties for the animated background
+          const starOffsetX = (bgMouseX - 50) * 0.2;
+          const starOffsetY = (bgMouseY - 50) * 0.2;
+          document.documentElement.style.setProperty('--star-transform-before', `translate(${starOffsetX}px, ${starOffsetY}px)`);
+          document.documentElement.style.setProperty('--star-transform-after', `translate(${-starOffsetX * 0.5}px, ${-starOffsetY * 0.5}px)`);
+          
+          // Smooth parallax for accent elements (using cached elements)
+          // Reduce effect on tablet
+          const parallaxMultiplier = isTablet ? 0.5 : 1;
+          forEachCached(cachedElements.modernAccents, (accent, index) => {
+            const speed = (0.5 + (index * 0.2)) * parallaxMultiplier;
+            const xOffset = (bgMouseX - 50) * speed;
+            const yOffset = (bgMouseY - 50) * speed;
+            accent.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+          });
+          
+          mouseThrottleTimer = null;
+        }, throttleDelay);
+      }
     });
+  } else {
+    // Set static values for touch devices/mobile
+    document.documentElement.style.setProperty('--mouse-x', '50%');
+    document.documentElement.style.setProperty('--mouse-y', '50%');
+    document.documentElement.style.setProperty('--star-transform-before', 'translate(0, 0)');
+    document.documentElement.style.setProperty('--star-transform-after', 'translate(0, 0)');
+    
+    // Also set on reactive-bg element directly
+    const reactiveBg = document.querySelector('.reactive-bg');
+    if (reactiveBg) {
+      reactiveBg.style.setProperty('--mouse-x', '50%');
+      reactiveBg.style.setProperty('--mouse-y', '50%');
+      reactiveBg.style.setProperty('--star-transform-before', 'translate(0, 0)');
+      reactiveBg.style.setProperty('--star-transform-after', 'translate(0, 0)');
+    }
+  }
+  
+  // Handle window resize to update mobile/tablet detection
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const wasNotMobile = !window.matchMedia('(max-width: 767px)').matches;
+      const isNowMobile = window.matchMedia('(max-width: 767px)').matches;
+      const isNowTablet = window.matchMedia('(min-width: 768px) and (max-width: 1199px)').matches;
+      
+      // If we switched to mobile/tablet, disable complex animations
+      if (!wasNotMobile && (isNowMobile || isNowTablet)) {
+        document.documentElement.style.setProperty('--mouse-x', '50%');
+        document.documentElement.style.setProperty('--mouse-y', '50%');
+        document.documentElement.style.setProperty('--star-transform-before', 'translate(0, 0)');
+        document.documentElement.style.setProperty('--star-transform-after', 'translate(0, 0)');
+        
+        // Reset modern accent transforms
+        forEachCached(cachedElements.modernAccents, (accent) => {
+          accent.style.transform = 'translate(0, 0)';
+        });
+        
+        // Remove any existing scroll color classes
+        const colorClasses = ['scroll-color-0', 'scroll-color-25', 'scroll-color-50', 'scroll-color-75', 'scroll-color-100'];
+        const reactiveBg = document.querySelector('.reactive-bg');
+        if (reactiveBg) {
+          colorClasses.forEach(cls => reactiveBg.classList.remove(cls));
+        }
+      }
+    }, 250);
   });
 
   // === SCROLL-RESPONSIVE GRADIENT BACKGROUND ===
   
-  let lastScrollY = 0;
+  // Check if user prefers reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   
-  const updateBackgroundOnScroll = () => {
-    const scrollY = window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollProgress = Math.min(scrollY / maxScroll, 1);
+  // Only enable scroll-based background changes on desktop non-touch devices
+  if (!isTouchDevice && !isMobile && !isTablet && !prefersReducedMotion) {
+    let lastScrollY = 0;
     
-    // Dynamic gradient based on scroll position
-    const hue1 = 220 + (scrollProgress * 40); // Blue to purple shift
-    const hue2 = 200 + (scrollProgress * 60); // Color evolution
-    const saturation = 70 - (scrollProgress * 20); // Subtle saturation change
-    const lightness = 15 + (scrollProgress * 5); // Slight lightness variation
+    const updateBackgroundOnScroll = () => {
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = Math.min(scrollY / maxScroll, 1);
+      
+      // Dynamic gradient based on scroll position
+      const hue1 = 220 + (scrollProgress * 40); // Blue to purple shift
+      const hue2 = 200 + (scrollProgress * 60); // Color evolution
+      const saturation = 70 - (scrollProgress * 20); // Subtle saturation change
+      const lightness = 15 + (scrollProgress * 5); // Slight lightness variation
+      
+      // Update reactive background
+      forEachCached(cachedElements.reactiveElements, (element) => {
+        element.style.background = `
+          radial-gradient(ellipse at ${50 + scrollProgress * 20}% ${30 - scrollProgress * 10}%, 
+            hsl(${hue1}, ${saturation}%, ${lightness}%) 0%, 
+            hsl(${hue2}, ${saturation - 10}%, ${lightness - 5}%) 70%),
+          radial-gradient(circle at ${80 - scrollProgress * 30}% ${70 + scrollProgress * 20}%, 
+            hsla(${hue1 + 20}, ${saturation}%, ${lightness + 5}%, 0.3) 0%, 
+            transparent 50%)
+        `;
+      });
+      
+      // Update accent elements opacity and position based on scroll
+      forEachCached(cachedElements.modernAccents, (accent, index) => {
+        const phase = (scrollProgress + index * 0.25) % 1;
+        const opacity = 0.6 + Math.sin(phase * Math.PI * 2) * 0.4;
+        accent.style.opacity = Math.max(0.1, opacity);
+      });
+      
+      lastScrollY = scrollY;
+    };
     
-    // Update reactive background
-    forEachCached(cachedElements.reactiveElements, (element) => {
-      element.style.background = `
-        radial-gradient(ellipse at ${50 + scrollProgress * 20}% ${30 - scrollProgress * 10}%, 
-          hsl(${hue1}, ${saturation}%, ${lightness}%) 0%, 
-          hsl(${hue2}, ${saturation - 10}%, ${lightness - 5}%) 70%),
-        radial-gradient(circle at ${80 - scrollProgress * 30}% ${70 + scrollProgress * 20}%, 
-          hsla(${hue1 + 20}, ${saturation}%, ${lightness + 5}%, 0.3) 0%, 
-          transparent 50%)
-      `;
+    // Throttled scroll listener for performance
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      if (scrollTimeout) {
+        cancelAnimationFrame(scrollTimeout);
+      }
+      scrollTimeout = requestAnimationFrame(updateBackgroundOnScroll);
     });
     
-    // Update accent elements opacity and position based on scroll
-    forEachCached(cachedElements.modernAccents, (accent, index) => {
-      const phase = (scrollProgress + index * 0.25) % 1;
-      const opacity = 0.6 + Math.sin(phase * Math.PI * 2) * 0.4;
-      accent.style.opacity = Math.max(0.1, opacity);
-    });
+    // Initial background setup
+    updateBackgroundOnScroll();
+  } else if ((isMobile || isTablet) && !prefersReducedMotion) {
+    // Simplified color transition for mobile/tablet
+    const mobileColorStops = [
+      { threshold: 0, class: 'scroll-color-0' },    // Initial blue
+      { threshold: 0.25, class: 'scroll-color-25' }, // Blue-purple
+      { threshold: 0.5, class: 'scroll-color-50' },  // Purple
+      { threshold: 0.75, class: 'scroll-color-75' }, // Purple-pink
+      { threshold: 1, class: 'scroll-color-100' }     // Deep purple
+    ];
     
-    lastScrollY = scrollY;
-  };
+    let currentColorClass = 'scroll-color-0';
+    let scrollDebounceTimer;
+    
+    const updateMobileBackground = () => {
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = Math.min(scrollY / maxScroll, 1);
+      
+      // Debug scroll values
+      console.log('Scroll debug:', {
+        scrollY,
+        maxScroll,
+        scrollProgress,
+        documentHeight: document.documentElement.scrollHeight,
+        windowHeight: window.innerHeight
+      });
+      
+      // Find which color stop we should be at
+      let newColorClass = 'scroll-color-0';
+      for (let i = mobileColorStops.length - 1; i >= 0; i--) {
+        if (scrollProgress >= mobileColorStops[i].threshold) {
+          newColorClass = mobileColorStops[i].class;
+          break;
+        }
+      }
+      
+      // Only update if color class changed
+      if (newColorClass !== currentColorClass) {
+        // Target only the reactive-bg element
+        const reactiveBg = document.querySelector('.reactive-bg');
+        if (reactiveBg) {
+          // Remove all color classes
+          mobileColorStops.forEach(stop => reactiveBg.classList.remove(stop.class));
+          // Add new color class
+          reactiveBg.classList.add(newColorClass);
+          
+          // Debug log
+          console.log('Mobile scroll color updated:', newColorClass, 'Progress:', scrollProgress);
+          console.log('Current classes:', reactiveBg.className);
+          console.log('Computed background:', window.getComputedStyle(reactiveBg).background);
+        } else {
+          console.error('reactive-bg element not found!');
+        }
+        currentColorClass = newColorClass;
+      }
+    };
+    
+    // Debounced scroll listener for mobile (less frequent updates)
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollDebounceTimer);
+      scrollDebounceTimer = setTimeout(updateMobileBackground, 100);
+    }, { passive: true });
+    
+    // Set initial color
+    updateMobileBackground();
+    
+    // Debug log
+    console.log('Mobile color transitions enabled');
+    
+    // Test: Try to directly change background after a delay
+    setTimeout(() => {
+      const reactiveBg = document.querySelector('.reactive-bg');
+      if (reactiveBg) {
+        console.log('Test: Attempting to change background directly');
+        reactiveBg.style.background = 'linear-gradient(135deg, #ff0000 0%, #00ff00 100%)';
+        console.log('Test: Background style applied');
+      }
+    }, 2000);
+  }
   
-  // Throttled scroll listener for performance
-  let scrollTimeout;
-  window.addEventListener('scroll', () => {
-    if (scrollTimeout) {
-      cancelAnimationFrame(scrollTimeout);
-    }
-    scrollTimeout = requestAnimationFrame(updateBackgroundOnScroll);
-  });
-  
-  // Initial background setup
-  updateBackgroundOnScroll();
-
   // Set initial state for work cards to be animated by scroll observer (desktop only)
   forEachCached(cachedElements.workCards, (card) => {
     // Work card animations now handled entirely by CSS (_animations.css)
@@ -1218,24 +1380,39 @@ const createProjectModal = (projectKey) => {
     // Close handler function defined first
     const closeModal = () => {
       overlay.classList.remove('open');
+      // Clean up scroll listeners
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        overlay.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('scroll', handleScroll);
+      } else {
+        const modalBody = overlay.querySelector('.project-modal-body');
+        if (modalBody) modalBody.removeEventListener('scroll', handleScroll);
+      }
+      // Restore body scroll
+      document.body.style.overflow = '';
       setTimeout(() => overlay.remove(), 400);
     };
+    
+    // Define handleScroll here so it's available for closeModal
+    let handleScroll;
 
-    // Modal structure with flexible content blocks
-    const overlay = document.createElement('div');
-    overlay.id = 'project-modal-overlay';
-    overlay.innerHTML = `
-      <div class="project-modal-backdrop"></div>
-      <div class="project-modal-content">
-        <button class="project-modal-close" aria-label="Close">&times;</button>
-        <div class="project-modal-header">
-          <h1 class="project-modal-title">${data.title}</h1>
-          <h2 class="project-modal-subtitle">${data.subtitle}</h2>
-          <div class="project-modal-tags">
-            ${data.overviewTags.map(tag => `<span class="project-modal-tag">${tag}</span>`).join('')}
-          </div>
+      // Modal structure with flexible content blocks
+  const overlay = document.createElement('div');
+  overlay.id = 'project-modal-overlay';
+  overlay.innerHTML = `
+    <div class="project-modal-backdrop"></div>
+    <button class="modal-back-to-top" aria-label="Back to top">↑</button>
+    <div class="project-modal-content">
+      <button class="project-modal-close" aria-label="Close">&times;</button>
+      <div class="project-modal-header">
+        <h1 class="project-modal-title">${data.title}</h1>
+        <h2 class="project-modal-subtitle">${data.subtitle}</h2>
+        <div class="project-modal-tags">
+          ${data.overviewTags.map(tag => `<span class="project-modal-tag">${tag}</span>`).join('')}
         </div>
-        <div class="project-modal-body">
+      </div>
+      <div class="project-modal-body">
           ${data.contentBlocks ? data.contentBlocks.map(block => {
             switch(block.type) {
               case 'hero':
@@ -1363,15 +1540,130 @@ const createProjectModal = (projectKey) => {
     `;
     
     document.body.appendChild(overlay);
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    
+    // Immediately reset scroll position before animation
+    if (window.innerWidth <= 768) {
+      overlay.scrollTop = 0;
+    } else {
+      const modalBody = overlay.querySelector('.project-modal-body');
+      if (modalBody) modalBody.scrollTop = 0;
+    }
 
-    // Animate in
+    // Animate in and ensure scroll starts at top
     setTimeout(() => {
       overlay.classList.add('open');
+      // Reset scroll position to top
+      const scrollContainer = window.innerWidth <= 768 ? overlay : overlay.querySelector('.project-modal-body');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+        scrollContainer.scrollTo(0, 0);
+      }
+      // Also scroll the overlay itself on mobile
+      overlay.scrollTop = 0;
+      overlay.scrollTo(0, 0);
+      
+      // Force another reset after render
+      requestAnimationFrame(() => {
+        if (scrollContainer) {
+          scrollContainer.scrollTop = 0;
+        }
+        overlay.scrollTop = 0;
+        
+        // Force focus to the top of the modal
+        const modalHeader = overlay.querySelector('.project-modal-header');
+        if (modalHeader) {
+          modalHeader.scrollIntoView({ block: 'start', inline: 'nearest' });
+        }
+        
+        // One more reset after everything settles
+        setTimeout(() => {
+          if (scrollContainer) {
+            scrollContainer.scrollTop = 0;
+          }
+          overlay.scrollTop = 0;
+          window.scrollTo(0, 0);
+        }, 100);
+      });
     }, 10);
 
     // Close logic
     overlay.querySelector('.project-modal-close').onclick = closeModal;
     overlay.querySelector('.project-modal-backdrop').onclick = closeModal;
+    
+    // Back to top button functionality
+    const backToTopBtn = overlay.querySelector('.modal-back-to-top');
+    const isMobile = window.innerWidth <= 768;
+    
+    // Show/hide back to top button based on scroll
+    handleScroll = (e) => {
+      let scrollTop = 0;
+      
+      // Try all possible scroll sources
+      const modalBody = overlay.querySelector('.project-modal-body');
+      
+      // Check multiple sources for scroll position
+      if (e && e.target) {
+        scrollTop = e.target.scrollTop || 0;
+      }
+      
+      // Also check specific elements
+      if (!scrollTop && modalBody) {
+        scrollTop = modalBody.scrollTop || 0;
+      }
+      
+      if (!scrollTop) {
+        scrollTop = overlay.scrollTop || 0;
+      }
+      
+      if (!scrollTop) {
+        scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      }
+      
+      // Show button after minimal scrolling
+      if (scrollTop > 5) {  // Even lower threshold
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    };
+    
+    // Scroll to top when button clicked
+    backToTopBtn.onclick = () => {
+      if (isMobile) {
+        overlay.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const modalBody = overlay.querySelector('.project-modal-body');
+        if (modalBody) modalBody.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    
+    // Attach scroll listener to the correct element with passive option for better performance
+    if (isMobile) {
+      overlay.addEventListener('scroll', handleScroll, { passive: true });
+      // Also try window scroll on mobile
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    } else {
+      const modalBody = overlay.querySelector('.project-modal-body');
+      if (modalBody) {
+        modalBody.addEventListener('scroll', handleScroll, { passive: true });
+        // Also add to overlay as backup
+        overlay.addEventListener('scroll', handleScroll, { passive: true });
+      }
+    }
+    
+    // Check scroll state multiple times to ensure proper detection
+    setTimeout(handleScroll, 50);
+    setTimeout(handleScroll, 200);
+    setTimeout(handleScroll, 500);
+    
+    // Also check on any interaction
+    overlay.addEventListener('wheel', handleScroll, { passive: true });
+    overlay.addEventListener('touchmove', handleScroll, { passive: true });
+    
+    // Remove the temporary testing code since button is working
     
     // ESC key to close
     const handleEscKey = (e) => {

@@ -38,28 +38,37 @@
   flex-shrink: 0 !important;
 }
 
-/* New container for left column content */
+/* Left column glass morphism container */
 .left-column-container {
-  width: 500px;
-  height: 850px;
+  /* No background - completely transparent */
   background: transparent;
-  backdrop-filter: none;
+  /* Light glass morphism blur for text readability */
+  backdrop-filter: blur(5px) saturate(1.1);
+  -webkit-backdrop-filter: blur(5px) saturate(1.1);
+  /* No border */
   border: none;
   border-radius: 24px;
-  padding: 32px 36px 28px 36px;
-  box-shadow: 
-    0 8px 32px rgba(0,0,0,0.15);
+  padding: 45px 40px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  position: relative;
+  /* Subtle shadow that decreases on hover */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-  isolation: isolate;
+  /* Performance optimization */
   transform: translateZ(0);
-  backface-visibility: hidden;
-  flex-shrink: 0 !important;
+  will-change: auto;
+}
+
+.left-column-container:hover {
+  /* Reduced shadow on hover */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 /* Remove glass effects from left column */

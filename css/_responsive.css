@@ -74,9 +74,12 @@
     align-items: center !important;
     justify-content: space-between !important;
     flex-shrink: 0 !important;
-    background: rgba(16, 24, 42, 0.6) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    backdrop-filter: blur(5px) saturate(1.1) !important;
+    -webkit-backdrop-filter: blur(5px) saturate(1.1) !important;
+    border: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+    transition: box-shadow 0.3s ease !important;
   }
   
   .right-column {
@@ -97,7 +100,80 @@
     width: 100vw !important;
     height: 100vh !important;
     z-index: -1 !important;
+    /* Simplified background for mobile - no mouse tracking */
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(110, 234, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(78, 140, 255, 0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #10182a 0%, #1a2540 100%) !important;
+    /* Enable smooth transitions for color changes */
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    /* Prevent any transform or filter changes */
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
   }
+  
+  /* Mobile scroll color transitions */
+  .reactive-bg.scroll-color-0 {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(110, 234, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(78, 140, 255, 0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #10182a 0%, #1a2540 100%) !important;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-25 {
+    background: 
+      radial-gradient(circle at 25% 35%, rgba(124, 200, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 75% 65%, rgba(100, 120, 255, 0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #141833 0%, #1e2844 100%) !important;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-50 {
+    background: 
+      radial-gradient(circle at 30% 40%, rgba(140, 160, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 60%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #18143a 0%, #22204a 100%) !important;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-75 {
+    background: 
+      radial-gradient(circle at 35% 45%, rgba(160, 120, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 65% 55%, rgba(180, 80, 255, 0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #1a1440 0%, #261850 100%) !important;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-100 {
+    background: 
+      radial-gradient(circle at 40% 50%, rgba(180, 100, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 60% 50%, rgba(200, 60, 255, 0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #1c1445 0%, #2a1655 100%) !important;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* Debug - add visible border to confirm class is applied */
+  .reactive-bg.scroll-color-25,
+  .reactive-bg.scroll-color-50,
+  .reactive-bg.scroll-color-75,
+  .reactive-bg.scroll-color-100 {
+    border: 2px solid red !important; /* Remove this after testing */
+  }
+  
+  /* Disable animated starfield on mobile for performance */
+  .reactive-bg::before,
+  .reactive-bg::after {
+    animation: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  /* Disable mouse-based CSS variables on mobile */
+  /* Moved to inline styles to avoid overriding scroll color classes */
   
   .work-cards-grid {
     gap: 20px !important;
@@ -180,6 +256,13 @@
   /* Modern accent elements should be fixed position */
   .modern-accent {
     position: fixed !important;
+    /* Disable parallax effects on mobile */
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    /* Stable opacity to prevent flickering */
+    opacity: 0.3 !important;
+    will-change: auto !important;
   }
   
   /* Ensure work section is visible */
@@ -217,10 +300,15 @@
   }
 
   /* Skills and Contact Mobile Styling */
+  .skills-block,
+  .contact-block {
+    padding-bottom: 80px !important; /* More space from toggle bar */
+  }
+
   .skills-block h2,
   .contact-block h2 {
     font-size: 1.6rem !important;
-    margin-bottom: 16px !important;
+    margin-bottom: 20px !important;
   }
   
   .skills-section {
@@ -245,7 +333,10 @@
   
   .contact-form {
     max-width: 100% !important;
-    padding: 0 10px !important;
+    padding: 16px !important;
+    margin: 0 10px !important;
+    background: rgba(255, 255, 255, 0.01) !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
   }
   
   .contact-form input,
@@ -256,7 +347,9 @@
   
   .contact-form button {
     font-size: 0.9rem !important;
-    padding: 12px 20px !important;
+    padding: 14px 24px !important;
+    width: 100% !important;
+    margin-top: 8px !important;
   }
   
   .work-card-title {
@@ -454,9 +547,16 @@
     align-items: center !important;
     justify-content: space-between !important;
     overflow: visible !important;
-    background: rgba(16, 24, 42, 0.7) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    backdrop-filter: blur(5px) saturate(1.1) !important;
+    -webkit-backdrop-filter: blur(5px) saturate(1.1) !important;
+    border: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+    transition: box-shadow 0.3s ease !important;
+  }
+  
+  .left-column-container:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
   }
   
   .right-column {
@@ -476,6 +576,71 @@
     width: 100vw !important;
     height: 100vh !important;
     z-index: -1 !important;
+    /* Slightly simplified background for tablet */
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(110, 234, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(78, 140, 255, 0.07) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #10182a 0%, #1a2540 100%) !important;
+    /* Smooth transition for better performance */
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* Tablet scroll color transitions */
+  .reactive-bg.scroll-color-0 {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(110, 234, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(78, 140, 255, 0.07) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #10182a 0%, #1a2540 100%) !important;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-25 {
+    background: 
+      radial-gradient(circle at 25% 35%, rgba(124, 200, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 75% 65%, rgba(100, 120, 255, 0.07) 0%, transparent 50%),
+      radial-gradient(circle at 45% 75%, rgba(140, 80, 237, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #141833 0%, #1e2844 100%) !important;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-50 {
+    background: 
+      radial-gradient(circle at 30% 40%, rgba(140, 160, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 70% 60%, rgba(124, 58, 237, 0.07) 0%, transparent 50%),
+      radial-gradient(circle at 50% 70%, rgba(160, 100, 237, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #18143a 0%, #22204a 100%) !important;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-75 {
+    background: 
+      radial-gradient(circle at 35% 45%, rgba(160, 120, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 65% 55%, rgba(180, 80, 255, 0.07) 0%, transparent 50%),
+      radial-gradient(circle at 55% 65%, rgba(200, 120, 237, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #1a1440 0%, #261850 100%) !important;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .reactive-bg.scroll-color-100 {
+    background: 
+      radial-gradient(circle at 40% 50%, rgba(180, 100, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 60% 50%, rgba(200, 60, 255, 0.07) 0%, transparent 50%),
+      radial-gradient(circle at 50% 60%, rgba(220, 100, 237, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #1c1445 0%, #2a1655 100%) !important;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* Simplify starfield animations on tablet */
+  .reactive-bg::before {
+    animation: starfieldMove 120s linear infinite !important; /* Slower animation */
+    opacity: 0.3 !important; /* Reduced opacity */
+  }
+  
+  .reactive-bg::after {
+    animation: starfieldMove 160s linear infinite reverse !important; /* Slower animation */
+    opacity: 0.2 !important; /* Reduced opacity */
   }
   
   /* Hide scroll prompt on tablet */
@@ -486,6 +651,8 @@
   /* Modern accent elements should be fixed position */
   .modern-accent {
     position: fixed !important;
+    /* Reduce parallax intensity on tablet */
+    transition: transform 0.5s ease-out !important;
   }
   
   /* Ensure work section is visible */
@@ -528,10 +695,15 @@
   }
 
   /* Skills and Contact Tablet Styling */
+  .skills-block,
+  .contact-block {
+    padding-bottom: 90px !important;
+  }
+
   .skills-block h2,
   .contact-block h2 {
     font-size: 1.8rem !important;
-    margin-bottom: 18px !important;
+    margin-bottom: 24px !important;
   }
   
   .skills-section {
