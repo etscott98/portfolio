@@ -17,10 +17,9 @@ const projectData = {
       'assets/images/projects/flologic/image of all new pages.png'
     ],
     overviewTags: [
-      'UX Focus', 'Mobile', 'Website',
-      'Role: Lead UI/UX Designer, Beta Program Lead',
-      'Tools: Figma, Miro', 'Timeline: Q1 2024 – Q2 2025'
+      'Lead UI/UX Designer', 'Mobile App Redesign', 'Ecosystem Design', 'Beta Program Lead'
     ],
+    tools: ['Figma', 'Miro', 'Prototyping', 'User Research'],
     // New flexible content blocks for magazine-style layout
     contentBlocks: [
       {
@@ -166,17 +165,15 @@ const projectData = {
     ]
   },
   circadia: {
-    title: 'Circadia',
+    title: 'Circadia - AI Powered Bed-Time App',
     subtitle: 'Circadia module popup inside a manifestation app built for stillness, designed to guide, not instruct',
     images: [
       'assets/images/projects/circadia/circadia.png'
     ],
     overviewTags: [
-      'Role: Sole Designer',
-      'Type: Mobile UI', 'Type: Animation',
-      'Tools: Illustrator', 'Tools: Rive',
-      'Timeline: Beta, 2024 – Ongoing'
+      'Sole Designer', 'AI App Design', 'Custom Animations', 'Mobile UI', 'Beta Program'
     ],
+    tools: ['Illustrator', 'Rive', 'Animation', 'Prototyping'],
     // New flexible content blocks for magazine-style layout
     contentBlocks: [
       {
@@ -278,11 +275,9 @@ const projectData = {
        'assets/images/projects/teamu.png'
     ],
     overviewTags: [
-       'Role: UX Researcher & Designer',
-       'Type: Mobile', 'Type: Social Platform',
-       'Tools: Figma', 'Tools: Miro',
-       'Timeline: Q2 2024 - Q4 2024'
+       'UX Research', 'Social Platform Design', 'AI Integration', 'Mental Health Focus'
     ],
+    tools: ['Figma', 'Miro', 'User Interviews', 'Competitive Analysis'],
     sections: [
        { heading: 'Problem', body: `In our increasingly digital world, social isolation and loneliness have reached epidemic levels. Traditional social media platforms often exacerbate these issues by promoting superficial connections and comparison-driven interactions rather than meaningful relationships.` },
        { heading: 'Objectives', body: `<ul><li>Conduct comprehensive UX research to understand user pain points around loneliness and social connection</li><li>Perform competitive analysis of existing social platforms to identify gaps in meaningful connection features</li><li>Design an AI-powered platform that facilitates authentic relationships and community building</li><li>Create features that prioritize mental health and genuine human connection over engagement metrics</li></ul>` },
@@ -302,11 +297,9 @@ const projectData = {
        'assets/images/projects/flologic/showing the transformation from device-centric to location-centric.png'
      ],
      overviewTags: [
-       'Role: Lead UX Designer',
-       'Type: IoT Setup Process', 'Type: Mobile & Web',
-       'Tools: Figma', 'Tools: Miro',
-       'Timeline: Q3 2024 - Q1 2025'
+       'Lead UX Designer', 'IoT Experience', 'Process Redesign', 'Cross-Platform'
      ],
+     tools: ['Figma', 'Miro', 'Journey Mapping', 'Prototyping'],
      sections: [
        { heading: 'Problem', body: `The existing device provisioning process was a major source of customer frustration and support tickets. Users struggled with complex connection steps, unclear error messages, and lengthy setup times, leading to high abandonment rates and negative first impressions.` },
        { heading: 'Objectives', body: `<ul><li>Redesign the entire provisioning flow to be more intuitive and error-resistant</li><li>Reduce customer confusion through clearer communication and visual feedback</li><li>Streamline backend communication to improve connection reliability</li><li>Future-proof the system to easily accommodate new hardware integrations</li></ul>` },
@@ -321,54 +314,82 @@ const projectData = {
      ]
    },
    dashboard: {
-     title: 'A Unified UI for Complex Systems',
-     subtitle: 'Scalable dashboard for real-time control and monitoring of connected devices',
+     title: 'FloLogic Dashboard MVP',
+     subtitle: 'Giving property managers instant clarity across devices and properties',
      images: [
-       'assets/images/projects/user dashboard/Macbook Mockup.png'
+       'assets/images/projects/user dashboard/thumbnail.png'
      ],
      overviewTags: [
-      'UX Focus', 'Dashboard Design', 'Enterprise Software',
-      'Role: Lead UI/UX Designer, Systems Architect', 
-      'Tools: Figma, User Research, Prototyping',
-      'Timeline: Q1 2024 – Q3 2024'
+      'Lead Product Designer', 'B2B Dashboard', 'MVP Development', 'Property Management'
     ],
-         contentBlocks: [
+    tools: ['Figma', 'MAUI/Telerik', 'User Testing', 'Design Systems'],
+    contentBlocks: [
       {
         type: 'hero',
-        image: 'assets/images/projects/user dashboard/Macbook Mockup.png',
-        alt: 'Unified dashboard interface showing real-time device monitoring and control systems'
+        image: 'assets/images/projects/user dashboard/thumbnail.png',
+        title: '',
+        description: '',
+        alt: 'FloLogic dashboard MVP showing property management interface'
       },
       {
         type: 'text',
-        heading: 'The Challenge: Fragmented Visibility',
-        content: '<p style="line-height: 1.8;">Property managers, technicians, and homeowners were drowning in disconnected tools. Each device had its own app, each system its own portal. Critical information was scattered across multiple interfaces, making it nearly impossible to understand the complete health of connected systems.</p><div style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 4px solid var(--color-primary);"><p style="margin-bottom: 1rem;"><strong>The breaking point:</strong> A technician would need to open 5+ different apps just to diagnose a single issue across connected devices.</p><p>Emergency situations became chaos. When a water leak sensor triggered, users had to navigate through multiple screens, remember different login credentials, and piece together information from disparate sources while water damage escalated.</p></div><p style="font-size: 1.1em; color: var(--color-primary); margin-top: 2rem;"><strong>The vision:</strong> One unified interface that would give users complete visibility and control over their entire connected ecosystem—from a single water valve to enterprise-scale deployments across multiple properties.</p>'
+        heading: 'From Consumer to Commercial',
+        content: '<p style="line-height: 1.8;">When FloLogic expanded from consumer homes into commercial properties, our sales team needed something fast: a working MVP dashboard that made sense to property managers — not just engineers. I stepped in as the lead product designer to ship a clean, no-fluff user interface that brought value from day one.</p>'
       },
       {
         type: 'text',
-        heading: 'Research: Understanding Two Worlds',
-        content: '<p style="line-height: 1.8;">This wasn\'t just about building another dashboard—it was about bridging the gap between two completely different user types with conflicting needs:</p><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;"><div style="padding: 1.5rem; background: rgba(110, 234, 255, 0.05); border-radius: 12px; border: 1px solid rgba(110, 234, 255, 0.2);"><h4 style="color: var(--color-primary); margin-bottom: 1rem;">👔 Property Managers & Technicians</h4><ul style="line-height: 1.6;"><li>Need comprehensive system overviews</li><li>Want detailed diagnostic data</li><li>Require bulk actions and automation</li><li>Prioritize efficiency and expert controls</li></ul></div><div style="padding: 1.5rem; background: rgba(79, 172, 254, 0.05); border-radius: 12px; border: 1px solid rgba(79, 172, 254, 0.2);"><h4 style="color: var(--color-secondary); margin-bottom: 1rem;">🏠 Homeowners & End Users</h4><ul style="line-height: 1.6;"><li>Want simple, at-a-glance status</li><li>Need clear, actionable alerts</li><li>Prefer guided troubleshooting</li><li>Value peace of mind over complexity</li></ul></div></div><p style="line-height: 1.8;">Through 15+ user interviews and shadowing sessions, I discovered that both groups shared one critical need: <strong style="color: var(--color-primary);">immediate confidence in system health</strong>. The difference was in the depth of information required to achieve that confidence.</p>'
+        heading: 'The Ask: "We just need something to show"',
+        content: '<p style="line-height: 1.8;">FloLogic\'s sales team was moving fast. With new B2B partnerships forming, we needed a working dashboard to demo — one that let stakeholders visualize devices across multiple properties without confusing or overwhelming them.</p><div style="margin: 2rem 0; padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 4px solid var(--color-primary);"><h4 style="color: var(--color-primary); margin-bottom: 1rem;">The Challenge</h4><ul style="line-height: 1.6; margin-bottom: 0;"><li><strong>No prior web dashboard existed</strong></li><li><strong>Needed MVP-level scope — fast</strong></li><li><strong>Minimal backend flexibility</strong> (MAUI - Telerik)</li><li><strong>Needed to work for both B2B and individual property managers</strong></li><li><strong>Data was device-heavy, but context-light</strong></li></ul></div>'
       },
       {
         type: 'text',
-        heading: 'Design System: Built for Scale',
-        content: '<p style="line-height: 1.8;">Creating a dashboard that could handle everything from a single homeowner\'s setup to enterprise deployments across hundreds of properties required a robust, scalable design foundation:</p><div style="margin: 2rem 0;"><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;"><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);"><h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">🎨 Visual Hierarchy</h4><p style="line-height: 1.6;">Color-coded status system, typography scales, and spacing tokens that maintain clarity regardless of data density.</p></div><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);"><h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">📱 Responsive Components</h4><p style="line-height: 1.6;">Modular dashboard widgets that gracefully adapt from desktop grids to mobile stacks without losing functionality.</p></div><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);"><h4 style="color: var(--color-primary); margin-bottom: 0.5rem;">⚡ Real-time Updates</h4><p style="line-height: 1.6;">Designed animated states and loading patterns that keep users informed during live data refreshes.</p></div></div></div><p style="line-height: 1.8; margin-top: 1.5rem;">Every component was built with the assumption that the system would grow—more device types, more data points, more concurrent users. The design needed to be as scalable as the technology beneath it.</p>'
+        heading: 'The Problem: Early Designs Confused Users',
+        content: '<p style="line-height: 1.8;">Early designs confused beta users and stakeholders with feedback like:</p><div style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(255, 69, 58, 0.05); border-radius: 12px; border: 1px solid rgba(255, 69, 58, 0.2);"><p style="margin-bottom: 0.5rem; color: rgba(255, 69, 58, 0.9);">"Why are the PinPoints separated out?"</p><p style="margin-bottom: 0.5rem; color: rgba(255, 69, 58, 0.9);">"Where is my Wi-Fi Connect?"</p></div><p style="line-height: 1.8;">While it worked for internal testers who already understood the system, new users hit a wall trying to find even basic device info.</p>'
+      },
+      {
+        type: 'text',
+        heading: 'What They Originally Had',
+        content: '<p style="line-height: 1.8;">Before my involvement, the "dashboard" was clunky, but workable. This is the design they were working with:</p>'
+      },
+      {
+        type: 'gallery',
+        heading: 'Original Dashboard Design',
+        images: [
+          { src: 'assets/images/projects/user dashboard/image of design before 1.png', alt: 'Original dashboard design showing confusing layout' },
+          { src: 'assets/images/projects/user dashboard/image of design before 2.png', alt: 'Original dashboard with separated PinPoints' },
+          { src: 'assets/images/projects/user dashboard/image of design before3.png', alt: 'Original dashboard lacking clear hierarchy' },
+          { src: 'assets/images/projects/user dashboard/image of design before4.png', alt: 'Original dashboard with usability issues' }
+        ]
+      },
+      {
+        type: 'text',
+        heading: 'My Role: Sole Designer, Full Product Ownership',
+        content: '<p style="line-height: 1.8;">I was the sole designer on the project. I led the product design from scratch — integrating what I knew about the current direction of the app I had designed and expanding upon their newly implemented design system.</p>'
+      },
+      {
+        type: 'text',
+        heading: 'What I Built Instead',
+        content: '<div style="margin: 2rem 0;"><h4 style="color: var(--color-primary); margin-bottom: 1rem;">Key Changes Made:</h4><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;"><div style="padding: 1.5rem; background: rgba(110, 234, 255, 0.05); border-radius: 12px; border: 1px solid rgba(110, 234, 255, 0.2);"><h5 style="color: var(--color-primary); margin-bottom: 0.5rem;">🏢 Clear Property-Level Hierarchy</h5><p style="line-height: 1.6;">Grouped gateways, valves, and sensors by property for intuitive navigation</p></div><div style="padding: 1.5rem; background: rgba(110, 234, 255, 0.05); border-radius: 12px; border: 1px solid rgba(110, 234, 255, 0.2);"><h5 style="color: var(--color-primary); margin-bottom: 0.5rem;">📱 Dedicated Information Sections</h5><p style="line-height: 1.6;">Removed confusing slide-outs and gave information its own designated section</p></div><div style="padding: 1.5rem; background: rgba(110, 234, 255, 0.05); border-radius: 12px; border: 1px solid rgba(110, 234, 255, 0.2);"><h5 style="color: var(--color-primary); margin-bottom: 0.5rem;">⚙️ Clear Grouping & Customization</h5><p style="line-height: 1.6;">More intuitive dashboard customization with logical device groupings</p></div></div></div>'
+      },
+      {
+        type: 'gallery',
+        heading: 'New Dashboard Design',
+        images: [
+          { src: 'assets/images/projects/user dashboard/new design.png', alt: 'New dashboard design with clear property hierarchy' },
+          { src: 'assets/images/projects/user dashboard/new design 2.png', alt: 'New dashboard showing improved grouping and customization' }
+        ]
       },
       {
         type: 'full-image',
-        image: 'assets/images/projects/user dashboard/Macbook Mockup.png',
-        alt: 'Final dashboard interface showing unified device management and real-time monitoring capabilities',
-        caption: 'The unified dashboard: bringing clarity to complex systems'
+        image: 'assets/images/projects/user dashboard/thumbnail.png',
+        alt: 'Final FloLogic dashboard MVP showing clean property management interface',
+        caption: 'The final MVP dashboard: clear, purposeful, and ready for B2B demos'
       }
-        ],
-    stats: [
-      { value: '88%', label: 'System visibility', desc: 'Increased cross-device visibility and monitoring' },
-      { value: '41%', label: 'Faster resolution', desc: 'Cut average troubleshooting time per incident' },
-      { value: '76%', label: 'User satisfaction', desc: 'Improved usability scores in beta testing' }
-     ],
-     impacts: [
-      { value: '88%', label: 'System visibility', desc: 'Increased cross-device visibility and monitoring' },
-      { value: '41%', label: 'Faster resolution', desc: 'Cut average troubleshooting time per incident' },  
-      { value: '76%', label: 'User satisfaction', desc: 'Improved usability scores in beta testing' }
+    ],
+    impacts: [
+      { value: '88%', label: 'Increase in System Visibility', desc: 'Property managers gained clear oversight across devices' },
+      { value: '70%', label: 'Reduction in Device Grouping Confusion', desc: 'Eliminated user confusion around device organization' },  
+      { value: '>3×', label: 'Faster Onboarding During Demos', desc: 'Prospects understood the system immediately' }
      ]
    },
    
@@ -379,11 +400,9 @@ const projectData = {
        'assets/images/projects/circadia/circadia.png'
      ],
      overviewTags: [
-       'Role: Web Designer & Developer',
-       'Type: Marketing Website', 'Type: Static Site',
-       'Tools: HTML/CSS', 'Tools: JavaScript',
-       'Timeline: Q2 2024 - Q3 2024'
+       'Designer & Developer', 'Marketing Website', 'Performance Optimization', 'Static Site'
      ],
+     tools: ['HTML/CSS', 'JavaScript', 'Performance Optimization', 'SEO'],
      sections: [
        { heading: 'Problem', body: `A firmware-focused embedded systems company needed a professional web presence that could effectively communicate their technical expertise while being accessible to both developers and decision-makers. Their existing site was slow, outdated, and not optimized for search engines or lead generation.` },
        { heading: 'Objectives', body: `<ul><li>Create a lightweight, fast-loading static site optimized for performance</li><li>Highlight real-time solutions and technical capabilities in an accessible way</li><li>Provide easy access to documentation and service offerings</li><li>Optimize for SEO to improve organic discovery</li><li>Design with developer-first usability principles</li></ul>` },

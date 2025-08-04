@@ -231,7 +231,7 @@
   align-items: center;
   width: 100%;
   margin: 10px 0 10px 0;
-  position: static;
+  /* Don't override position - let animations.css handle it */
 }
 
 .profile-photo img {
@@ -239,7 +239,7 @@
   height: 180px;
   object-fit: cover;
   border-radius: var(--radius-full);
-  position: static;
+  /* Don't override position - let animations.css handle absolute positioning for cycling */
   background: var(--profile-gradient, conic-gradient(from 0deg, 
     var(--color-primary) 0deg, 
     var(--color-secondary) 90deg, 

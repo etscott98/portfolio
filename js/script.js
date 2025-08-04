@@ -1407,12 +1407,21 @@ const createProjectModal = (projectKey) => {
       <button class="project-modal-close" aria-label="Close">&times;</button>
       <div class="project-modal-header">
         <h1 class="project-modal-title">${data.title}</h1>
-        <h2 class="project-modal-subtitle">${data.subtitle}</h2>
-        <div class="project-modal-tags">
-          ${data.overviewTags.map(tag => `<span class="project-modal-tag">${tag}</span>`).join('')}
-        </div>
       </div>
       <div class="project-modal-body">
+        <div class="project-modal-scrollable-header">
+          <div class="project-modal-tags">
+            ${data.overviewTags.map(tag => `<span class="project-modal-tag">${tag}</span>`).join('')}
+          </div>
+          ${data.tools ? `
+            <div class="project-modal-tools">
+              <h4>Tools & Technologies</h4>
+              <div class="project-modal-tools-list">
+                ${data.tools.map(tool => `<span class="project-modal-tool">${tool}</span>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
           ${data.contentBlocks ? data.contentBlocks.map(block => {
             switch(block.type) {
               case 'hero':

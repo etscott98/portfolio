@@ -120,8 +120,8 @@
 /* Modal Close Button - Simplified */
 .project-modal-close {
   position: absolute;
-  top: 32px;
-  right: 40px;
+  top: 17px;
+  right: 17px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
@@ -142,17 +142,19 @@
   transform: scale(1.1);
 }
 
-/* Modal Header */
+/* Modal Header - Fixed minimal header with only title */
 .project-modal-header {
-  padding: 48px 60px 32px 60px;
+  padding: 24px 60px 16px 60px;
   text-align: left;
   position: relative;
   z-index: 2;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(18, 24, 38, 0.98);
+  flex-shrink: 0;
 }
 
 .project-modal-title {
-  font-size: 3.5rem;
+  font-size: 2.2rem;
   font-weight: 800;
   background: linear-gradient(135deg, 
     var(--color-primary) 0%, 
@@ -161,18 +163,16 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin: 0 0 16px 0;
+  margin: 0;
   letter-spacing: -0.03em;
   line-height: 1.1;
 }
 
-.project-modal-subtitle {
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0 0 24px 0;
-  font-weight: 400;
-  line-height: 1.5;
-  max-width: 80%;
+/* Scrollable content header - only tags */
+.project-modal-scrollable-header {
+  padding: 0 0 24px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 32px;
 }
 
 /* Modal Tags */
@@ -200,12 +200,49 @@
   transform: translateY(-2px);
 }
 
+/* Modal Tools Section */
+.project-modal-tools {
+  margin-top: 24px;
+}
+
+.project-modal-tools h4 {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.project-modal-tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-modal-tool {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.project-modal-tool:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
 /* Modal Body - Optimized for smooth scrolling */
 .project-modal-body {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 48px 60px 60px 60px;
+  padding: 32px 60px 60px 60px;
   position: relative;
   /* Optimize scrolling performance */
   -webkit-overflow-scrolling: touch;
@@ -255,7 +292,7 @@
 
 /* Hero Section */
 .content-block-hero {
-  margin: -48px -60px 64px -60px;
+  margin: -32px -60px 64px -60px;
   position: relative;
   height: 400px;
   overflow: hidden;
@@ -572,18 +609,23 @@
   }
   
   .project-modal-header {
-    padding: 32px 32px 24px 32px;
+    padding: 20px 32px 16px 32px;
     position: relative;
   }
   
   .project-modal-body {
-    padding: 32px;
+    padding: 24px 32px 32px 32px;
     overflow: visible;
     max-height: none;
   }
   
   .project-modal-title {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .project-modal-scrollable-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
   }
   
   .content-block-full-image {
@@ -601,8 +643,8 @@
   
   .project-modal-close {
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: 17px;
+    right: 17px;
     width: 40px;
     height: 40px;
     z-index: 1001;
