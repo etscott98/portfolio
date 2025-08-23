@@ -1550,6 +1550,14 @@ const createProjectModal = (projectKey) => {
     
     document.body.appendChild(overlay);
     
+    // Apply theme colors if they exist
+    const modalContent = overlay.querySelector('.project-modal-content');
+    if (data.theme && modalContent) {
+      modalContent.style.setProperty('--color-primary', data.theme.primary);
+      modalContent.style.setProperty('--color-secondary', data.theme.secondary);
+      modalContent.style.setProperty('--color-accent', data.theme.accent);
+    }
+
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
     
