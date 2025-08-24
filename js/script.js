@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     workCards: document.querySelectorAll('.work-card'),
     modernAccents: document.querySelectorAll('.modern-accent'),
     reactiveElements: document.querySelectorAll('.reactive-bg, body'),
-    magneticElements: document.querySelectorAll('.toggle-btn, .tag-filter, .work-card-stat, .contact-form button'),
+    magneticElements: document.querySelectorAll('.toggle-btn, .tag-filter, .work-card-stat, #chat-send'),
     tagFilters: document.querySelectorAll('.tag-filter'),
     workCardLinks: document.querySelectorAll('.work-card-link'),
     rightColumn: document.querySelector('.right-column'),
@@ -338,15 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Debug log
     console.log('Mobile color transitions enabled');
     
-    // Test: Try to directly change background after a delay
-    setTimeout(() => {
-      const reactiveBg = document.querySelector('.reactive-bg');
-      if (reactiveBg) {
-        console.log('Test: Attempting to change background directly');
-        reactiveBg.style.background = 'linear-gradient(135deg, #ff0000 0%, #00ff00 100%)';
-        console.log('Test: Background style applied');
-      }
-    }, 2000);
+    // Test code removed - was overriding mobile scroll color transitions
   }
   
   // Set initial state for work cards to be animated by scroll observer (desktop only)
@@ -442,46 +434,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Toggle between greeting, skills, and contact in left column
+  // Toggle between greeting, skills, and chat in left column
   const greetingBlock = document.getElementById('greeting-block');
   const skillsBlock = document.getElementById('skills-block');
-  const contactBlock = document.getElementById('contact-block');
+  const chatBlock = document.getElementById('chat-block');
   const toggleGreeting = document.getElementById('toggle-greeting');
   const toggleSkills = document.getElementById('toggle-skills');
-  const toggleContact = document.getElementById('toggle-contact');
+  const toggleChat = document.getElementById('toggle-chat');
 
   toggleGreeting.addEventListener('click', () => {
     greetingBlock.style.display = '';
     skillsBlock.style.display = 'none';
-    contactBlock.style.display = 'none';
+    chatBlock.style.display = 'none';
     toggleGreeting.classList.add('active');
     toggleSkills.classList.remove('active');
-    toggleContact.classList.remove('active');
+    toggleChat.classList.remove('active');
     // Remove visible class when hiding
     skillsBlock.classList.remove('visible');
-    contactBlock.classList.remove('visible');
+    chatBlock.classList.remove('visible');
   });
   toggleSkills.addEventListener('click', () => {
     greetingBlock.style.display = 'none';
     skillsBlock.style.display = '';
-    contactBlock.style.display = 'none';
+    chatBlock.style.display = 'none';
     toggleGreeting.classList.remove('active');
     toggleSkills.classList.add('active');
-    toggleContact.classList.remove('active');
+    toggleChat.classList.remove('active');
     // Add visible class for animation
     setTimeout(() => skillsBlock.classList.add('visible'), 10);
-    contactBlock.classList.remove('visible');
+    chatBlock.classList.remove('visible');
   });
-  toggleContact.addEventListener('click', () => {
+  toggleChat.addEventListener('click', () => {
     greetingBlock.style.display = 'none';
     skillsBlock.style.display = 'none';
-    contactBlock.style.display = '';
+    chatBlock.style.display = '';
     toggleGreeting.classList.remove('active');
     toggleSkills.classList.remove('active');
-    toggleContact.classList.add('active');
+    toggleChat.classList.add('active');
     // Add visible class for animation
     skillsBlock.classList.remove('visible');
-    setTimeout(() => contactBlock.classList.add('visible'), 10);
+    setTimeout(() => chatBlock.classList.add('visible'), 10);
   });
 
   // --- Scroll-triggered entrance animations ---
@@ -788,18 +780,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Stripped - no 3D tilt effects to eliminate transform conflicts
   });
 
-  // Enhanced dynamic color shift and star particle effects
-  const reactiveBgElement = document.querySelector('.reactive-bg');
-  let scrollHue = 200; // Base blue color
-  let mouseX = 50, mouseY = 50; // Center position
-  let targetMouseX = 50, targetMouseY = 50; // For smooth interpolation
-  let lastMouseX = window.innerWidth / 2; // Track previous mouse X position
-  let isMouseMovingHorizontally = false;
-  let mouseStopTimeout;
-  let starOffsetX = 0; // Track star layer offset
-  let targetStarOffsetX = 0;
-  
-  if (reactiveBgElement) {
+  // Enhanced dynamic color shift and star particle effects (DESKTOP ONLY)
+  // Skip this entire system on mobile/tablet to allow CSS scroll color classes to work
+  if (!isMobile && !isTablet && !isTouchDevice) {
+    const reactiveBgElement = document.querySelector('.reactive-bg');
+    let scrollHue = 200; // Base blue color
+    let mouseX = 50, mouseY = 50; // Center position
+    let targetMouseX = 50, targetMouseY = 50; // For smooth interpolation
+    let lastMouseX = window.innerWidth / 2; // Track previous mouse X position
+    let isMouseMovingHorizontally = false;
+    let mouseStopTimeout;
+    let starOffsetX = 0; // Track star layer offset
+    let targetStarOffsetX = 0;
+    
+    if (reactiveBgElement) {
       // Use cached right-column element for better performance
     let scrollTimeout;
     
@@ -952,9 +946,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.style.setProperty('--profile-color-3', profileColor3, 'important');
     }
     
-    // Initialize background
-    updateBackground();
-  }
+      // Initialize background
+      updateBackground();
+    }
+  } // End of desktop-only background system
 
   // Optimized magnetic cursor effect with cached rect calculations
   const magneticStates = new Map();

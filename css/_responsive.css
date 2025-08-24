@@ -154,13 +154,7 @@
     transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   
-  /* Debug - add visible border to confirm class is applied */
-  .reactive-bg.scroll-color-25,
-  .reactive-bg.scroll-color-50,
-  .reactive-bg.scroll-color-75,
-  .reactive-bg.scroll-color-100 {
-    border: 2px solid red !important; /* Remove this after testing */
-  }
+  /* Debug border removed - scroll color classes are working correctly */
   
   /* Disable animated starfield on mobile for performance */
   .reactive-bg::before,

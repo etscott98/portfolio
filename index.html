@@ -79,19 +79,43 @@
             </ul>
           </div>
         </div>
-        <div class="contact-block" id="contact-block" style="display:none;">
-          <h2>contact</h2>
-          <form class="contact-form">
-            <input type="text" name="name" placeholder="your name" required>
-            <input type="email" name="email" placeholder="your email" required>
-            <textarea name="message" placeholder="your message" required></textarea>
-            <button type="submit">send</button>
-          </form>
-                 </div>
+        <div class="chat-block" id="chat-block" style="display:none;">
+          <div class="chat-header">
+            <h2>ask AI</h2>
+            <p class="chat-subtitle">Ask me anything about Erin's work & experience</p>
+          </div>
+          <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+              <div class="chat-message ai-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                  <p>Hi! I'm Erin's AI assistant. I can answer questions about her design work, technical skills, projects, and experience. What would you like to know?</p>
+                </div>
+              </div>
+            </div>
+            <div class="chat-suggestions" id="chat-suggestions">
+              <button class="suggestion-btn" data-question="What's Erin's design philosophy?">Design Philosophy</button>
+              <button class="suggestion-btn" data-question="Tell me about Erin's technical skills">Technical Skills</button>
+              <button class="suggestion-btn" data-question="What are Erin's recent projects?">Recent Projects</button>
+            </div>
+            <div class="chat-input-container">
+              <div class="chat-input-wrapper">
+                <input type="text" id="chat-input" placeholder="Ask me anything about Erin..." autocomplete="off">
+                <button id="chat-send" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="chat-status" id="chat-status"></div>
+            </div>
+          </div>
+        </div>
           <div class="toggle-bar">
             <button id="toggle-greeting" class="toggle-btn active">hi</button>
             <button id="toggle-skills" class="toggle-btn">skills</button>
-            <button id="toggle-contact" class="toggle-btn">contact</button>
+            <button id="toggle-chat" class="toggle-btn">ask AI</button>
           </div>
         </div>
       </div>
@@ -133,7 +157,7 @@
               </div>
             </div></div>
             <div class="work-card-link" data-project="teamu"><div class="work-card" data-tags="ux focus,mobile">
-              <div class="work-card-image"><img src="assets/images/projects/teamu.png" alt="Teamu app mockup"></div>
+              <div class="work-card-image"><img src="assets/images/projects/teamu/teamu.png" alt="Teamu app mockup"></div>
               <div class="work-card-content">
                 <h3 class="work-card-title">Teamu</h3>
                 <p class="work-card-desc">AI social media platform looking into closing the increasing isolation, solving the loneliness epidemic. Conducted UX research, competitive analysis.</p>
@@ -144,7 +168,7 @@
               </div>
             </div></div>
             <div class="work-card-link" data-project="provisioning"><div class="work-card" data-tags="ux focus">
-              <div class="work-card-image"><img src="assets/images/projects/flologic.png" alt="Provisioning redesign"></div>
+              <div class="work-card-image"><img src="assets/images/projects/provisioning/provisioning New.png" alt="Provisioning redesign"></div>
               <div class="work-card-content">
                 <h3 class="work-card-title">End-to-End Provisioning Reimagined</h3>
                 <p class="work-card-desc">A complete overhaul of the device provisioning process—from connection to onboarding—focusing on reliability, speed, and user clarity. Designed to reduce customer confusion, streamline backend communication, and future-proof new hardware integrations.</p>
@@ -168,7 +192,7 @@
               </div>
             </div></div>
             <div class="work-card-link" data-project="project6"><div class="work-card" data-tags="website">
-              <div class="work-card-image"><img src="assets/images/projects/circadia.png" alt="Embedded systems marketing site"></div>
+              <div class="work-card-image"><img src="assets/images/projects/cecontrol website/cropped-SmallLogoHorizontal.png" alt="Embedded systems marketing site"></div>
               <div class="work-card-content">
                 <h3 class="work-card-title">A Clean Digital Presence for Embedded Systems</h3>
                 <p class="work-card-desc">Created a lightweight, fast-loading static marketing site for a firmware-focused company, highlighting their real-time solutions, documentation access, and service offerings. Optimized for SEO and developer-first usability.</p>
@@ -186,6 +210,7 @@
 
 
     <script src="./js/project-data.js"></script>
+    <script src="./js/chat.js"></script>
     <script src="./js/script.js"></script>
 </body>
 </html> 
