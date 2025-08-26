@@ -845,6 +845,7 @@
   border-radius: 50%;
   margin-top: 8px;
   flex-shrink: 0;
+  background-color: var(--color-primary);
 }
 .bullet-list div:last-child {
   display: flex;

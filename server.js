@@ -11,14 +11,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('.')); // Serve static files from current directory
 
-// OpenAI configuration
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+// Gemini configuration
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 // Erin's knowledge base
 const knowledgeBase = `
 AI Reference – Erin Scott (Nano-5 profile)
-Last updated: Aug 24, 2025 • Use: short, factual answers; no fluff.
+Last updated: Aug 24, 2025 
 
 1) Identity & Contact
 Name: Erin Scott (pronounced "AIR-IN")
@@ -26,12 +26,11 @@ Pronouns: she/her
 Location / TZ: Raleigh, NC • Eastern Time (ET)
 Primary email: lunarspired@gmail.com
 LinkedIn: https://www.linkedin.com/in/erin-s-6369071b2/
+hg
+
 Phone: Share by email or LinkedIn DM only (anti-scam policy)
 Fastest contact: Email or LinkedIn DM
-Portfolio: TBD
-Resume: TBD
-GitHub: TBD
-Case study links (top 2–3): TBD
+
 
 2) Role Targeting & Logistics
 Current title: Lead Product Designer
@@ -84,7 +83,7 @@ Interests: Art/painting, yoga, holistic living, journaling/astrology
 Why I design: To make complex systems feel clear, human, and genuinely useful
 `;
 
-const systemPrompt = `You are Erin Scott's AI assistant. Use the provided knowledge base to answer questions about Erin's work, skills, experience, and projects. 
+const systemPrompt = `
 
 Guidelines:
 - Be conversational and friendly, matching Erin's personality
@@ -98,7 +97,73 @@ Guidelines:
 Knowledge Base:
 ${knowledgeBase}`;
 
-// Smart fallback responses
+
+// API endpoint for chat
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // Rate limiting (simple)
+    const userIP = req.ip;
+    console.log(`Chat request from ${userIP}: ${message}`);
+
+    // Try Gemini API if key is available
+    if (GEMINI_API_KEY) {
+      try {
+        const response = await fetch(GEMINI_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': GEMINI_API_KEY
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: 'user',
+                parts: [{ text: `${systemPrompt}\n\nUser Question: ${message}` }]
+              }
+            ],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 500
+            }
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const aiResponse = data.candidates[0].content.parts[0].text;
+          
+          return res.json({ 
+            response: aiResponse,
+            source: 'gemini'
+          });
+        } else {
+          const errorData = await response.json();
+          console.error('Gemini API Error:', errorData);
+        }
+      } catch (error) {
+        console.warn('Gemini API failed, using fallback:', error.message);
+      }
+    }
+
+    // Fallback response
+    const fallbackResponse = getFallbackResponse(message);
+    res.json({ 
+      response: fallbackResponse,
+      source: 'fallback'
+    });
+
+  } catch (error) {
+    console.error('Chat error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 function getFallbackResponse(userMessage) {
   const lowerMessage = userMessage.toLowerCase();
   
@@ -125,72 +190,6 @@ function getFallbackResponse(userMessage) {
   return "Thanks for your question! Erin is a Lead Product Designer who combines beautiful design with functional code. She's worked on projects ranging from mobile app redesigns to AI-powered platforms, always focusing on making experiences more human. What specific aspect of her work would you like to know more about?";
 }
 
-// API endpoint for chat
-app.post('/api/chat', async (req, res) => {
-  try {
-    const { message } = req.body;
-    
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
-    }
-
-    // Rate limiting (simple)
-    const userIP = req.ip;
-    console.log(`Chat request from ${userIP}: ${message}`);
-
-    // Try OpenAI API if key is available
-    if (OPENAI_API_KEY) {
-      try {
-        const response = await fetch(OPENAI_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${OPENAI_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-              {
-                role: 'system',
-                content: systemPrompt
-              },
-              {
-                role: 'user',
-                content: message
-              }
-            ],
-            max_tokens: 500,
-            temperature: 0.7
-          })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const aiResponse = data.choices[0].message.content;
-          
-          return res.json({ 
-            response: aiResponse,
-            source: 'openai'
-          });
-        }
-      } catch (error) {
-        console.warn('OpenAI API failed, using fallback:', error.message);
-      }
-    }
-
-    // Fallback response
-    const fallbackResponse = getFallbackResponse(message);
-    res.json({ 
-      response: fallbackResponse,
-      source: 'fallback'
-    });
-
-  } catch (error) {
-    console.error('Chat error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 // Serve the main page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -204,7 +203,7 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`🤖 Chat API available at http://localhost:${PORT}/api/chat`);
-  console.log(`🔑 OpenAI API: ${OPENAI_API_KEY ? 'Configured' : 'Using fallback only'}`);
+  console.log(`🔑 Gemini API: ${GEMINI_API_KEY ? 'Configured' : 'Using fallback only'}`);
 });
 
 module.exports = app;

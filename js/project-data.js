@@ -392,6 +392,108 @@ const projectData = {
        { value: '1.2s', label: 'Page Load Time', desc: 'Improved average load time globally' },
        { value: '2.3x', label: 'Lead Generation', desc: 'More inbound leads within 60 days post-launch' }
      ]
+   },
+   loneliness: {
+    title: 'Solving the Loneliness Epidemic',
+    subtitle: 'Teamu transforms passive social interaction into meaningful collaboration through AI-driven project matching',
+    images: [
+      'assets/images/projects/teamu/prototype 1.png'
+    ],
+    overviewTags: [
+      'Lead Product Designer', 'AI Platform', 'Community Building', 'UX Research'
+    ],
+    tools: ['Figma', 'User Research', 'Prototyping', 'Marketing Strategy'],
+    contentBlocks: [
+      {
+        type: 'hero',
+        image: 'assets/images/projects/teamu/prototype 1.png',
+        title: 'Solving the Loneliness Epidemic',
+        description: 'Transforming passive social interaction into meaningful collaboration',
+        alt: 'Teamu prototype showing community-driven project platform'
+      },
+      {
+        type: 'text',
+        heading: 'Problem',
+        content: '<p class="large-text">Our true passions often simmer on the back burner, lost to a lack of motivation and a growing sense of isolation.</p><p>The loneliness epidemic has made it harder than ever to find meaningful connection and support, leaving many feeling stuck and uninspired.</p>'
+      },
+      {
+        type: 'text',
+        heading: 'Objectives',
+        content: '<ul class="bullet-list"><li><div class="bullet-icon"></div><div>Create a space where users can actively collaborate on community-driven projects.</div></li><li><div class="bullet-icon"></div><div>Leverage AI to generate project ideas based on user passions.</div></li><li><div class="bullet-icon"></div><div>Build a community-focused platform that allows users to connect, collaborate, and create meaningful change.</div></li><li><div class="bullet-icon"></div><div>Implement features that allow users to swipe on ideas, form groups, and launch projects with minimal friction.</div></li></ul>'
+      },
+      {
+        type: 'text',
+        heading: 'Summary',
+        content: '<p class="large-text">Teamu is a community-driven platform that transforms passive social interaction into meaningful collaboration. Through AI-driven idea generation, users can swipe on project concepts, join community boards, and turn ideas into action. The platform is designed to bridge the gap between social media and real-world impact.</p>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/teamu/prototype 2.png',
+        alt: 'Teamu prototype showing AI-driven project matching interface',
+        caption: ''
+      },
+      {
+        type: 'text',
+        heading: 'Key Responsibilities',
+        content: '<ul class="bullet-list"><li><div class="bullet-icon"></div><div>Conducted user research and interviews to understand community needs and barriers to collaboration.</div></li><li><div class="bullet-icon"></div><div>Designed user flows that simplify project matching and collaboration.</div></li><li><div class="bullet-icon"></div><div>Developed a tagging system for community boards to enhance discoverability.</div></li><li><div class="bullet-icon"></div><div>Created high-fidelity mockups and prototypes for the app\'s MVP.</div></li><li><div class="bullet-icon"></div><div>Established marketing strategies to drive early user adoption.</div></li></ul>'
+      },
+      {
+        type: 'text',
+        heading: 'User Interviews',
+        content: '<p>To better understand Teamu\'s potential users, I conducted in-depth interviews with five young professionals (ages 25–45) who all held full-time jobs and actively pursued hobbies outside their work.</p><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-users"></span> User Interview Goals:</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div>Understand how users currently try to connect with others around shared passions</div></li><li><div class="bullet-icon"></div><div>Identify obstacles to meaningful collaboration or community involvement</div></li><li><div class="bullet-icon"></div><div>Learn about their current experience with social media or productivity platforms</div></li><li><div class="bullet-icon"></div><div>Gauge interest in alternative, purpose-driven platforms like Teamu</div></li></ul></div>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/teamu/user interviews.webp',
+        alt: 'User interview insights and findings',
+        caption: ''
+      },
+      {
+        type: 'text',
+        heading: 'Competitive Analysis',
+        content: '<p class="large-text">SWOT analysis helped get an idea of how similar products meet the current demand.</p>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/teamu/competitive analysis.webp',
+        alt: 'Competitive analysis showing SWOT of similar platforms',
+        caption: ''
+      },
+      {
+        type: 'text',
+        heading: 'Initial Wireframes',
+        content: '<p>The wireframing process for Teamu was pretty different from what I usually do. Normally, I start by defining the content, mapping out the user flow, and then building the wireframes.</p><p>But this time the founder and I were working closely and things moved fast. There wasn\'t a set flow. We just had a general idea of how things should feel and made changes as we went. Screens shifted a lot as we kept gathering new info. It was a bit messy but helped us move quickly and stay in sync.</p>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/teamu/iterations.png',
+        alt: 'Iterations of wireframes and design evolution',
+        caption: ''
+      },
+      {
+        type: 'text',
+        heading: 'Final Design',
+        content: '<p>While the Teamu app was successfully published to the Apple App Store, the project has been on hiatus for an extended period. As a result, much of the app\'s functionality (particularly those tied to the AI backend) is no longer operational.</p><p>Despite this, the Founder still intends to pursue the core vision of Teamu moving forward.</p><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-structure"></span> Technical Stack (AI Backend):</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div><strong>Database:</strong> Supabase (PostgreSQL)</div></li><li><div class="bullet-icon"></div><div><strong>Cloud Functions:</strong> Google Cloud (Python)</div></li><li><div class="bullet-icon"></div><div><strong>AI Model:</strong> Gemini 1.5 Flash</div></li></ul></div><p>These final screens reflect the last working version of the app before development paused.</p>'
+      },
+      {
+        type: 'gallery',
+        heading: '',
+        images: [
+          { src: 'assets/images/projects/teamu/Teamu 1.png', alt: 'Teamu final design screen 1' },
+          { src: 'assets/images/projects/teamu/Teamu 2.png', alt: 'Teamu final design screen 2' },
+          { src: 'assets/images/projects/teamu/Teamu 3.png', alt: 'Teamu final design screen 3' },
+          { src: 'assets/images/projects/teamu/Teamu 4.png', alt: 'Teamu final design screen 4' },
+          { src: 'assets/images/projects/teamu/Teamu 5.png', alt: 'Teamu final design screen 5' },
+          { src: 'assets/images/projects/teamu/Teamu 6.png', alt: 'Teamu final design screen 6' },
+          { src: 'assets/images/projects/teamu/Teamu 7.png', alt: 'Teamu final design screen 7' }
+        ]
+      }
+    ],
+    impacts: [
+      { value: '5', label: 'User interviews', desc: 'In-depth research with professionals' },
+      { value: '15+', label: 'Platforms analyzed', desc: 'Comprehensive competitive analysis' },
+      { value: 'MVP', label: 'Shipped to App Store', desc: 'Successfully launched on iOS' }
+    ]
    }
 };
 
