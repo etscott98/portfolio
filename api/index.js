@@ -11,8 +11,11 @@ if (!process.env.GEMINI_API_KEY) {
   console.warn('Missing GEMINI_API_KEY — RAG will not run.');
 }
 
-// Single pool reused across invocations
-const pool = process.env.DATABASE_URL ? new Pool({ connectionString: process.env.DATABASE_URL }) : null;
+// Single pool reused across invocations with SSL config for Supabase
+const pool = process.env.DATABASE_URL ? new Pool({ 
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL.includes('supabase') ? { rejectUnauthorized: false } : false
+}) : null;
 
 // ---- Helpers
 function l2norm(a) {
@@ -46,32 +49,85 @@ async function embedWithGemini(text) {
 }
 
 async function generateWithGemini(prompt) {
-  const mod = await import('@google/genai');
-  const { GoogleGenAI } = mod;
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-  const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
-  const r = await ai.models.generateContent({
-    model,
-    contents: [{ role: 'user', parts: [{ text: prompt }]}]
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-goog-api-key': process.env.GEMINI_API_KEY
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 800
+      }
+    })
   });
-  return (r?.response?.text?.() || r?.outputText?.() || '').trim();
+
+  if (!response.ok) {
+    throw new Error(`Gemini generation failed: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.candidates[0].content.parts[0].text;
 }
 
-// Build strict prompt from retrieved chunks
+// Build enhanced prompt with system instructions and retrieved chunks  
 function buildPrompt(question, matches) {
-  const ctx = matches.map((m, i) =>
-    `[${i + 1}] (${m.source_path || m.doc_id})\n${m.text}`
+  const systemPrompt = `You are Erin Scott's AI assistant, representing her professional portfolio and expertise as a UX/UI Designer and Frontend Developer.
+
+## Response Format Guidelines:
+- Use clear, structured responses with proper paragraphs separated by double line breaks
+- Start with a direct answer to the question
+- Include specific examples and metrics when available
+- Use bullet points (•) for lists and key accomplishments
+- Use **bold text** for emphasis on important points
+- Use ## for section headers when organizing longer responses
+- Add spacing between different sections for better readability
+- End with a call-to-action when appropriate
+
+## Personality & Tone:
+- Be conversational, friendly, and professional
+- Match Erin's authentic, thoughtful communication style
+- Show enthusiasm for design and development work
+- Be honest about limitations while staying helpful
+
+## Content Focus:
+- Highlight Erin's unique combination of design AND development skills
+- Emphasize user-centered design approach and measurable results
+- Mention specific technologies, tools, and methodologies
+- Include project outcomes and business impact when relevant
+- Reference her experience with AI platforms, mobile apps, and web development
+
+## Response Structure:
+1. **Direct Answer**: Address the question immediately
+2. **Supporting Details**: Provide context, examples, or elaboration
+3. **Key Highlights**: Use bullet points for achievements or skills
+4. **Next Steps**: Suggest how to learn more or get in touch
+
+## When to Redirect:
+If asked about something not covered in the knowledge base, acknowledge the limitation but redirect to relevant expertise areas.
+
+## Contact Encouragement:
+For inquiries about collaboration or availability, enthusiastically encourage reaching out via lunarspired@gmail.com or LinkedIn. When mentioning contact methods, always include the specific email address and mention LinkedIn by name for automatic link conversion.`;
+
+  const context = matches.map((m, i) => 
+    `[${i + 1}] ${m.text}`
   ).join('\n\n---\n\n');
 
-  return `Answer ONLY using the retrieved context. If the answer isn't in the context, reply exactly:
-"I don't know. You can contact Erin at lunarspired@gmail.com."
-Cite sources by index like [1], [2].
+  return `${systemPrompt}
 
-Question:
-${question}
+Retrieved Context:
+${context}
 
-Context:
-${ctx}`;
+User Question: ${question}
+
+Please answer using the retrieved context above. If the context doesn't contain the information needed, use your general knowledge about Erin but mention that you're working with limited context.`;
 }
 
 // Minimal final fallback (only if RAG cannot run at all)
@@ -101,7 +157,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ response: minimalFallback(), source: 'fallback' });
     }
 
-    // 1) Embed query (1536-dim, normalized)
+    // 1) Embed query (768-dim, normalized)
     const qvec = await embedWithGemini(message.trim());
 
     // 2) Vector + FTS retrieval via match_chunks(vector(768), text, int)
