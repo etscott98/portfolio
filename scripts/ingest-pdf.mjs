@@ -72,17 +72,25 @@ async function getEmbeddings(texts) {
   return embeddings;
 }
 
-// Simple text extraction - for now, just read as text
+// Simple text extraction - reads from text files
 async function extractTextFromFile(filePath) {
-  // For demonstration, we'll read the knowledgeBase from server.js instead
-  // In a real implementation, you'd use a proper PDF parser
-  const serverContent = await fs.readFile('server.js', 'utf-8');
-  const knowledgeBaseMatch = serverContent.match(/const knowledgeBase = `([\s\S]*?)`;/);
-  
-  if (knowledgeBaseMatch) {
-    return knowledgeBaseMatch[1];
-  } else {
-    throw new Error('Could not extract knowledgeBase from server.js');
+  try {
+    console.log(`📖 Reading text file: ${filePath}`);
+    
+    // Read as UTF-8 text file
+    const rawContent = await fs.readFile(filePath, 'utf-8'); const content = rawContent.replace(/\0/g, '').replace(/[\u0000-\u001F\u007F-\u009F]/g, ' ').replace(/\s+/g, ' ').trim();
+    
+    console.log(`✅ Text read: ${content.length} characters`);
+    
+    if (!content.trim()) {
+      throw new Error('File is empty or contains no text');
+    }
+    
+    return content;
+    
+  } catch (error) {
+    console.log(`❌ Error reading file: ${error.message}`);
+    throw new Error(`Failed to read file: ${error.message}`);
   }
 }
 
