@@ -183,11 +183,11 @@ class ErinAIChat {
     // Convert LinkedIn mentions to clickable links
     formatted = formatted
       .replace(/LinkedIn(?:\s+profile)?/gi, 
-        '<a href="https://linkedin.com/in/erinescott" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>')
+        '<a href="https://www.linkedin.com/in/erin-s-6369071b2/" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>')
       .replace(/on LinkedIn/gi, 
-        'on <a href="https://linkedin.com/in/erinescott" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>')
+        'on <a href="https://www.linkedin.com/in/erin-s-6369071b2/" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>')
       .replace(/via LinkedIn/gi, 
-        'via <a href="https://linkedin.com/in/erinescott" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>');
+        'via <a href="https://www.linkedin.com/in/erin-s-6369071b2/" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>');
 
     return formatted;
   }

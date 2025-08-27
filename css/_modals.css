@@ -264,6 +264,14 @@
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   /* Note: loading="lazy" should be set as HTML attribute, not CSS */
+  /* Make images clearly clickable */
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.project-modal-body img:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
 }
 
 /* Custom Scrollbar */

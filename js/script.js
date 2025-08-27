@@ -1702,21 +1702,35 @@ function enableProjectModalImageZoom() {
     const modal = clickedImg.closest('#project-modal-overlay');
     if (!modal) return;
     
+    // Debug logging
+    console.log('Image clicked in modal:', clickedImg.src);
+    
     // Get all images in the modal (both old and new structure)
     const allImages = Array.from(modal.querySelectorAll('img')).filter(img => {
       // Exclude small UI images like close buttons, only include content images
-      return !img.closest('.project-modal-close') && 
-             (img.classList.contains('project-modal-img') || 
-              img.closest('.content-block-gallery-item') ||
-              img.closest('.content-block-two-col-image') ||
-              img.closest('.content-block-hero') ||
-              img.closest('.content-block-full-image'));
+      const isCloseButton = img.closest('.project-modal-close');
+      const isContentImage = img.classList.contains('project-modal-img') || 
+                           img.closest('.content-block-gallery-item') ||
+                           img.closest('.content-block-two-col-image') ||
+                           img.closest('.content-block-hero') ||
+                           img.closest('.content-block-full-image') ||
+                           img.closest('.project-modal-gallery') ||
+                           img.closest('.project-modal-images');
+      
+      return !isCloseButton && isContentImage;
     });
     
-    const startIndex = allImages.indexOf(clickedImg);
-    if (startIndex === -1) return;
+    console.log('All modal images found:', allImages.length);
     
-    openImageZoomOverlay(allImages.map(i => i.src), startIndex);
+    const startIndex = allImages.indexOf(clickedImg);
+    if (startIndex === -1) {
+      console.log('Clicked image not found in filtered list, adding it');
+      // If the clicked image isn't in our filtered list, add it
+      allImages.push(clickedImg);
+      openImageZoomOverlay(allImages.map(i => i.src), allImages.length - 1);
+    } else {
+      openImageZoomOverlay(allImages.map(i => i.src), startIndex);
+    }
   });
 }
 
@@ -1743,10 +1757,11 @@ function openImageZoomOverlay(imageSrcs, startIndex) {
   overlay.tabIndex = 0;
   overlay.innerHTML = `
     <div class="image-zoom-content" style="position:relative;max-width:90vw;max-height:90vh;display:flex;align-items:center;">
-      <button class="image-zoom-close" aria-label="Close" style="position:absolute;top:16px;right:16px;font-size:2rem;background:none;border:none;color:#fff;z-index:2;cursor:pointer;">&times;</button>
-      <button class="image-zoom-arrow image-zoom-arrow-left" aria-label="Previous image" style="position:absolute;left:-48px;top:50%;transform:translateY(-50%);font-size:2.5rem;background:none;border:none;color:#fff;z-index:2;cursor:pointer;display:${imageSrcs.length>1?'block':'none'};">&#8592;</button>
-      <img src="${imageSrcs[currentIndex]}" class="image-zoom-img" style="max-width:80vw;max-height:80vh;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,0.5);background:#222;" alt="Zoomed project image">
-      <button class="image-zoom-arrow image-zoom-arrow-right" aria-label="Next image" style="position:absolute;right:-48px;top:50%;transform:translateY(-50%);font-size:2.5rem;background:none;border:none;color:#fff;z-index:2;cursor:pointer;display:${imageSrcs.length>1?'block':'none'};">&#8594;</button>
+      <button class="image-zoom-close" aria-label="Close" style="position:absolute;top:20px;right:20px;font-size:2rem;background:rgba(0,0,0,0.5);border:none;color:#fff;z-index:3;cursor:pointer;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:all 0.2s ease;">&times;</button>
+      <button class="image-zoom-arrow image-zoom-arrow-left" aria-label="Previous image" style="position:absolute;left:-60px;top:50%;transform:translateY(-50%);font-size:1.5rem;background:rgba(0,0,0,0.5);border:none;color:#fff;z-index:2;cursor:pointer;width:48px;height:48px;border-radius:50%;display:${imageSrcs.length>1?'flex':'none'};align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:all 0.2s ease;">‹</button>
+      <img src="${imageSrcs[currentIndex]}" class="image-zoom-img" style="max-width:85vw;max-height:85vh;border-radius:12px;box-shadow:0 12px 60px rgba(0,0,0,0.6);background:#111;user-select:none;transition:transform 0.3s ease;" alt="Zoomed project image">
+      <button class="image-zoom-arrow image-zoom-arrow-right" aria-label="Next image" style="position:absolute;right:-60px;top:50%;transform:translateY(-50%);font-size:1.5rem;background:rgba(0,0,0,0.5);border:none;color:#fff;z-index:2;cursor:pointer;width:48px;height:48px;border-radius:50%;display:${imageSrcs.length>1?'flex':'none'};align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:all 0.2s ease;">›</button>
+      <div class="image-zoom-counter" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.5);color:#fff;padding:8px 16px;border-radius:20px;font-size:0.9rem;backdrop-filter:blur(10px);display:${imageSrcs.length>1?'block':'none'};">${currentIndex + 1} / ${imageSrcs.length}</div>
     </div>
   `;
   document.body.appendChild(overlay);
@@ -1787,5 +1802,11 @@ function openImageZoomOverlay(imageSrcs, startIndex) {
     if (idx >= imageSrcs.length) idx = 0;
     currentIndex = idx;
     overlay.querySelector('.image-zoom-img').src = imageSrcs[currentIndex];
+    
+    // Update counter if it exists
+    const counter = overlay.querySelector('.image-zoom-counter');
+    if (counter) {
+      counter.textContent = `${currentIndex + 1} / ${imageSrcs.length}`;
+    }
   }
 }
