@@ -413,8 +413,8 @@ const projectData = {
       },
       {
         type: 'text',
-        heading: 'Problem',
-        content: '<p class="large-text">Our true passions often simmer on the back burner, lost to a lack of motivation and a growing sense of isolation.</p><p>The loneliness epidemic has made it harder than ever to find meaningful connection and support, leaving many feeling stuck and uninspired.</p>'
+        heading: 'The Challenge: From Isolation to Collaboration',
+        content: '<p class="large-text">Our true passions often simmer on the back burner, lost to a lack of motivation and a growing sense of isolation. The loneliness epidemic has made it harder than ever to find meaningful connection and support, leaving many feeling stuck and uninspired.</p><div class="side-by-side-panels"><div class="panel legacy-panel"><h4><span class="icon-ui icon-mobile-old"></span>The Problem</h4><p>Digital isolation<br/>Lack of motivation<br/>Superficial connections</p></div><div class="panel new-panel"><h4><span class="icon-ui icon-network-new"></span>The Goal</h4><p>Meaningful collaboration<br/>AI-driven ideas<br/>Real-world impact</p></div></div><div class="challenge-box"><h3>The Core Design Challenge</h3><p>How do we transform passive social interaction into active, meaningful collaboration, leveraging AI to bridge the gap between online communities and real-world projects?</p></div>'
       },
       {
         type: 'text',
@@ -435,7 +435,7 @@ const projectData = {
       {
         type: 'text',
         heading: 'Key Responsibilities',
-        content: '<ul class="bullet-list"><li><div class="bullet-icon"></div><div>Conducted user research and interviews to understand community needs and barriers to collaboration.</div></li><li><div class="bullet-icon"></div><div>Designed user flows that simplify project matching and collaboration.</div></li><li><div class="bullet-icon"></div><div>Developed a tagging system for community boards to enhance discoverability.</div></li><li><div class="bullet-icon"></div><div>Created high-fidelity mockups and prototypes for the app\'s MVP.</div></li><li><div class="bullet-icon"></div><div>Established marketing strategies to drive early user adoption.</div></li></ul>'
+        content: '<div class="role-responsibilities"><div class="responsibility-item"><h4>1. User Research & Strategy</h4><p>Conducted in-depth user interviews and competitive analysis to identify the core needs and frustrations of users seeking meaningful connection. Used these insights to define the product\'s core value proposition and strategic direction.</p></div><div class="responsibility-item"><h4>2. UX/UI Design & Prototyping</h4><p>Designed all user flows, from idea swiping to group formation and project launch. Created high-fidelity mockups and interactive prototypes in Figma, focusing on a simple, intuitive, and engaging user experience.</p></div><div class="responsibility-item"><h4>3. Community & Marketing</h4><p>Developed a tagging system for community boards to improve discoverability and engagement. Established early-stage marketing strategies to drive user adoption and build an initial community base.</p></div></div>'
       },
       {
         type: 'text',
@@ -451,7 +451,7 @@ const projectData = {
       {
         type: 'text',
         heading: 'Competitive Analysis',
-        content: '<p class="large-text">SWOT analysis helped get an idea of how similar products meet the current demand.</p>'
+        content: '<p class="large-text">A SWOT analysis of 15+ social and community platforms helped identify a clear market gap for a platform focused on collaborative, project-based connection rather than passive content consumption.</p>'
       },
       {
         type: 'full-image',
@@ -462,7 +462,7 @@ const projectData = {
       {
         type: 'text',
         heading: 'Initial Wireframes',
-        content: '<p>The wireframing process for Teamu was pretty different from what I usually do. Normally, I start by defining the content, mapping out the user flow, and then building the wireframes.</p><p>But this time the founder and I were working closely and things moved fast. There wasn\'t a set flow. We just had a general idea of how things should feel and made changes as we went. Screens shifted a lot as we kept gathering new info. It was a bit messy but helped us move quickly and stay in sync.</p>'
+        content: '<p>The wireframing process for Teamu was highly collaborative and iterative. Working closely with the founder, we moved quickly from rough concepts to more defined layouts, constantly adapting to new insights and feedback. This agile approach, while sometimes messy, allowed us to stay aligned and evolve the product rapidly.</p>'
       },
       {
         type: 'full-image',
@@ -472,8 +472,8 @@ const projectData = {
       },
       {
         type: 'text',
-        heading: 'Final Design',
-        content: '<p>While the Teamu app was successfully published to the Apple App Store, the project has been on hiatus for an extended period. As a result, much of the app\'s functionality (particularly those tied to the AI backend) is no longer operational.</p><p>Despite this, the Founder still intends to pursue the core vision of Teamu moving forward.</p><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-structure"></span> Technical Stack (AI Backend):</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div><strong>Database:</strong> Supabase (PostgreSQL)</div></li><li><div class="bullet-icon"></div><div><strong>Cloud Functions:</strong> Google Cloud (Python)</div></li><li><div class="bullet-icon"></div><div><strong>AI Model:</strong> Gemini 1.5 Flash</div></li></ul></div><p>These final screens reflect the last working version of the app before development paused.</p>'
+        heading: 'Final Design & Technical Stack',
+        content: '<p>While the Teamu app was successfully published to the Apple App Store, the project has been on hiatus for an extended period. As a result, much of the app’s functionality (particularly those tied to the AI backend) is no longer operational.</p><p>Despite this, the Founder still intends to pursue the core vision of Teamu moving forward.</p><div class="side-by-side-panels"><div class="panel"><h4 class="panel-title"><span class="icon-ui icon-structure"></span> Technical Stack</h4><ul class="bullet-list compact"><li><div class="bullet-icon"></div><div><strong>Database:</strong> Supabase (PostgreSQL)</div></li><li><div class="bullet-icon"></div><div><strong>Cloud Functions:</strong> Google Cloud (Python)</div></li><li><div class="bullet-icon"></div><div><strong>AI Model:</strong> Chat GPT 3.0</div></li></ul></div><div class="panel"><h4 class="panel-title"><span class="icon-ui icon-target"></span> Project Status</h4><ul class="bullet-list compact"><li><div class="bullet-icon"></div><div>YC Finalist 2022</div></li><li><div class="bullet-icon"></div><div>MVP Shipped to App Store</div></li><li><div class="bullet-icon"></div><div>Currently on Hiatus</div></li></ul></div></div><p style="margin-top:1rem;">These final screens reflect the last working version of the app before development paused.</p>'
       },
       {
         type: 'gallery',
@@ -490,9 +490,9 @@ const projectData = {
       }
     ],
     impacts: [
-      { value: '5', label: 'User interviews', desc: 'In-depth research with professionals' },
-      { value: '15+', label: 'Platforms analyzed', desc: 'Comprehensive competitive analysis' },
-      { value: 'MVP', label: 'Shipped to App Store', desc: 'Successfully launched on iOS' }
+      { value: 'YC', label: 'Finalist 2022', desc: 'Recognized by Y Combinator' },
+      { value: '300+', label: 'MAU in the first month', desc: 'Successful user ramp-up' },
+      { value: 'MVP', label: 'Shipped to App Store', desc: 'Launched on iOS' }
     ]
    }
 };
