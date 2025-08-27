@@ -15,87 +15,58 @@ app.use(express.static('.')); // Serve static files from current directory
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
-// Erin's knowledge base
-const knowledgeBase = `
-AI Reference – Erin Scott (Nano-5 profile)
-Last updated: Aug 24, 2025 
+// Database configuration for RAG
+const DATABASE_URL = process.env.DATABASE_URL;
+const { Pool } = require('pg');
+const { toSql } = require('pgvector/pg');
 
-1) Identity & Contact
-Name: Erin Scott (pronounced "AIR-IN")
-Pronouns: she/her
-Location / TZ: Raleigh, NC • Eastern Time (ET)
-Primary email: lunarspired@gmail.com
-LinkedIn: https://www.linkedin.com/in/erin-s-6369071b2/
-hg
+// Initialize database pool if URL is available
+const pool = DATABASE_URL ? new Pool({ 
+  connectionString: DATABASE_URL,
+  ssl: DATABASE_URL.includes('supabase') ? { rejectUnauthorized: false } : false
+}) : null;
 
-Phone: Share by email or LinkedIn DM only (anti-scam policy)
-Fastest contact: Email or LinkedIn DM
+// Knowledge base is stored in Supabase vector database
+
+const systemPrompt = `You are Erin Scott's AI assistant, representing her professional portfolio and expertise as a UX/UI Designer and Frontend Developer.
+
+## Response Format Guidelines:
+- Use clear, structured responses with proper paragraphs separated by double line breaks
+- Start with a direct answer to the question
+- Include specific examples and metrics when available
+- Use bullet points (•) for lists and key accomplishments
+- Use **bold text** for emphasis on important points
+- Use ## for section headers when organizing longer responses
+- Add spacing between different sections for better readability
+- End with a call-to-action when appropriate
+
+## Personality & Tone:
+- Be conversational, friendly, and professional
+- Match Erin's authentic, thoughtful communication style
+- Show enthusiasm for design and development work
+- Be honest about limitations while staying helpful
+
+## Content Focus:
+- Highlight Erin's unique combination of design AND development skills
+- Emphasize user-centered design approach and measurable results
+- Mention specific technologies, tools, and methodologies
+- Include project outcomes and business impact when relevant
+- Reference her experience with AI platforms, mobile apps, and web development
+
+## Response Structure:
+1. **Direct Answer**: Address the question immediately
+2. **Supporting Details**: Provide context, examples, or elaboration
+3. **Key Highlights**: Use bullet points for achievements or skills
+4. **Next Steps**: Suggest how to learn more or get in touch
+
+## When to Redirect:
+If asked about something not covered in the knowledge base, acknowledge the limitation but redirect to relevant expertise areas.
+
+## Contact Encouragement:
+For inquiries about collaboration or availability, enthusiastically encourage reaching out via lunarspired@gmail.com or LinkedIn. When mentioning contact methods, always include the specific email address and mention LinkedIn by name for automatic link conversion.`;
 
 
-2) Role Targeting & Logistics
-Current title: Lead Product Designer
-Actively pursuing: Senior Product Designer, Lead Product Designer, Founding Product Designer
-What I optimize for: ownership, end-to-end impact, cross-functional work, startup ambiguity
-Work modes: Remote / Hybrid / On-site (rank preference: TBD)
-Geo focus: SF Bay Area (open to remote US)
-Timeline: TBD
-Budget/comp: $120-160k base + equity, open to less base for higher equity in the right role
-Visa situation: US citizen
 
-3) Experience Summary
-Core specialty: Product design (end-to-end), design systems
-Years designing: 6+ years
-Years at startups: 4+ years
-Industry focus: B2B SaaS, consumer apps, AI/automation tools
-Team sizes worked with: 2-50+ people
-Design team sizes: solo designer to 8-person teams
-
-4) Skills & Tools
-Design: Figma (expert), Sketch, Adobe CC, Principle, ProtoPie
-Research: User interviews, usability testing, analytics analysis, A/B testing
-Development: HTML, CSS, JavaScript (functional), React basics
-Collaboration: Slack, Linear, Notion, Miro, FigJam
-Specialties: Design systems, mobile-first design, accessibility, motion design
-
-5) Recent Work Highlights
-- FloLogic Mobile App Redesign: 25% support call reduction, 30% faster implementation
-- Circadia AI Bedtime App: 40+ token design system, 100% onboarding completion
-- Teamu Social Platform: 8k+ members, conducted UX research and competitive analysis
-- Device Provisioning Redesign: 63% cut in support tickets, 42% improved success rate
-- Dashboard MVP: 88% increase in system visibility, 3x faster demo onboarding
-
-6) Design Philosophy
-"I design to feel something, code to feel nothing, and live somewhere in between"
-Focus: Making users feel "even 1% more human" through thoughtful design
-Approach: Accessibility-first, human-centered design with emotional intelligence
-Balance: Beautiful design meets functional code
-
-7) What I'm Looking For
-Role focus: End-to-end product design with ownership
-Team: Cross-functional collaboration, startup ambiguity
-Impact: Products that reduce isolation, improve accessibility, enable communities
-Growth: Opportunities to blend design and development skills
-
-8) Availability & Preferences
-Location: Raleigh, NC (open to remote US work)
-Contact: lunarspired@gmail.com or LinkedIn DM
-Interests: Art/painting, yoga, holistic living, journaling/astrology
-Why I design: To make complex systems feel clear, human, and genuinely useful
-`;
-
-const systemPrompt = `
-
-Guidelines:
-- Be conversational and friendly, matching Erin's personality
-- Focus on her design philosophy, technical skills, and project results
-- If asked about something not in the knowledge base, politely redirect to what you do know
-- Keep responses concise but informative
-- Highlight her unique combination of design and development skills
-- Mention specific project results and metrics when relevant
-- If someone asks about availability or wants to work with Erin, encourage them to reach out
-
-Knowledge Base:
-${knowledgeBase}`;
 
 
 // API endpoint for chat
@@ -111,45 +82,127 @@ app.post('/api/chat', async (req, res) => {
     const userIP = req.ip;
     console.log(`Chat request from ${userIP}: ${message}`);
 
-    // Try Gemini API if key is available
-    if (GEMINI_API_KEY) {
-      try {
-        const response = await fetch(GEMINI_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-goog-api-key': GEMINI_API_KEY
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                role: 'user',
-                parts: [{ text: `${systemPrompt}\n\nUser Question: ${message}` }]
-              }
-            ],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 500
-            }
-          })
-        });
+      // Try RAG with vector database first, then fallback
+  if (GEMINI_API_KEY && pool) {
+    try {
+      // Step 1: Get embedding for the user's question
+      const embeddingResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-goog-api-key': GEMINI_API_KEY
+        },
+        body: JSON.stringify({
+          model: 'models/text-embedding-004',
+          content: {
+            parts: [{ text: message }]
+          }
+        })
+      });
 
-        if (response.ok) {
-          const data = await response.json();
-          const aiResponse = data.candidates[0].content.parts[0].text;
-          
-          return res.json({ 
-            response: aiResponse,
-            source: 'gemini'
+      if (embeddingResponse.ok) {
+        const embeddingData = await embeddingResponse.json();
+        const queryVector = embeddingData.embedding.values;
+
+        // Step 2: Search vector database for relevant chunks
+        const { rows: matches } = await pool.query(
+          `SELECT id, doc_id, "order", left(text, 1500) as text, headings, source_path, score
+           FROM match_chunks($1::vector(768), $2::text, $3::int)`,
+          [toSql(queryVector), message, 5]
+        );
+
+        if (matches && matches.length > 0) {
+          // Step 3: Build enhanced prompt with retrieved context
+          const context = matches.map((m, i) => 
+            `[${i + 1}] ${m.text}`
+          ).join('\n\n---\n\n');
+
+          const ragPrompt = `${systemPrompt}
+
+Retrieved Context:
+${context}
+
+User Question: ${message}
+
+Please answer using the retrieved context above. If the context doesn't contain the information needed, use your general knowledge about Erin but mention that you're working with limited context.`;
+
+          // Step 4: Generate response with enhanced context
+          const response = await fetch(GEMINI_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-goog-api-key': GEMINI_API_KEY
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: 'user',
+                  parts: [{ text: ragPrompt }]
+                }
+              ],
+              generationConfig: {
+                temperature: 0.7,
+                maxOutputTokens: 800
+              }
+            })
           });
-        } else {
-          const errorData = await response.json();
-          console.error('Gemini API Error:', errorData);
+
+          if (response.ok) {
+            const data = await response.json();
+            const aiResponse = data.candidates[0].content.parts[0].text;
+            
+            return res.json({ 
+              response: aiResponse,
+              source: 'rag',
+              chunks_found: matches.length
+            });
+          }
         }
-      } catch (error) {
-        console.warn('Gemini API failed, using fallback:', error.message);
       }
+    } catch (error) {
+      console.warn('RAG failed, trying basic Gemini:', error.message);
     }
+  }
+
+  // Fallback: Basic Gemini without RAG
+  if (GEMINI_API_KEY) {
+    try {
+      const response = await fetch(GEMINI_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-goog-api-key': GEMINI_API_KEY
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: `${systemPrompt}\n\nUser Question: ${message}` }]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 800
+          }
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const aiResponse = data.candidates[0].content.parts[0].text;
+        
+        return res.json({ 
+          response: aiResponse,
+          source: 'gemini_basic'
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Gemini API Error:', errorData);
+      }
+    } catch (error) {
+      console.warn('Gemini API failed, using fallback:', error.message);
+    }
+  }
 
     // Fallback response
     const fallbackResponse = getFallbackResponse(message);
@@ -204,6 +257,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`🤖 Chat API available at http://localhost:${PORT}/api/chat`);
   console.log(`🔑 Gemini API: ${GEMINI_API_KEY ? 'Configured' : 'Using fallback only'}`);
+  console.log(`🗄️  Database: ${DATABASE_URL ? 'Connected (RAG enabled)' : 'Not connected (basic mode)'}`);
 });
 
 module.exports = app;

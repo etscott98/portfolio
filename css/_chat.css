@@ -88,6 +88,15 @@
 .chat-message.user-message {
   flex-direction: row-reverse;
   align-self: flex-end;
+  justify-content: flex-start;
+  margin-left: 20%;
+}
+
+.chat-message.ai-message {
+  flex-direction: row;
+  align-self: flex-start;
+  justify-content: flex-start;
+  margin-right: 20%;
 }
 
 .message-avatar {
@@ -110,7 +119,7 @@
 }
 
 .message-content {
-  max-width: 75%;
+  max-width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -123,13 +132,74 @@
   background: var(--primary-cyan-bg);
   border-color: var(--primary-cyan);
   border-color: rgba(110, 234, 255, 0.3);
+  border-radius: 18px 18px 4px 18px;
+  text-align: right;
+}
+
+.ai-message .message-content {
+  border-radius: 18px 18px 18px 4px;
+  text-align: left;
 }
 
 .message-content p {
-  margin: 0;
+  margin: 0 0 12px 0;
   font-size: 0.9rem;
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--text-primary);
+}
+
+.message-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* AI Response Formatting */
+
+.ai-message .message-content h3 {
+  margin: 16px 0 8px 0;
+  font-size: 1rem;
+  color: var(--primary-cyan);
+  font-weight: 600;
+  text-align: left;
+}
+
+.ai-message .message-content ul {
+  margin: 8px 0;
+  padding-left: 16px;
+  list-style-type: disc;
+  text-align: left;
+}
+
+.ai-message .message-content li {
+  margin: 4px 0;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.ai-message .message-content p {
+  text-align: left;
+}
+
+.ai-message .message-content strong {
+  color: var(--primary-cyan);
+  font-weight: 600;
+}
+
+.ai-message .message-content br {
+  line-height: 1.8;
+}
+
+.ai-message .message-content a {
+  color: var(--primary-cyan);
+  text-decoration: underline;
+  transition: all 0.2s ease;
+}
+
+.ai-message .message-content a:hover {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: var(--primary-cyan);
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
 .user-message .message-content p {
@@ -339,6 +409,14 @@
   .chat-messages {
     padding: 12px;
     gap: 12px;
+  }
+
+  .chat-message.user-message {
+    margin-left: 10%;
+  }
+
+  .chat-message.ai-message {
+    margin-right: 10%;
   }
   
   .chat-suggestions {

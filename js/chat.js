@@ -73,8 +73,8 @@ class ErinAIChat {
       // Remove typing indicator
       this.hideTypingIndicator();
       
-      // Add AI response
-      this.addMessage(response, 'ai');
+      // Stream the AI response with typing effect
+      await this.streamAIResponse(response);
       
     } catch (error) {
       console.error('Chat error:', error);
@@ -117,15 +117,117 @@ class ErinAIChat {
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
     
-    const messageText = document.createElement('p');
-    messageText.textContent = content;
+    if (type === 'ai') {
+      // Format AI responses with proper paragraphs and spacing
+      messageContent.innerHTML = this.formatAIResponse(content);
+    } else {
+      // User messages remain as simple text
+      const messageText = document.createElement('p');
+      messageText.textContent = content;
+      messageContent.appendChild(messageText);
+    }
     
-    messageContent.appendChild(messageText);
     messageDiv.appendChild(avatar);
     messageDiv.appendChild(messageContent);
     
     this.chatMessages?.appendChild(messageDiv);
     this.scrollToBottom();
+  }
+
+  formatAIResponse(content) {
+    // Clean and format the AI response for better readability
+    let formatted = content
+      // Format headers FIRST (before other processing)
+      .replace(/^###?\s+(.+)$/gm, '<h3>$1</h3>')
+      // Format bullet points with * - • 
+      .replace(/^[\*\-•]\s+(.+)$/gm, '<li>$1</li>')
+      // Format numbered lists
+      .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+      // Format bold text (markdown-style)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      // Convert double line breaks to paragraph breaks
+      .replace(/\n\n+/g, '</p><p>')
+      // Convert single line breaks to line breaks within paragraphs
+      .replace(/\n/g, '<br>')
+      // Add spacing around headers
+      .replace(/<h3>/g, '<h3 style="margin: 16px 0 8px 0; font-size: 1rem; color: var(--primary-cyan);">')
+      // Clean up extra spaces
+      .trim();
+
+    // Wrap in paragraphs if not already wrapped
+    if (!formatted.startsWith('<')) {
+      formatted = '<p>' + formatted + '</p>';
+    }
+
+    // Handle lists properly - group consecutive <li> elements
+    formatted = formatted.replace(/(<li>.*?<\/li>)/gs, (match) => {
+      return `<ul style="margin: 8px 0; padding-left: 16px;">${match}</ul>`;
+    });
+
+    // Fix nested list issues
+    formatted = formatted.replace(/<\/ul>\s*<ul[^>]*>/g, '');
+
+    // Clean up any remaining markdown artifacts
+    formatted = formatted
+      .replace(/^\*\s+/gm, '') // Remove remaining bullet points at start of lines
+      .replace(/^##+\s*/gm, '') // Remove remaining headers
+      .replace(/<br>\s*<li>/g, '<li>') // Clean up line breaks before list items
+      .replace(/<\/li>\s*<br>/g, '</li>'); // Clean up line breaks after list items
+
+    // Convert email addresses to mailto links
+    formatted = formatted.replace(
+      /lunarspired@gmail\.com/g, 
+      '<a href="mailto:lunarspired@gmail.com" style="color: var(--primary-cyan); text-decoration: underline;">lunarspired@gmail.com</a>'
+    );
+
+    // Convert LinkedIn mentions to clickable links
+    formatted = formatted
+      .replace(/LinkedIn(?:\s+profile)?/gi, 
+        '<a href="https://linkedin.com/in/erinescott" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>')
+      .replace(/on LinkedIn/gi, 
+        'on <a href="https://linkedin.com/in/erinescott" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>')
+      .replace(/via LinkedIn/gi, 
+        'via <a href="https://linkedin.com/in/erinescott" target="_blank" rel="noopener noreferrer" style="color: var(--primary-cyan); text-decoration: underline;">LinkedIn</a>');
+
+    return formatted;
+  }
+
+  async streamAIResponse(text) {
+    // Create the AI message container
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chat-message ai-message';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = '🤖';
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(messageContent);
+    this.chatMessages?.appendChild(messageDiv);
+    
+    // Stream the response with typing effect
+    await this.typeWriterEffect(messageContent, text);
+  }
+
+  async typeWriterEffect(container, text) {
+    const words = text.split(' ');
+    let currentText = '';
+    
+    for (let i = 0; i < words.length; i++) {
+      currentText += (i > 0 ? ' ' : '') + words[i];
+      
+      // Format and display the current text
+      container.innerHTML = this.formatAIResponse(currentText);
+      
+      // Scroll to bottom
+      this.scrollToBottom();
+      
+      // Add a small delay between words for streaming effect
+      await new Promise(resolve => setTimeout(resolve, 60));
+    }
   }
 
   showTypingIndicator() {

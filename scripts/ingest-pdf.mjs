@@ -3,6 +3,10 @@ import fs from "fs/promises";
 import path from "path";
 import { Pool } from "pg";
 import pgv from "pgvector/pg";
+import { config } from "dotenv";
+
+// Load environment variables
+config();
 
 const { toSql } = pgv;
 
@@ -33,7 +37,10 @@ if (!DATABASE_URL || !GEMINI_API_KEY) {
   process.exit(1);
 }
 
-const pool = new Pool({ connectionString: DATABASE_URL });
+const pool = new Pool({ 
+  connectionString: DATABASE_URL,
+  ssl: DATABASE_URL.includes('supabase') ? { rejectUnauthorized: false } : false
+});
 
 // Function to get embeddings from Gemini API
 async function getEmbeddings(texts) {
