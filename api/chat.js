@@ -1,4 +1,4 @@
-// api/index.js — RAG-only API (Gemini + Postgres pgvector 1536-dim)
+// api/chat.js — RAG-enabled chat API (Gemini + Postgres pgvector 768-dim)
 
 const { Pool } = require('pg');
 const { toSql } = require('pgvector/pg');
