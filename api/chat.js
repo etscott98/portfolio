@@ -1,7 +1,8 @@
-// api/chat.js — RAG-enabled chat API (Gemini + Postgres pgvector 768-dim)
+// api/chat.js — RAG-enabled chat API (Gemini + Postgres pgvector 768-dim) with chat history
 
 const { Pool } = require('pg');
 const { toSql } = require('pgvector/pg');
+const { createClient } = require('@supabase/supabase-js');
 
 // ---- Config checks (fail early with clear messages)
 if (!process.env.DATABASE_URL) {
@@ -10,12 +11,20 @@ if (!process.env.DATABASE_URL) {
 if (!process.env.GEMINI_API_KEY) {
   console.warn('Missing GEMINI_API_KEY — RAG will not run.');
 }
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+  console.warn('Missing SUPABASE_URL or SUPABASE_ANON_KEY — Chat history will not be saved.');
+}
 
 // Single pool reused across invocations with SSL config for Supabase
 const pool = process.env.DATABASE_URL ? new Pool({ 
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL.includes('supabase') ? { rejectUnauthorized: false } : false
 }) : null;
+
+// Initialize Supabase client for chat history
+const supabase = (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) 
+  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+  : null;
 
 // ---- Helpers
 function l2norm(a) {
@@ -75,6 +84,95 @@ async function generateWithGemini(prompt) {
 
   const data = await response.json();
   return data.candidates[0].content.parts[0].text;
+}
+
+// ---- Chat History Functions
+async function getOrCreateSession(userIdentifier, userAgent = null, ipAddress = null) {
+  if (!supabase) return null;
+  
+  try {
+    // First, try to find an active session for this user (within last 24 hours)
+    const { data: existingSessions, error: findError } = await supabase
+      .from('chat_sessions')
+      .select('id')
+      .eq('user_id', userIdentifier)
+      .gte('session_started_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+      .is('session_ended_at', null)
+      .order('session_started_at', { ascending: false })
+      .limit(1);
+
+    if (findError) {
+      console.error('Error finding existing session:', findError);
+      return null;
+    }
+
+    if (existingSessions && existingSessions.length > 0) {
+      return existingSessions[0].id;
+    }
+
+    // Create new session if none exists
+    const { data: newSession, error: createError } = await supabase
+      .from('chat_sessions')
+      .insert({
+        user_id: userIdentifier,
+        user_agent: userAgent,
+        ip_address: ipAddress
+      })
+      .select('id')
+      .single();
+
+    if (createError) {
+      console.error('Error creating new session:', createError);
+      return null;
+    }
+
+    return newSession.id;
+  } catch (error) {
+    console.error('Session management error:', error);
+    return null;
+  }
+}
+
+async function saveChatMessage(sessionId, messageType, content, metadata = {}) {
+  if (!supabase || !sessionId) return false;
+  
+  try {
+    const { error } = await supabase
+      .from('chat_messages')
+      .insert({
+        session_id: sessionId,
+        message_type: messageType,
+        content: content,
+        metadata: metadata
+      });
+
+    if (error) {
+      console.error('Error saving chat message:', error);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Chat message save error:', error);
+    return false;
+  }
+}
+
+function getUserIdentifier(req) {
+  // Create a simple user identifier - you can enhance this logic
+  // For now, we'll use IP address as the identifier
+  const forwarded = req.headers['x-forwarded-for'];
+  const ip = forwarded ? forwarded.split(',')[0] : req.connection.remoteAddress;
+  return ip || 'unknown';
+}
+
+function getUserAgent(req) {
+  return req.headers['user-agent'] || null;
+}
+
+function getClientIP(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  return forwarded ? forwarded.split(',')[0] : req.connection.remoteAddress;
 }
 
 // Build enhanced prompt with system instructions and retrieved chunks  
@@ -140,6 +238,9 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  const startTime = Date.now();
+  let sessionId = null;
+
   try {
     // Parse input
     const { message, k } = (req.body || {});
@@ -148,9 +249,32 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
+    // Get user information for session tracking
+    const userIdentifier = getUserIdentifier(req);
+    const userAgent = getUserAgent(req);
+    const clientIP = getClientIP(req);
+
+    // Create or get session for chat history
+    sessionId = await getOrCreateSession(userIdentifier, userAgent, clientIP);
+
+    // Save user message to chat history
+    if (sessionId) {
+      await saveChatMessage(sessionId, 'user', message.trim());
+    }
+
     // Ensure RAG prerequisites
     if (!pool || !process.env.GEMINI_API_KEY) {
-      return res.status(200).json({ response: minimalFallback(), source: 'fallback' });
+      const fallbackResponse = minimalFallback();
+      
+      // Save AI response to chat history
+      if (sessionId) {
+        await saveChatMessage(sessionId, 'ai', fallbackResponse, {
+          source: 'fallback',
+          response_time_ms: Date.now() - startTime
+        });
+      }
+      
+      return res.status(200).json({ response: fallbackResponse, source: 'fallback' });
     }
 
     // 1) Embed query (768-dim, normalized)
@@ -167,8 +291,19 @@ module.exports = async function handler(req, res) {
     );
 
     if (!matches || matches.length === 0) {
+      const noMatchResponse = `I don't know. You can contact Erin at lunarspired@gmail.com.`;
+      
+      // Save AI response to chat history
+      if (sessionId) {
+        await saveChatMessage(sessionId, 'ai', noMatchResponse, {
+          source: 'no_matches',
+          response_time_ms: Date.now() - startTime,
+          chunks_found: 0
+        });
+      }
+      
       return res.status(200).json({
-        response: `I don't know. You can contact Erin at lunarspired@gmail.com.`,
+        response: noMatchResponse,
         source: 'no_matches',
         chunks: []
       });
@@ -177,15 +312,37 @@ module.exports = async function handler(req, res) {
     // 3) Build prompt from retrieved chunks and generate answer
     const prompt = buildPrompt(message, matches);
     const answer = await generateWithGemini(prompt);
+    const finalResponse = answer || minimalFallback();
+
+    // Save AI response to chat history with metadata
+    if (sessionId) {
+      await saveChatMessage(sessionId, 'ai', finalResponse, {
+        source: 'rag',
+        response_time_ms: Date.now() - startTime,
+        chunks_found: matches.length,
+        top_chunk_score: matches[0]?.score || 0,
+        retrieval_query: message.trim()
+      });
+    }
 
     return res.status(200).json({
-      response: answer || minimalFallback(),
+      response: finalResponse,
       source: 'rag',
       chunks: matches
     });
 
   } catch (err) {
     console.error('RAG API error:', err?.stack || err);
+    
+    // Save error to chat history if we have a session
+    if (sessionId) {
+      await saveChatMessage(sessionId, 'ai', 'I encountered an error processing your request.', {
+        source: 'error',
+        response_time_ms: Date.now() - startTime,
+        error_message: err.message || 'Unknown error'
+      });
+    }
+    
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
