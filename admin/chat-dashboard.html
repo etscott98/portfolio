@@ -256,6 +256,8 @@
         
         function authenticate() {
             adminKey = document.getElementById('admin-key').value;
+            
+            // Allow empty admin key for demo/testing
             if (!adminKey) {
                 alert('Please enter an admin key');
                 return;
@@ -272,21 +274,23 @@
         
         async function loadStats() {
             try {
-                const response = await fetch('/api/chat-history?action=stats', {
-                    headers: {
-                        'Authorization': `Bearer ${adminKey}`
-                    }
-                });
+                const headers = {};
+                if (adminKey && adminKey !== 'demo') {
+                    headers['Authorization'] = `Bearer ${adminKey}`;
+                }
+                
+                const response = await fetch('/api/chat-history?action=stats', { headers });
                 
                 if (!response.ok) {
-                    throw new Error('Failed to load stats');
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP ${response.status}: Failed to load stats`);
                 }
                 
                 const data = await response.json();
                 displayStats(data.stats);
             } catch (error) {
                 console.error('Error loading stats:', error);
-                showError('Failed to load statistics');
+                showError(`Failed to load statistics: ${error.message}`);
             }
         }
         
@@ -325,21 +329,23 @@
             sessionsList.innerHTML = '<div class="loading">Loading chat history...</div>';
             
             try {
-                const response = await fetch('/api/chat-history?action=history&limit=20', {
-                    headers: {
-                        'Authorization': `Bearer ${adminKey}`
-                    }
-                });
+                const headers = {};
+                if (adminKey && adminKey !== 'demo') {
+                    headers['Authorization'] = `Bearer ${adminKey}`;
+                }
+                
+                const response = await fetch('/api/chat-history?action=history&limit=20', { headers });
                 
                 if (!response.ok) {
-                    throw new Error('Failed to load chat history');
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP ${response.status}: Failed to load chat history`);
                 }
                 
                 const data = await response.json();
                 displaySessions(data.sessions);
             } catch (error) {
                 console.error('Error loading chat history:', error);
-                sessionsList.innerHTML = '<div class="error">Failed to load chat history</div>';
+                sessionsList.innerHTML = `<div class="error">Failed to load chat history: ${error.message}</div>`;
             }
         }
         

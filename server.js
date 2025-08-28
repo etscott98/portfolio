@@ -69,8 +69,18 @@ For inquiries about collaboration or availability, enthusiastically encourage re
 
 
 
-// API endpoint for chat
-app.post('/api/chat', async (req, res) => {
+// Import the handlers
+const chatHistoryHandler = require('./api/chat-history');
+const chatHandler = require('./api/chat');
+
+// API endpoint for chat history (admin)
+app.get('/api/chat-history', chatHistoryHandler);
+
+// API endpoint for chat (with history logging)
+app.post('/api/chat', chatHandler);
+
+// Backup chat endpoint (original Express implementation)
+app.post('/api/chat-express', async (req, res) => {
   try {
     const { message } = req.body;
     
