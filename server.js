@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +11,51 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static('.')); // Serve static files from current directory
+
+// Rate limiting configurations
+const createRateLimiter = (windowMs, max, message, skipSuccessfulRequests = false) => {
+  return rateLimit({
+    windowMs,
+    max,
+    message: { error: message },
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    skipSuccessfulRequests,
+    handler: (req, res) => {
+      res.status(429).json({
+        error: message,
+        retryAfter: Math.round(windowMs / 1000),
+        limit: max,
+        windowMs
+      });
+    }
+  });
+};
+
+// Different rate limits for different endpoints
+const chatRateLimit = createRateLimiter(
+  20 * 60 * 1000, // 20 minutes
+  20, // limit each IP to 20 requests per windowMs
+  'Too many chat requests from this IP, please try again in 20 minutes.',
+  false
+);
+
+const adminRateLimit = createRateLimiter(
+  5 * 60 * 1000, // 5 minutes
+  30, // limit each IP to 30 requests per windowMs for admin endpoints
+  'Too many admin requests from this IP, please try again in 5 minutes.',
+  true // Don't count successful requests toward the limit
+);
+
+const generalRateLimit = createRateLimiter(
+  15 * 60 * 1000, // 15 minutes
+  100, // limit each IP to 100 requests per windowMs for general endpoints
+  'Too many requests from this IP, please try again in 15 minutes.',
+  true
+);
+
+// Apply general rate limiting to all requests
+app.use(generalRateLimit);
 
 // Gemini configuration
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -73,14 +119,14 @@ For inquiries about collaboration or availability, enthusiastically encourage re
 const chatHistoryHandler = require('./api/chat-history');
 const chatHandler = require('./api/chat');
 
-// API endpoint for chat history (admin)
-app.get('/api/chat-history', chatHistoryHandler);
+// API endpoint for chat history (admin) - with admin rate limiting
+app.get('/api/chat-history', adminRateLimit, chatHistoryHandler);
 
-// API endpoint for chat (with history logging)
-app.post('/api/chat', chatHandler);
+// API endpoint for chat (with history logging) - with chat rate limiting
+app.post('/api/chat', chatRateLimit, chatHandler);
 
-// Backup chat endpoint (original Express implementation)
-app.post('/api/chat-express', async (req, res) => {
+// Backup chat endpoint (original Express implementation) - with chat rate limiting
+app.post('/api/chat-express', chatRateLimit, async (req, res) => {
   try {
     const { message } = req.body;
     
@@ -268,6 +314,7 @@ app.listen(PORT, () => {
   console.log(`🤖 Chat API available at http://localhost:${PORT}/api/chat`);
   console.log(`🔑 Gemini API: ${GEMINI_API_KEY ? 'Configured' : 'Using fallback only'}`);
   console.log(`🗄️  Database: ${DATABASE_URL ? 'Connected (RAG enabled)' : 'Not connected (basic mode)'}`);
+  console.log(`⏱️  Rate Limits: Chat (20 req/20min), Admin (30 req/5min), General (100 req/15min)`);
 });
 
 module.exports = app;

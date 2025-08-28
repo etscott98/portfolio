@@ -175,8 +175,54 @@ function getClientIP(req) {
   return forwarded ? forwarded.split(',')[0] : req.connection.remoteAddress;
 }
 
-// Build enhanced prompt with system instructions and retrieved chunks  
-function buildPrompt(question, matches) {
+// Retrieve recent chat history for context
+async function getRecentChatHistory(sessionId, limit = 10) {
+  if (!supabase || !sessionId) return [];
+  
+  try {
+    const { data: messages, error } = await supabase
+      .from('chat_messages')
+      .select('message_type, content, created_at')
+      .eq('session_id', sessionId)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error('Error fetching chat history:', error);
+      return [];
+    }
+
+    // Return messages in chronological order (oldest first)
+    return messages ? messages.reverse() : [];
+  } catch (error) {
+    console.error('Chat history retrieval error:', error);
+    return [];
+  }
+}
+
+// Create enhanced query that includes conversation context for better retrieval
+function createContextualQuery(currentQuestion, chatHistory) {
+  if (!chatHistory || chatHistory.length === 0) {
+    return currentQuestion;
+  }
+
+  // Get recent user questions to understand the conversation flow
+  const recentUserMessages = chatHistory
+    .filter(msg => msg.message_type === 'user')
+    .slice(-3) // Last 3 user messages
+    .map(msg => msg.content);
+
+  // Combine current question with recent context
+  const contextualQuery = [
+    ...recentUserMessages,
+    currentQuestion
+  ].join(' ');
+
+  return contextualQuery;
+}
+
+// Build enhanced prompt with system instructions, chat history, and retrieved chunks  
+function buildPrompt(question, matches, chatHistory = []) {
   const systemPrompt = `You are Erin Scott's AI assistant, representing her professional portfolio and expertise as a UX/UI Designer and Frontend Developer.
 
 ## Response Style:
@@ -185,6 +231,7 @@ function buildPrompt(question, matches) {
 - Use bullet points (•) for lists when needed
 - Use **bold text** sparingly for key emphasis
 - Only provide detailed explanations when specifically asked to "explain" or "elaborate"
+- **Never include numbered references** like [1], [2], etc. - write naturally without source citations
 
 ## Personality & Tone:
 - Be conversational, friendly, and professional
@@ -214,14 +261,28 @@ For collaboration inquiries, encourage reaching out via lunarspired@gmail.com or
     `[${i + 1}] ${m.text}`
   ).join('\n\n---\n\n');
 
+  // Format chat history for context
+  let conversationHistory = '';
+  if (chatHistory && chatHistory.length > 0) {
+    const recentMessages = chatHistory.slice(-8); // Last 8 messages for context
+    conversationHistory = recentMessages.map(msg => 
+      `${msg.message_type.toUpperCase()}: ${msg.content}`
+    ).join('\n');
+  }
+
   return `${systemPrompt}
 
-Retrieved Context:
+${conversationHistory ? `Previous Conversation:
+${conversationHistory}
+
+` : ''}Retrieved Context:
 ${context}
 
-User Question: ${question}
+Current User Question: ${question}
 
-Please answer using the retrieved context above. If the context doesn't contain the information needed, use your general knowledge about Erin but mention that you're working with limited context.`;
+Please answer the current question using the retrieved context above. If there's relevant conversation history, reference it naturally to maintain continuity. If the context doesn't contain the information needed, use your general knowledge about Erin but mention that you're working with limited context.
+
+IMPORTANT: Do not include numbered references like [1], [2], etc. in your response. Write naturally without citing specific source numbers.`;
 }
 
 // Minimal final fallback (only if RAG cannot run at all)
@@ -257,6 +318,14 @@ module.exports = async function handler(req, res) {
     // Create or get session for chat history
     sessionId = await getOrCreateSession(userIdentifier, userAgent, clientIP);
 
+    // Get recent chat history for context (before saving new message)
+    const chatHistory = await getRecentChatHistory(sessionId);
+    
+    // Log conversation context info for debugging
+    if (chatHistory.length > 0) {
+      console.log(`Using conversation context: ${chatHistory.length} previous messages`);
+    }
+
     // Save user message to chat history
     if (sessionId) {
       await saveChatMessage(sessionId, 'user', message.trim());
@@ -277,17 +346,20 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ response: fallbackResponse, source: 'fallback' });
     }
 
-    // 1) Embed query (768-dim, normalized)
-    const qvec = await embedWithGemini(message.trim());
+    // 1) Create contextual query that includes conversation history
+    const contextualQuery = createContextualQuery(message.trim(), chatHistory);
+    
+    // 2) Embed contextual query (768-dim, normalized) 
+    const qvec = await embedWithGemini(contextualQuery);
 
-    // 2) Vector + FTS retrieval via match_chunks(vector(768), text, int)
+    // 3) Vector + FTS retrieval via match_chunks(vector(768), text, int)
     //    NOTE: your DB must have the function defined for 768 dims.
     const { rows: matches } = await pool.query(
       `select id, doc_id, "order",
               left(text, 1500) as text,
               headings, source_path, score
        from match_chunks($1::vector(768), $2::text, $3::int)`,
-      [toSql(qvec), message, topK]
+      [toSql(qvec), contextualQuery, topK]
     );
 
     if (!matches || matches.length === 0) {
@@ -309,8 +381,8 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // 3) Build prompt from retrieved chunks and generate answer
-    const prompt = buildPrompt(message, matches);
+    // 4) Build prompt from retrieved chunks, chat history, and generate answer
+    const prompt = buildPrompt(message, matches, chatHistory);
     const answer = await generateWithGemini(prompt);
     const finalResponse = answer || minimalFallback();
 
@@ -321,7 +393,10 @@ module.exports = async function handler(req, res) {
         response_time_ms: Date.now() - startTime,
         chunks_found: matches.length,
         top_chunk_score: matches[0]?.score || 0,
-        retrieval_query: message.trim()
+        retrieval_query: message.trim(),
+        contextual_query: contextualQuery,
+        conversation_messages_used: chatHistory.length,
+        has_conversation_context: chatHistory.length > 0
       });
     }
 

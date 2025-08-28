@@ -79,8 +79,15 @@ class ErinAIChat {
     } catch (error) {
       console.error('Chat error:', error);
       this.hideTypingIndicator();
-      this.addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment!", 'ai');
-      this.updateStatus('Connection error - please try again');
+      
+      // Handle rate limiting errors specifically
+      if (error.message.includes('429') || error.message.includes('Too many')) {
+        this.addMessage("I'm receiving a lot of requests right now. Please wait a few minutes before sending another message. Thanks for your patience!", 'ai');
+        this.updateStatus('Rate limit reached - please wait before sending another message');
+      } else {
+        this.addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment!", 'ai');
+        this.updateStatus('Connection error - please try again');
+      }
     } finally {
       this.isProcessing = false;
       this.updateSendButton(false);
@@ -98,12 +105,40 @@ class ErinAIChat {
       })
     });
 
+    // Check rate limit headers and show warnings
+    this.checkRateLimitHeaders(response);
+
     if (!response.ok) {
+      // Handle rate limiting specifically
+      if (response.status === 429) {
+        const errorData = await response.json().catch(() => ({}));
+        const retryAfter = errorData.retryAfter || 1200; // Default to 20 minutes
+        throw new Error(`Rate limit exceeded. Please wait ${Math.round(retryAfter / 60)} minutes before trying again.`);
+      }
+      
       throw new Error(`API request failed: ${response.status}`);
     }
 
     const data = await response.json();
     return data.response;
+  }
+
+  checkRateLimitHeaders(response) {
+    const remaining = response.headers.get('RateLimit-Remaining');
+    const limit = response.headers.get('RateLimit-Limit');
+    
+    if (remaining !== null && limit !== null) {
+      const remainingCount = parseInt(remaining);
+      const limitCount = parseInt(limit);
+      
+      // Show warning when user has used 80% of their rate limit
+      if (remainingCount <= limitCount * 0.2 && remainingCount > 0) {
+        this.updateStatus(`${remainingCount} messages remaining in current window`);
+      }
+      
+      // Log rate limit info for debugging
+      console.log(`Rate limit: ${remainingCount}/${limitCount} remaining`);
+    }
   }
 
   addMessage(content, type) {
