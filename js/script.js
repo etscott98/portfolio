@@ -651,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const typingSequence = [
     { element: heroName, text: "i'm erin", delay: 800 },
-    { element: heroTitle, text: "lead UI UX designer", delay: 500 },
+    { element: heroTitle, text: "lead product designer", delay: 500 },
     { element: heroLine1, text: "i design to feel something,", delay: 800 },
     { element: heroLine2, text: "code to feel nothing,", delay: 600 },
     { element: heroLine3, text: "and live somewhere in between.", delay: 600 },
