@@ -266,63 +266,133 @@
     transform: none !important;
   }
   
+  /* Greeting Block Improvements */
+  .greeting-block {
+    padding: 20px 15px !important;
+    text-align: center !important;
+  }
+
+  .hero-icon {
+    font-size: 1.5rem !important;
+    margin-bottom: 10px !important;
+  }
+
   .hero-name {
-    font-size: 2.2rem !important;
+    font-size: 2rem !important;
+    line-height: 1.1 !important;
+    margin: 15px 0 8px 0 !important;
+  }
+
+  .hero-title {
+    font-size: 1.1rem !important;
+    margin: 8px 0 20px 0 !important;
+    opacity: 0.9 !important;
   }
 
   .hero-desc {
-    font-size: 1rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    max-width: 100% !important;
+    margin: 20px 0 !important;
+  }
+
+  .hero-desc-main {
+    display: block !important;
+    margin-bottom: 15px !important;
+  }
+
+  .hero-desc-line {
+    display: block !important;
+    margin: 3px 0 !important;
+  }
+
+  .hero-desc-secondary,
+  .hero-desc-tertiary {
+    display: block !important;
+    margin: 10px 0 !important;
+    font-size: 0.85rem !important;
+    opacity: 0.8 !important;
   }
 
   .profile-photo {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    width: 140px !important;
-    height: 140px !important;
-    margin: 10px auto !important;
+    width: 120px !important;
+    height: 120px !important;
+    margin: 15px auto 20px auto !important;
     position: relative !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
   }
 
   .profile-photo img {
-    width: 140px !important;
-    height: 140px !important;
+    width: 120px !important;
+    height: 120px !important;
     margin: 0 !important;
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
+    border-radius: 50% !important;
   }
 
-  /* Skills and Contact Mobile Styling */
-  .skills-block,
-  .contact-block {
-    padding-bottom: 80px !important; /* More space from toggle bar */
+  /* Skills Block Improvements */
+  .skills-block {
+    padding: 20px 15px 80px 15px !important;
+    overflow-y: auto !important;
+    max-height: calc(100vh - 200px) !important;
   }
 
-  .skills-block h2,
-  .contact-block h2 {
-    font-size: 1.6rem !important;
-    margin-bottom: 20px !important;
+  .skills-block h2 {
+    font-size: 1.4rem !important;
+    margin: 0 0 20px 0 !important;
+    text-align: center !important;
   }
   
   .skills-section {
     max-width: 100% !important;
-    padding: 0 10px !important;
+    padding: 0 5px !important;
   }
   
   .skills-section h3 {
-    font-size: 1.1rem !important;
-    margin: 16px 0 10px 0 !important;
+    font-size: 1rem !important;
+    margin: 20px 0 12px 0 !important;
+    text-align: left !important;
+    padding: 8px 0 4px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .skills-list {
+    margin: 0 0 20px 0 !important;
+    padding: 0 !important;
   }
   
   .skills-list li {
-    font-size: 0.9rem !important;
-    padding: 4px 0 4px 20px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    padding: 8px 0 8px 20px !important;
+    margin: 0 0 6px 0 !important;
+    position: relative !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 6px !important;
+    border-left: 2px solid var(--primary-cyan) !important;
   }
   
   .skills-list li:before {
-    left: 4px !important;
-    font-size: 0.7rem !important;
+    left: 8px !important;
+    font-size: 0.6rem !important;
+    color: var(--primary-cyan) !important;
+  }
+
+  /* Contact Block Improvements */
+  .contact-block {
+    padding: 20px 15px 80px 15px !important;
+  }
+
+  .contact-block h2 {
+    font-size: 1.4rem !important;
+    margin: 0 0 20px 0 !important;
+    text-align: center !important;
   }
   
   .contact-form {
@@ -355,15 +425,43 @@
     line-height: 1.5;
   }
   
+  /* Toggle Bar Improvements */
   .toggle-bar {
-    gap: 8px;
-    padding: 8px 16px;
-    min-height: 50px;
+    gap: 10px !important;
+    padding: 12px 16px !important;
+    min-height: 60px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 10 !important;
   }
   
   .toggle-btn {
-    font-size: 0.95rem;
-    padding: 8px 12px;
+    font-size: 0.9rem !important;
+    padding: 10px 16px !important;
+    min-height: 44px !important;
+    border-radius: 12px !important;
+    flex: 1 !important;
+    max-width: 120px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    font-weight: 500 !important;
+  }
+
+  .toggle-btn:active {
+    transform: scale(0.98) !important;
+  }
+
+  .toggle-btn.active {
+    background: var(--primary-cyan-bg) !important;
+    border-color: var(--primary-cyan) !important;
+    color: var(--primary-cyan) !important;
+    box-shadow: 0 0 12px rgba(110, 234, 255, 0.2) !important;
   }
 }
 
@@ -404,24 +502,99 @@
     transform: none !important;
   }
   
+  /* Small Mobile Specific Improvements */
+  .left-column-container {
+    padding: 16px 10px 14px 10px !important;
+    margin: 0 !important;
+    min-height: auto !important;
+  }
+
+  /* Greeting Block - Small Mobile */
+  .greeting-block {
+    padding: 15px 10px !important;
+  }
+
+  .hero-name {
+    font-size: 1.8rem !important;
+    margin: 10px 0 6px 0 !important;
+  }
+
+  .hero-title {
+    font-size: 1rem !important;
+    margin: 6px 0 15px 0 !important;
+  }
+
+  .hero-desc {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    margin: 15px 0 !important;
+  }
+
+  .hero-desc-secondary,
+  .hero-desc-tertiary {
+    font-size: 0.8rem !important;
+    margin: 8px 0 !important;
+  }
+
   /* Profile photo alignment for small mobile */
   .profile-photo {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    width: 120px !important;
-    height: 120px !important;
-    margin: 10px auto !important;
+    width: 100px !important;
+    height: 100px !important;
+    margin: 12px auto 15px auto !important;
     position: relative !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
   }
   
   .profile-photo img {
-    width: 120px !important;
-    height: 120px !important;
+    width: 100px !important;
+    height: 100px !important;
     margin: 0 !important;
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
+    border-radius: 50% !important;
+  }
+
+  /* Skills Block - Small Mobile */
+  .skills-block {
+    padding: 15px 10px 80px 10px !important;
+    max-height: calc(100vh - 180px) !important;
+  }
+
+  .skills-block h2 {
+    font-size: 1.3rem !important;
+    margin: 0 0 15px 0 !important;
+  }
+
+  .skills-section h3 {
+    font-size: 0.95rem !important;
+    margin: 15px 0 10px 0 !important;
+  }
+
+  .skills-list li {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+    padding: 6px 0 6px 16px !important;
+    margin: 0 0 4px 0 !important;
+  }
+
+  /* Toggle Bar - Small Mobile */
+  .toggle-bar {
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    min-height: 56px !important;
+  }
+  
+  .toggle-btn {
+    font-size: 0.85rem !important;
+    padding: 8px 12px !important;
+    min-height: 40px !important;
+    border-radius: 10px !important;
+    max-width: 100px !important;
   }
   
   .work-card-content {

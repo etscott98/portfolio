@@ -25,7 +25,7 @@ class ErinAIChat {
     // Send message on button click
     this.chatSend?.addEventListener('click', () => this.sendMessage());
     
-    // Send message on Enter key
+    // Send message on Enter key (but allow Shift+Enter for new lines on mobile)
     this.chatInput?.addEventListener('keypress', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -43,11 +43,204 @@ class ErinAIChat {
       });
     });
 
-    // Auto-resize input
+    // Auto-resize input with mobile optimization
     this.chatInput?.addEventListener('input', () => {
-      this.chatInput.style.height = 'auto';
-      this.chatInput.style.height = this.chatInput.scrollHeight + 'px';
+      this.autoResizeInput();
     });
+
+    // Mobile-specific optimizations
+    if (this.isMobileDevice()) {
+      this.setupMobileOptimizations();
+      this.setupMobileTapColors();
+    }
+  }
+
+  isMobileDevice() {
+    return window.innerWidth <= 767 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  setupMobileOptimizations() {
+    // Prevent zoom on input focus on iOS
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      this.chatInput?.addEventListener('focus', () => {
+        document.querySelector('meta[name=viewport]')?.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+      });
+      
+      this.chatInput?.addEventListener('blur', () => {
+        document.querySelector('meta[name=viewport]')?.setAttribute('content', 'width=device-width, initial-scale=1.0');
+      });
+    }
+
+    // Better scrolling behavior on mobile
+    this.chatMessages?.addEventListener('touchstart', () => {
+      this.chatMessages.style.overflowY = 'auto';
+    });
+
+    // Hide suggestions after first interaction on mobile
+    let hasInteracted = false;
+    this.chatInput?.addEventListener('focus', () => {
+      if (!hasInteracted) {
+        hasInteracted = true;
+        setTimeout(() => this.hideSuggestions(), 3000);
+      }
+    });
+  }
+
+  setupMobileTapColors() {
+    // Initialize mobile color cycling system to match desktop
+    this.currentColorIndex = 0;
+    this.mobileHueValues = [
+      200, // Blue (initial)
+      230, // Blue-Cyan  
+      260, // Purple
+      320, // Pink-Orange
+      360  // Orange-Red
+    ];
+
+    // Add tap listeners to chat-specific elements
+    this.addMobileColorTrigger(this.chatSend);
+    
+    // Add tap listeners to suggestion buttons
+    document.querySelectorAll('.suggestion-btn').forEach(btn => {
+      this.addMobileColorTrigger(btn);
+    });
+
+    // Add tap listener to chat container for easy access
+    const chatContainer = document.querySelector('.chat-container');
+    if (chatContainer) {
+      this.addMobileColorTrigger(chatContainer);
+    }
+
+    // Add tap listener to chat header
+    const chatHeader = document.querySelector('.chat-header');
+    if (chatHeader) {
+      this.addMobileColorTrigger(chatHeader);
+    }
+
+    // Add global tap listeners to main areas outside chat
+    this.setupGlobalMobileTapColors();
+  }
+
+  setupGlobalMobileTapColors() {
+    // Add tap listeners to main navigation areas
+    const leftColumn = document.querySelector('.left-column-container');
+    if (leftColumn) {
+      this.addMobileColorTrigger(leftColumn);
+    }
+
+    // Add tap listeners to toggle buttons
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      this.addMobileColorTrigger(btn);
+    });
+
+    // Add tap listeners to work cards
+    document.querySelectorAll('.work-card').forEach(card => {
+      this.addMobileColorTrigger(card);
+    });
+
+    // Add tap listener to empty areas of main columns
+    const mainColumns = document.querySelector('.main-columns');
+    if (mainColumns) {
+      mainColumns.addEventListener('touchstart', (e) => {
+        // Only trigger if tapping background areas, not interactive elements
+        if (e.target === mainColumns || 
+            e.target.classList.contains('left-column') ||
+            e.target.classList.contains('right-column') ||
+            e.target.classList.contains('work-section')) {
+          this.cycleMobileBackgroundColor();
+        }
+      });
+    }
+  }
+
+  addMobileColorTrigger(element) {
+    if (!element) return;
+    
+    // Add touch-based color cycling
+    element.addEventListener('touchstart', (e) => {
+      this.cycleMobileBackgroundColor();
+    });
+  }
+
+  cycleMobileBackgroundColor() {
+    if (!this.isMobileDevice()) return;
+
+    const reactiveBg = document.querySelector('.reactive-bg');
+    if (!reactiveBg) return;
+
+    // Move to next color in sequence
+    this.currentColorIndex = (this.currentColorIndex + 1) % this.mobileHueValues.length;
+    const currentHue = this.mobileHueValues[this.currentColorIndex];
+    
+    // Apply the same HSL color system as desktop
+    const baseColor = `hsla(${currentHue}, 50%, 25%, 0.4)`;
+    const glowColor = `hsla(${currentHue}, 80%, 65%, 0.3)`;
+    const secondaryGlow = `hsla(${currentHue + 40}, 70%, 60%, 0.15)`;
+    
+    const backgroundStyle = `
+      radial-gradient(circle 1200px at 50% 50%, ${glowColor} 0%, ${secondaryGlow} 40%, transparent 70%),
+      radial-gradient(circle 800px at 50% 50%, ${secondaryGlow} 0%, transparent 50%),
+      linear-gradient(135deg, ${baseColor} 0%, #10182a 100%)
+    `;
+    
+    // Apply the background with same system as desktop
+    reactiveBg.style.setProperty('background', backgroundStyle, 'important');
+    
+    // Update CSS custom properties to match the color
+    const primaryCyan = `hsl(${currentHue + 30}, 85%, 75%)`;
+    const primaryBlue = `hsl(${currentHue - 20}, 75%, 70%)`;
+    const primaryCyanShadow = `hsl(${currentHue + 30}, 85%, 75%, 0.2)`;
+    const primaryCyanBg = `hsl(${currentHue + 30}, 85%, 75%, 0.13)`;
+    const accentGradient = `linear-gradient(135deg, hsl(${currentHue + 30}, 85%, 75%) 0%, hsl(${currentHue - 20}, 75%, 70%) 50%, hsl(${currentHue + 60}, 70%, 65%) 100%)`;
+    
+    document.documentElement.style.setProperty('--primary-cyan', primaryCyan, 'important');
+    document.documentElement.style.setProperty('--primary-blue', primaryBlue, 'important');
+    document.documentElement.style.setProperty('--primary-cyan-shadow', primaryCyanShadow, 'important');
+    document.documentElement.style.setProperty('--primary-cyan-bg', primaryCyanBg, 'important');
+    document.documentElement.style.setProperty('--accent-gradient', accentGradient, 'important');
+    document.documentElement.style.setProperty('--gradient-primary', accentGradient, 'important');
+    
+    // Update work card specific properties
+    const workCardImageGradient = `linear-gradient(135deg, hsla(${currentHue}, 80%, 65%, 0.1), hsla(${currentHue - 20}, 70%, 60%, 0.05))`;
+    document.documentElement.style.setProperty('--work-card-image-gradient', workCardImageGradient, 'important');
+
+    // Add subtle visual feedback
+    this.showColorChangeIndicator();
+  }
+
+  showColorChangeIndicator() {
+    // Create a subtle pulse effect to show color change
+    const indicator = document.createElement('div');
+    indicator.style.cssText = `
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(110, 234, 255, 0.15);
+      border: 1px solid rgba(110, 234, 255, 0.3);
+      pointer-events: none;
+      z-index: 1000;
+      animation: colorChangePulse 0.5s ease-out forwards;
+    `;
+    
+    document.body.appendChild(indicator);
+    
+    // Remove after animation
+    setTimeout(() => {
+      indicator.remove();
+    }, 500);
+  }
+
+  autoResizeInput() {
+    if (this.chatInput) {
+      this.chatInput.style.height = 'auto';
+      const maxHeight = this.isMobileDevice() ? 100 : 120;
+      const newHeight = Math.min(this.chatInput.scrollHeight, maxHeight);
+      this.chatInput.style.height = newHeight + 'px';
+    }
   }
 
   async sendMessage() {
@@ -318,7 +511,30 @@ class ErinAIChat {
 
   scrollToBottom() {
     if (this.chatMessages) {
-      this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+      // Smooth scrolling with mobile optimization
+      if (this.isMobileDevice()) {
+        // Use requestAnimationFrame for smoother mobile scrolling
+        requestAnimationFrame(() => {
+          this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+        });
+      } else {
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+      }
+    }
+  }
+
+  // Enhanced mobile scroll behavior for new messages
+  scrollToBottomSmooth() {
+    if (this.chatMessages) {
+      if (this.isMobileDevice()) {
+        // For mobile, use smooth scrolling with better performance
+        this.chatMessages.scrollTo({
+          top: this.chatMessages.scrollHeight,
+          behavior: 'smooth'
+        });
+      } else {
+        this.scrollToBottom();
+      }
     }
   }
 }
