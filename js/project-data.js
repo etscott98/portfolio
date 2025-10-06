@@ -266,6 +266,8 @@ const projectData = {
        { value: '73%', label: 'User Satisfaction', desc: 'Reported feeling less lonely' }
      ]
    },
+   // REMOVED: provisioning case study
+   /*
    provisioning: {
      title: 'End-to-End Provisioning Reimagined',
      subtitle: 'Device provisioning process overhaul focusing on reliability, speed, and user clarity',
@@ -289,6 +291,7 @@ const projectData = {
        { value: '3.1min', label: 'Setup Time Reduction', desc: 'Reduced average time to full system setup' }
      ]
    },
+   */
    dashboard: {
      title: 'FloLogic Dashboard MVP',
      subtitle: 'Giving property managers instant clarity across devices and properties',
@@ -367,32 +370,35 @@ const projectData = {
       { value: '70%', label: 'Reduction in Device Grouping Confusion', desc: 'Eliminated user confusion around device organization' },  
       { value: '>3×', label: 'Faster Onboarding During Demos', desc: 'Prospects understood the system immediately' }
      ]
-   },
+   }
    
-     project6: {
-     title: 'A Clean Digital Presence for Embedded Systems',
-     subtitle: 'Lightweight, fast-loading static marketing site for firmware-focused company',
-     images: [
-       'assets/images/projects/circadia/circadia.png'
-     ],
-     overviewTags: [
-       'Designer & Developer', 'Marketing Website', 'Performance Optimization', 'Static Site'
-     ],
-     tools: ['HTML/CSS', 'JavaScript', 'Performance Optimization', 'SEO'],
-     sections: [
-       { heading: 'Problem', body: `A firmware-focused embedded systems company needed a professional web presence that could effectively communicate their technical expertise while being accessible to both developers and decision-makers. Their existing site was slow, outdated, and not optimized for search engines or lead generation.` },
-       { heading: 'Objectives', body: `<ul><li>Create a lightweight, fast-loading static site optimized for performance</li><li>Highlight real-time solutions and technical capabilities in an accessible way</li><li>Provide easy access to documentation and service offerings</li><li>Optimize for SEO to improve organic discovery</li><li>Design with developer-first usability principles</li></ul>` },
-       { heading: 'Design Approach', body: `Focused on clean, minimal design that lets the technical content shine. Prioritized page speed and accessibility, using modern web standards and optimized assets. Created clear information architecture that guides both technical and business users to relevant content quickly.` },
-       { heading: 'Key Features', body: `<ul><li>Ultra-fast loading times through optimized static site generation</li><li>Clean, developer-friendly documentation navigation</li><li>Clear service offering presentations with technical depth</li><li>Mobile-responsive design optimized for all device types</li><li>SEO-optimized content structure and metadata</li><li>Streamlined contact and lead capture forms</li></ul>` },
-       { heading: 'Technical Implementation', body: `Built as a static site for maximum performance and reliability. Implemented modern CSS and JavaScript best practices, optimized images and assets, and structured content for search engine visibility. Used performance budgets to ensure sub-1.2 second load times globally.` },
-       { heading: 'Results & Impact', body: `The new site significantly improved user engagement and lead generation. The combination of better performance, clearer messaging, and improved SEO resulted in substantial business impact within the first 60 days of launch.` }
-     ],
-     impacts: [
-       { value: '39%', label: 'Bounce Rate Reduction', desc: 'Decreased bounce rate after launch' },
-       { value: '1.2s', label: 'Page Load Time', desc: 'Improved average load time globally' },
-       { value: '2.3x', label: 'Lead Generation', desc: 'More inbound leads within 60 days post-launch' }
-     ]
-   },
+   // REMOVED: project6 case study
+   /*,
+    project6: {
+    title: 'A Clean Digital Presence for Embedded Systems',
+    subtitle: 'Lightweight, fast-loading static marketing site for firmware-focused company',
+    images: [
+      'assets/images/projects/circadia/circadia.png'
+    ],
+    overviewTags: [
+      'Designer & Developer', 'Marketing Website', 'Performance Optimization', 'Static Site'
+    ],
+    tools: ['HTML/CSS', 'JavaScript', 'Performance Optimization', 'SEO'],
+    sections: [
+      { heading: 'Problem', body: `A firmware-focused embedded systems company needed a professional web presence that could effectively communicate their technical expertise while being accessible to both developers and decision-makers. Their existing site was slow, outdated, and not optimized for search engines or lead generation.` },
+      { heading: 'Objectives', body: `<ul><li>Create a lightweight, fast-loading static site optimized for performance</li><li>Highlight real-time solutions and technical capabilities in an accessible way</li><li>Provide easy access to documentation and service offerings</li><li>Optimize for SEO to improve organic discovery</li><li>Design with developer-first usability principles</li></ul>` },
+      { heading: 'Design Approach', body: `Focused on clean, minimal design that lets the technical content shine. Prioritized page speed and accessibility, using modern web standards and optimized assets. Created clear information architecture that guides both technical and business users to relevant content quickly.` },
+      { heading: 'Key Features', body: `<ul><li>Ultra-fast loading times through optimized static site generation</li><li>Clean, developer-friendly documentation navigation</li><li>Clear service offering presentations with technical depth</li><li>Mobile-responsive design optimized for all device types</li><li>SEO-optimized content structure and metadata</li><li>Streamlined contact and lead capture forms</li></ul>` },
+      { heading: 'Technical Implementation', body: `Built as a static site for maximum performance and reliability. Implemented modern CSS and JavaScript best practices, optimized images and assets, and structured content for search engine visibility. Used performance budgets to ensure sub-1.2 second load times globally.` },
+      { heading: 'Results & Impact', body: `The new site significantly improved user engagement and lead generation. The combination of better performance, clearer messaging, and improved SEO resulted in substantial business impact within the first 60 days of launch.` }
+    ],
+    impacts: [
+      { value: '39%', label: 'Bounce Rate Reduction', desc: 'Decreased bounce rate after launch' },
+      { value: '1.2s', label: 'Page Load Time', desc: 'Improved average load time globally' },
+      { value: '2.3x', label: 'Lead Generation', desc: 'More inbound leads within 60 days post-launch' }
+    ]
+  }
+  */,
    loneliness: {
     title: 'Solving the Loneliness Epidemic',
     subtitle: 'Teamu transforms passive social interaction into meaningful collaboration through AI-driven project matching',

@@ -1300,7 +1300,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     projectCards.forEach(card => {
-      // Modern click handler with destructuring
+      // Modern click handler with destructuring - Navigate to case study page
       card.addEventListener('click', (e) => {
         e.preventDefault(); // Prevent any default link behavior
         e.stopPropagation(); // Stop event bubbling
@@ -1312,8 +1312,8 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log(`Clicked project card: ${projectKey}`);
           
           if (projectKey) {
-            console.log('Attempting to create modal...');
-            createProjectModal(projectKey);
+            console.log('Navigating to case study page...');
+            window.location.href = `case-study.html?project=${projectKey}`;
           } else {
             console.warn('Project card missing data-project attribute');
           }
@@ -1348,9 +1348,9 @@ setTimeout(() => {
 // Project data is now loaded from external file for better maintainability
 
 // Test function for debugging (can be called from console)
-window.testModal = function(projectKey = 'flologic') {
-  console.log('Testing modal creation manually...');
-  createProjectModal(projectKey);
+window.testCaseStudy = function(projectKey = 'flologic') {
+  console.log('Testing case study navigation manually...');
+  window.location.href = `case-study.html?project=${projectKey}`;
 };
 
 // Modal overlay creation with modern error handling

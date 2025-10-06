@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Case Study | erin scott</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/case-study.css">
+</head>
+<body class="case-study-body">
+    <div class="reactive-bg"></div>
+
+    <!-- Fixed Sidebar (Large Screens Only) -->
+    <aside class="cs-sidebar">
+        <div class="cs-sidebar-inner">
+            <div class="cs-sidebar-meta">
+                <span class="cs-sidebar-role"></span>
+                <span class="cs-sidebar-divider">•</span>
+                <span class="cs-sidebar-timeline"></span>
+            </div>
+            <h1 class="cs-sidebar-title"></h1>
+            <p class="cs-sidebar-subtitle"></p>
+            <div class="cs-sidebar-tools"></div>
+            <div class="cs-sidebar-progress">
+                <div class="cs-sidebar-progress-label">Reading Progress</div>
+                <div class="cs-sidebar-progress-bar-container">
+                    <div class="cs-sidebar-progress-bar"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Scrollable Content Column (Large Screens) -->
+    <div class="cs-content-column">
+        <!-- Navigation (Mobile/Tablet Only) -->
+        <nav class="case-study-nav">
+            <a href="index.html" class="nav-back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back to Portfolio</span>
+            </a>
+            <div class="nav-progress">
+                <div class="nav-progress-bar"></div>
+            </div>
+        </nav>
+
+        <!-- Hero Section (Mobile/Tablet Only) -->
+        <section class="cs-hero" id="hero">
+            <div class="cs-hero-background">
+                <div class="cs-hero-image"></div>
+                <div class="cs-hero-overlay"></div>
+            </div>
+            <div class="cs-hero-content">
+                <div class="cs-hero-meta">
+                    <span class="cs-hero-role"></span>
+                    <span class="cs-hero-divider">•</span>
+                    <span class="cs-hero-timeline"></span>
+                </div>
+                <h1 class="cs-hero-title"></h1>
+                <p class="cs-hero-subtitle"></p>
+                <div class="cs-hero-tools"></div>
+                <div class="cs-hero-scroll-indicator">
+                    <div class="scroll-line"></div>
+                    <span>Scroll to explore</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="cs-main">
+            <!-- Introduction -->
+            <section class="cs-section cs-intro" id="introduction">
+                <div class="cs-container">
+                    <div class="cs-section-label">Introduction</div>
+                    <div class="cs-intro-content"></div>
+                </div>
+            </section>
+
+            <!-- Problem & Insight -->
+            <section class="cs-section cs-problem" id="problem">
+                <div class="cs-container">
+                    <div class="cs-section-label">Problem & Insight</div>
+                    <div class="cs-problem-content"></div>
+                </div>
+            </section>
+
+            <!-- Process -->
+            <section class="cs-section cs-process" id="process">
+                <div class="cs-container">
+                    <div class="cs-section-label">Process</div>
+                    <div class="cs-process-content"></div>
+                </div>
+            </section>
+
+            <!-- Solution -->
+            <section class="cs-section cs-solution" id="solution">
+                <div class="cs-container">
+                    <div class="cs-section-label">Solution</div>
+                    <div class="cs-solution-content"></div>
+                </div>
+            </section>
+
+            <!-- Impact -->
+            <section class="cs-section cs-impact" id="impact">
+                <div class="cs-container">
+                    <div class="cs-section-label">Impact & Results</div>
+                    <h2 class="cs-section-title">Measuring Success</h2>
+                    <div class="cs-impact-grid"></div>
+                </div>
+            </section>
+
+            <!-- Reflection -->
+            <section class="cs-section cs-reflection" id="reflection">
+                <div class="cs-container">
+                    <div class="cs-section-label">Reflection</div>
+                    <div class="cs-reflection-content"></div>
+                </div>
+            </section>
+
+            <!-- Next Project -->
+            <section class="cs-section cs-next">
+                <div class="cs-container">
+                    <div class="cs-next-label">Next Project</div>
+                    <div class="cs-next-project"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="cs-footer">
+            <div class="cs-container">
+                <p>© 2025 Erin Scott. Designed & developed with intention.</p>
+            </div>
+        </footer>
+    </div><!-- End .cs-content-column -->
+
+            <!-- Image Lightbox Modal -->
+            <div class="image-lightbox" id="imageLightbox">
+                <div class="lightbox-overlay"></div>
+                <div class="lightbox-content">
+                    <button class="lightbox-close" aria-label="Close lightbox">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                    <img class="lightbox-image" src="" alt="">
+                    <div class="lightbox-caption"></div>
+                </div>
+            </div>
+
+            <script src="./js/project-data.js"></script>
+            <script src="./js/case-study.js"></script>
+        </body>
+        </html>
