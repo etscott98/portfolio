@@ -202,14 +202,9 @@ const projectData = {
         content: '<p class="large-text">The most critical strategic shift was in the onboarding. Initially, it functioned as a typical transactional gateway: "give us your information before we let you in." This felt completely at odds with the app\'s core philosophy.</p><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-lightbulb"></span> The Mental Model Shift</h4><div class="side-by-side-panels compact"><div class="panel error-panel-alt"><h5 class="panel-title"><span class="icon-ui icon-close"></span> Transactional Gateway</h5><p>"Give us your data, then you can use the app."</p><div class="panel-tag">Barrier to entry, feels like work</div></div><div class="panel success-panel-alt"><h5 class="panel-title"><span class="icon-ui icon-check"></span> Meditative Experience</h5><p>"Each question draws you in gently, like the start of a meditation."</p><div class="panel-tag">Part of the ritual, builds trust</div></div></div></div><div class="highlight-box quote-box compact"><h3 class="box-title"><span class="icon-ui icon-target"></span>The Design Philosophy</h3><div class="quote-content">"Onboarding should feel like<br/>the beginning of the ritual,<br/>not a barrier to it."</div><p>Every interaction was redesigned to invite, not interrogate.</p></div>'
       },
       {
-        type: 'gallery',
-        heading: 'Key Screens & Interactions',
-        images: [
-          { src: 'assets/images/projects/circadia/dAXewvJ6lleBv4zSq76LKdQL9NE.webp', alt: 'Onboarding flow' },
-          { src: 'assets/images/projects/circadia/sPG5Zmop1bG0Iyp3PNN0RwMSOE.webp', alt: 'Manifestation guide' },
-          { src: 'assets/images/projects/circadia/UGkyq0MnIHLRdSHmT3ERnDECA4.webp', alt: 'Dream journal entry' },
-          { src: 'assets/images/projects/circadia/Circadia Mudras.png', alt: 'Moon phase tracking' }
-        ]
+        type: 'text',
+        heading: 'Deliverables',
+        content: '<div class="deliverables-grid"><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">01</div><div class="deliverable-text"><h4>Main Immersive UI Flows</h4><p>Mapped out complete user journeys from onboarding through daily ritual use, ensuring seamless transitions between states.</p></div></div><img src="assets/images/projects/circadia/dAXewvJ6lleBv4zSq76LKdQL9NE.webp" alt="Main immersive UI flows mapped out" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">02</div><div class="deliverable-text"><h4>Wireframing Flows</h4><p>Low-fidelity wireframes establishing information architecture and interaction patterns before visual design.</p></div></div><img src="assets/images/projects/circadia/sPG5Zmop1bG0Iyp3PNN0RwMSOE.webp" alt="Wireframing flows" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">03</div><div class="deliverable-text"><h4>Design System</h4><p>Minimal design system creation with 40+ tokens for consistency moving forward across all product flows.</p></div></div><img src="assets/images/projects/circadia/UGkyq0MnIHLRdSHmT3ERnDECA4.webp" alt="Minimal design system creation for consistency moving forward" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">04</div><div class="deliverable-text"><h4>Custom Illustrations</h4><p>Mudra illustrations crafted in Illustrator to enhance the spiritual and meditative aspects of the experience.</p></div></div><img src="assets/images/projects/circadia/Circadia Mudras.png" alt="Mudra illustrations made in Illustrator" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">05</div><div class="deliverable-text"><h4>RIVE Animations</h4><p>Custom animation created in RIVE – one of 15+ animations designed to guide users through the bedtime ritual with subtle, intentional microinteractions.</p></div></div><video controls loop muted playsinline><source src="assets/images/projects/circadia/Animation recording.mp4" type="video/mp4">Your browser does not support the video tag.</video></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">06</div><div class="deliverable-text"><h4>Final Product</h4><p>Circadia transforms bedtime routines into meaningful rituals through thoughtful design and lunar synchronization.</p></div></div><img src="assets/images/projects/circadia/circadia.avif" alt="Circadia app ecosystem showing various screens and moon phases" loading="lazy"></div></div>'
       },
       {
         type: 'quote',
@@ -217,31 +212,22 @@ const projectData = {
       },
       {
         type: 'stats',
-        heading: 'Impact & Results',
         stats: [
           { value: '40+', label: 'Token design system', desc: 'Used across all product flows' },
           { value: '15+', label: 'Custom animations', desc: 'For immersive transitions' },
-          { value: '100%', label: 'Onboarding completion', desc: 'During internal beta testing' },
-          { value: '0', label: 'Traditional logins', desc: 'Replaced with seamless flow' }
+          { value: '100%', label: 'Onboarding completion', desc: 'During internal beta testing' }
         ]
       },
       {
         type: 'text',
         heading: 'Lessons Learned',
         content: '<p class="large-text">This project was a lesson in designing for emotion and intention under tight constraints. It was part-time work alongside a full-time role, but the vision remained clear.</p><div style="margin-top: 1rem; display: grid; gap: 1rem;"><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px;"><p><strong>More conceptual exploration early:</strong> Given more time, I would have dedicated a specific phase to divergent thinking and broad vision exploration before diving into high-fidelity designs. This could have uncovered even more innovative approaches.</p></div><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px;"><p><strong>AI-accelerated iteration:</strong> The pace of the project would have benefited from leveraging modern AI tools to rapidly prototype and test different visual concepts and user flows, getting feedback faster.</p></div><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px;"><p><strong>The power of a clear vision:</strong> Despite changing requirements and constraints, having an unwavering goal—"build something that feels like a ritual, not just an app"—was the anchor that kept the project focused and coherent.</p></div></div>'
-      },
-      {
-        type: 'full-image',
-        image: 'assets/images/projects/circadia/circadia.avif',
-        alt: 'Circadia app ecosystem showing various screens and moon phases',
-        caption: 'Circadia transforms bedtime routines into meaningful rituals through thoughtful design and lunar synchronization'
       }
     ],
     impacts: [
       { value: '40+', label: 'Token design system', desc: 'Used across all product flows' },
       { value: '15+', label: 'Custom animations', desc: 'For immersive transitions' },
-      { value: '100%', label: 'Onboarding completion', desc: 'During internal beta testing' },
-      { value: '0', label: 'Traditional logins', desc: 'Replaced with seamless flow' }
+      { value: '100%', label: 'Onboarding completion', desc: 'During internal beta testing' }
     ]
   },
    teamu: {

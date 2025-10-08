@@ -212,6 +212,19 @@ function populateFromContentBlocks(blocks) {
         solutionContent += imageContent;
         break;
         
+      case 'video':
+        const videoContent = `
+          <figure class="cs-full-video" style="transition-delay: ${index * 0.1}s">
+            <video controls loop muted playsinline>
+              <source src="${block.video}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            ${block.caption ? `<figcaption>${block.caption}</figcaption>` : ''}
+          </figure>
+        `;
+        solutionContent += videoContent;
+        break;
+        
       case 'gallery':
         let galleryHTML = block.heading ? `<h3 class="cs-section-title">${block.heading}</h3>` : '';
         galleryHTML += '<div class="cs-gallery">';
@@ -412,6 +425,7 @@ function initScrollAnimations() {
     .cs-impact-card,
     .cs-reflection-lesson,
     .cs-full-image,
+    .cs-full-video,
     .cs-gallery-item,
     .cs-quote
   `);
@@ -669,7 +683,7 @@ function initImageLightbox() {
   // Add click listeners to all images
   const addImageClickListeners = () => {
     // Case study images
-    const images = document.querySelectorAll('.cs-full-image img, .cs-gallery-item img');
+    const images = document.querySelectorAll('.cs-full-image img, .cs-gallery-item img, .deliverable-card img');
     images.forEach(img => {
       img.addEventListener('click', () => {
         const figure = img.closest('figure');
