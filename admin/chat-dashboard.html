@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat Dashboard - Erin's Portfolio</title>
+    <title>Dashboard - Erin's Portfolio</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,72 @@
             color: #00d9ff;
             margin-bottom: 30px;
             text-align: center;
+        }
+        
+        .dashboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 12px 24px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button:hover {
+            background: #3a3a3a;
+        }
+        
+        .tab-button.active {
+            background: #00d9ff;
+            color: #000;
+            border-color: #00d9ff;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .analytics-frame {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .analytics-frame h3 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+        }
+        
+        .analytics-frame p {
+            color: #888;
+            margin-bottom: 15px;
+        }
+        
+        .analytics-frame iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #444;
+            border-radius: 8px;
         }
         
         .auth-section {
@@ -222,7 +288,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🤖 AI Chat Dashboard</h1>
+        <h1>📊 Portfolio Dashboard</h1>
         
         <!-- Authentication Section -->
         <div id="auth-section" class="auth-section">
@@ -233,13 +299,21 @@
         
         <!-- Main Dashboard -->
         <div id="dashboard" class="hidden">
+            <!-- Tab Navigation -->
+            <div class="dashboard-tabs">
+                <button class="tab-button active" onclick="switchTab('chat')">💬 AI Chat</button>
+                <button class="tab-button" onclick="switchTab('analytics')">📈 Visitor Analytics</button>
+            </div>
+            
+            <!-- Chat Tab Content -->
+            <div id="chat-tab" class="tab-content active">
             <!-- Stats Section -->
             <div id="stats-section" class="stats-grid">
                 <!-- Stats will be populated here -->
             </div>
             
-            <!-- Sessions Section -->
-            <div class="sessions-container">
+                <!-- Sessions Section -->
+                <div class="sessions-container">
                 <div class="sessions-header">
                     <h3>Chat Sessions</h3>
                     <button class="refresh-btn" onclick="loadChatHistory()">Refresh</button>
@@ -247,12 +321,78 @@
                 <div id="sessions-list">
                     <div class="loading">Loading chat history...</div>
                 </div>
+                </div>
+            </div>
+            
+            <!-- Analytics Tab Content -->
+            <div id="analytics-tab" class="tab-content">
+                <div class="analytics-frame">
+                    <h3>📊 Google Analytics Setup Required</h3>
+                    <p>To view your visitor analytics, you need to set up Google Analytics 4.</p>
+                    <p>Follow these steps:</p>
+                    <ol style="text-align: left; max-width: 600px; margin: 0 auto; color: #e0e0e0;">
+                        <li>Create a Google Analytics account at <a href="https://analytics.google.com" target="_blank" style="color: #00d9ff;">analytics.google.com</a></li>
+                        <li>Get your Measurement ID (looks like G-XXXXXXXXXX)</li>
+                        <li>Add it to your index.html file</li>
+                        <li>Come back here and add your property ID below</li>
+                    </ol>
+                    <div style="margin-top: 30px;">
+                        <p>Once configured, you can embed your analytics dashboard here:</p>
+                        <input type="text" id="ga-property-id" placeholder="Enter your GA4 Property ID" style="padding: 10px; margin: 10px 0; width: 300px; background: #2a2a2a; border: 1px solid #444; border-radius: 5px; color: #e0e0e0;">
+                        <button onclick="saveAnalyticsConfig()" style="padding: 10px 20px; background: #00d9ff; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Save Configuration</button>
+                    </div>
+                    <div id="analytics-embed" style="margin-top: 30px; display: none;">
+                        <!-- Google Analytics embed will go here -->
+                    </div>
+                </div>
+                
+                <!-- Custom Analytics Stats -->
+                <div class="stats-grid" id="visitor-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Visitors Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Visitors This Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Total Visitors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         let adminKey = '';
+        let currentTab = 'chat';
+        
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            
+            // Load analytics data if switching to analytics tab
+            if (tab === 'analytics') {
+                loadAnalyticsData();
+            }
+        }
         
         function authenticate() {
             adminKey = document.getElementById('admin-key').value;
@@ -417,6 +557,78 @@
             setTimeout(() => {
                 errorDiv.remove();
             }, 5000);
+        }
+        
+        // Analytics Functions
+        function loadAnalyticsData() {
+            // Check if we have a saved GA property ID
+            const savedPropertyId = localStorage.getItem('ga-property-id');
+            if (savedPropertyId) {
+                document.getElementById('ga-property-id').value = savedPropertyId;
+                showAnalyticsEmbed(savedPropertyId);
+            }
+            
+            // In a real implementation, you would fetch data from Google Analytics API
+            // For now, we'll show placeholder data
+            updateVisitorStats();
+        }
+        
+        function saveAnalyticsConfig() {
+            const propertyId = document.getElementById('ga-property-id').value.trim();
+            if (!propertyId) {
+                alert('Please enter your Google Analytics Property ID');
+                return;
+            }
+            
+            localStorage.setItem('ga-property-id', propertyId);
+            showAnalyticsEmbed(propertyId);
+            alert('Analytics configuration saved!');
+        }
+        
+        function showAnalyticsEmbed(propertyId) {
+            const embedDiv = document.getElementById('analytics-embed');
+            embedDiv.style.display = 'block';
+            embedDiv.innerHTML = `
+                <h3>Analytics Dashboard</h3>
+                <p>To view your full analytics dashboard, visit:</p>
+                <a href="https://analytics.google.com/analytics/web/#/p${propertyId}/reports/intelligenthome" 
+                   target="_blank" 
+                   style="display: inline-block; padding: 10px 20px; background: #00d9ff; color: #000; text-decoration: none; border-radius: 5px; font-weight: 600; margin-top: 10px;">
+                    Open Google Analytics Dashboard
+                </a>
+                <p style="margin-top: 20px; color: #888;">Note: Google Analytics doesn't allow direct embedding for security reasons. 
+                   Use the link above to view your detailed analytics.</p>
+            `;
+        }
+        
+        function updateVisitorStats() {
+            // These would be fetched from Google Analytics Reporting API in a real implementation
+            // For demonstration purposes, showing placeholder data
+            const visitorStats = document.getElementById('visitor-stats');
+            if (visitorStats) {
+                visitorStats.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Visitors Today</div>
+                        <small style="color: #666; font-size: 0.8rem;">Connect GA API for live data</small>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Visitors This Week</div>
+                        <small style="color: #666; font-size: 0.8rem;">Connect GA API for live data</small>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Total Visitors</div>
+                        <small style="color: #666; font-size: 0.8rem;">Connect GA API for live data</small>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-</div>
+                        <div class="stat-label">Countries</div>
+                        <small style="color: #666; font-size: 0.8rem;">Connect GA API for live data</small>
+                    </div>
+                `;
+            }
         }
     </script>
 </body>
