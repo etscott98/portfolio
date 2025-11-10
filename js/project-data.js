@@ -10,6 +10,8 @@
  */
 
 const projectData = {
+  // ========== COMPLETED PROJECTS ========== //
+  
   flologic: {
     title: 'FloLogic Mobile App Redesign',
     subtitle: 'From one valve to an entire ecosystem – clarity for homeowners, power for property managers',
@@ -143,18 +145,6 @@ const projectData = {
         heading: 'Continuous Evolution',
         content: '<p class="large-text" style="line-height: 1.8; margin: 0;">The current version of the FloLogic application is live in beta and continues to evolve with each new device firmware release and user feedback. The main change with the device hierarchy exists in production. FloLogic plans on slowly rolling out these changes over time as the dev team is able to implement them.</p>'
       }
-    ],
-    // Keep old structure for backward compatibility
-    sections: [
-      { heading: 'Problem', body: `FloLogic began as a single Wi-Fi shut-off valve. In 2024, the company was transitioning to a sophisticated, multi-unit mesh network. Early stakeholder hopes of "adding a few screens" collapsed as soon as we watched beta users try to navigate the old linear interface. The mental model had to change.` },
-      { heading: 'My Role', body: `<ul><li>Complete app re-work + modernization</li><li>Comprehensive design system + FloLogic brand guidelines</li><li>Beta feedback integration with 20-person test group</li><li>Stakeholder presentations on hi-fi prototypes</li><li>Project + cross-team management</li></ul>` },
-      { heading: 'Key Achievements', body: `<ul><li>50% fewer taps to reach valve controls</li><li>25% drop in support calls within beta cohort</li><li>30% faster implementation according to dev feedback</li><li>Built tokenized design system for plug-and-play dev handoff</li></ul>` },
-      { heading: 'The Challenge', body: `The old UI was built around a single device with no model for parent/child relationships, mesh-networked dependencies, or multiple locations. Visual parity alone failed to convey functional parity.` },
-      { heading: 'The Solution', body: `Shifted from device-type framing to location-based framing. Each system was grouped visually inside a white container box, labeled by physical address. This created a clear mental model: "This is my house. These are the devices in it."` },
-      { heading: 'Key Improvements', body: `<ul><li>Centralized menu bar combining account, sharing, and support</li><li>Apple-inspired settings pages with grouped like-settings</li><li>Device tree page with location-centric organization</li><li>Centralized history for all device events</li><li>Inline troubleshooting and contextual help</li></ul>` },
-      { heading: 'Heuristic Evaluation Findings', body: `<ul><li><b>Navigation Structure:</b> Highly linear, limiting flexibility</li><li><b>Overly Novel:</b> Unfamiliar language and design choices</li><li><b>Recognition Over Recall:</b> Important settings buried</li><li><b>Error Prevention:</b> Limited support for preventing user errors</li></ul>` },
-      { heading: 'Beta Testing', body: `20-person beta group (plumbers, retirees, property managers) with weekly TestFlight builds. Used surveys, Zoom walkthroughs, and screen recordings to identify friction points.` },
-      { heading: 'Lessons Learned', body: `<ul><li>Use more low-fidelity prototypes for faster iteration</li><li>Keep a decision log for stakeholders to prevent repeat debates</li><li>Version the design system (v1.0, v1.1) for parallel team shipping</li></ul>` }
     ],
     impacts: [
       { value: '↓ 25%', label: 'Support call reduction', desc: 'Fewer confused users calling support' },
@@ -373,35 +363,7 @@ const projectData = {
       { value: '70%', label: 'Reduction in Device Grouping Confusion', desc: 'Eliminated user confusion around device organization' },  
       { value: '>3×', label: 'Faster Onboarding During Demos', desc: 'Prospects understood the system immediately' }
      ]
-   }
-   
-   // REMOVED: project6 case study
-   /*,
-    project6: {
-    title: 'A Clean Digital Presence for Embedded Systems',
-    subtitle: 'Lightweight, fast-loading static marketing site for firmware-focused company',
-    images: [
-      'assets/images/projects/circadia/circadia.png'
-    ],
-    overviewTags: [
-      'Designer & Developer', 'Marketing Website', 'Performance Optimization', 'Static Site'
-    ],
-    tools: ['HTML/CSS', 'JavaScript', 'Performance Optimization', 'SEO'],
-    sections: [
-      { heading: 'Problem', body: `A firmware-focused embedded systems company needed a professional web presence that could effectively communicate their technical expertise while being accessible to both developers and decision-makers. Their existing site was slow, outdated, and not optimized for search engines or lead generation.` },
-      { heading: 'Objectives', body: `<ul><li>Create a lightweight, fast-loading static site optimized for performance</li><li>Highlight real-time solutions and technical capabilities in an accessible way</li><li>Provide easy access to documentation and service offerings</li><li>Optimize for SEO to improve organic discovery</li><li>Design with developer-first usability principles</li></ul>` },
-      { heading: 'Design Approach', body: `Focused on clean, minimal design that lets the technical content shine. Prioritized page speed and accessibility, using modern web standards and optimized assets. Created clear information architecture that guides both technical and business users to relevant content quickly.` },
-      { heading: 'Key Features', body: `<ul><li>Ultra-fast loading times through optimized static site generation</li><li>Clean, developer-friendly documentation navigation</li><li>Clear service offering presentations with technical depth</li><li>Mobile-responsive design optimized for all device types</li><li>SEO-optimized content structure and metadata</li><li>Streamlined contact and lead capture forms</li></ul>` },
-      { heading: 'Technical Implementation', body: `Built as a static site for maximum performance and reliability. Implemented modern CSS and JavaScript best practices, optimized images and assets, and structured content for search engine visibility. Used performance budgets to ensure sub-1.2 second load times globally.` },
-      { heading: 'Results & Impact', body: `The new site significantly improved user engagement and lead generation. The combination of better performance, clearer messaging, and improved SEO resulted in substantial business impact within the first 60 days of launch.` }
-    ],
-    impacts: [
-      { value: '39%', label: 'Bounce Rate Reduction', desc: 'Decreased bounce rate after launch' },
-      { value: '1.2s', label: 'Page Load Time', desc: 'Improved average load time globally' },
-      { value: '2.3x', label: 'Lead Generation', desc: 'More inbound leads within 60 days post-launch' }
-    ]
-  }
-  */,
+   },
    admintool: {
     title: 'Internal Support Tool Redesign',
     subtitle: 'Consolidating fragmented workflows into a single source of truth for Customer Service and Engineering',
@@ -631,6 +593,9 @@ const projectData = {
       { value: 'MVP', label: 'Shipped to App Store', desc: 'Launched on iOS' }
     ]
    },
+   
+   // ========== WORK IN PROGRESS ========== //
+   
    provisioning: {
     title: 'Gateway Connect Provisioning',
     subtitle: 'Streamlining the setup experience for Gateway Connect devices',
@@ -691,8 +656,5 @@ const projectData = {
    }
 };
 
-// Export for use in other modules (if using ES6 modules)
-// export { projectData };
-
-// Make available globally (for current implementation)
+// Make available globally
 window.projectData = projectData; 

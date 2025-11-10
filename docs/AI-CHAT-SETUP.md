@@ -1,6 +1,6 @@
-# Portfolio AI Chat Setup
+# AI Chat Setup Guide
 
-This guide explains how to set up the secure AI chat functionality for Erin's portfolio.
+This guide explains how to set up and configure the AI chat assistant feature in the portfolio website. The AI chat allows visitors to ask questions about Erin's work and experience.
 
 ## 🔧 Setup Instructions
 
@@ -65,19 +65,17 @@ http://localhost:3000
 3. Set API key: `heroku config:set OPENAI_API_KEY=your-key`
 4. Deploy: `git push heroku main`
 
-## 📁 Project Structure
+## 📁 AI Chat Files
 
 ```
 portfolio-website/
-├── server.js              # Secure backend server
-├── package.json           # Dependencies
-├── .env                   # Environment variables (not in git)
-├── .gitignore            # Prevents .env from being committed
+├── server.js              # Backend server with AI integration
+├── .env                   # Environment variables (create this file)
 ├── js/
-│   └── chat.js           # Frontend chat interface (secure)
+│   └── chat.js           # Frontend chat interface
 ├── css/
 │   └── _chat.css         # Chat styling
-└── index.html            # Main portfolio page
+└── index.html            # Contains chat UI components
 ```
 
 ## 🛠 How It Works

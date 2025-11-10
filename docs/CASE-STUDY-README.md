@@ -71,12 +71,14 @@ case-study.html?project={projectId}
 ```
 
 Available project IDs:
-- `flologic` - FloLogic Mobile App Redesign
+- `flologic` - FloLogic Mobile App Redesign  
+- `projecty` - Projecty - Location-Based Organization
+- `admintool` - Internal Support Tool Redesign
 - `circadia` - Circadia AI Bedtime App
 - `loneliness` - Solving the Loneliness Epidemic
-- `provisioning` - End-to-End Provisioning
 - `dashboard` - FloLogic Dashboard MVP
-- `project6` - Embedded Systems Website
+- `provisioning` - Gateway Connect Provisioning (WIP)
+- `remoteio` - Remote I/O Configuration (WIP)
 
 ### Adding New Case Studies
 
@@ -104,11 +106,7 @@ projectData.yourProject = {
 };
 ```
 
-2. **Add to project order in `js/case-study.js`**:
-
-```javascript
-const projectOrder = ['flologic', 'circadia', ..., 'yourProject'];
-```
+2. **Project order is automatically determined** by the order of projects in `js/project-data.js`
 
 3. **Add work card to `index.html`**:
 

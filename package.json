@@ -1,7 +1,7 @@
 {
-  "name": "erin-portfolio-backend",
+  "name": "portfolio-website",
   "version": "1.0.0",
-  "description": "Secure backend for Erin's portfolio AI chat",
+  "description": "Erin Scott's portfolio website with AI chat assistant",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
