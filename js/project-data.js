@@ -31,23 +31,18 @@ const projectData = {
       },
       {
         type: 'text',
-        heading: 'The Evolution Challenge',
-        content: '<p class="large-text">FloLogic began as a single Wi-Fi shut-off valve that stopped leaks at the main water line. In 2024, the company was undergoing a massive transformation that would fundamentally change how users interact with their water systems:</p><div class="side-by-side-panels"><div class="panel legacy-panel"><h4><span class="icon-ui icon-mobile-old"></span>Legacy System</h4><p>Single Wi-Fi valve<br/>Direct app control<br/>Linear interface<br/>One device, one home</p></div><div class="panel new-panel"><h4><span class="icon-ui icon-network-new"></span>New Ecosystem</h4><p>Multi-unit mesh network<br/>Gateway + sensors + valves<br/>Complex relationships<br/>Multiple properties</p></div></div><div class="highlight-box info-box"><p><strong><span class="icon-ui icon-lightbulb"></span>The reality check:</strong> Early stakeholder hopes of "just adding a few screens" collapsed as soon as we watched beta users try to navigate the old linear interface. The mental model had to completely change.</p></div><div class="challenge-box"><h3>The Core Design Challenge</h3><p>How do you evolve an application originally conceived for a singular device to effectively manage a complex ecosystem of gateways, valves, and sensors—potentially spread across multiple properties?</p></div>'
-      },
-      {
-        type: 'text',
         heading: 'My Role & Responsibilities',
         content: '<div class="role-responsibilities"><div class="responsibility-item"><h4>1. Complete App Re-work + Modernization</h4><p>Tore the legacy linear flow apart and rebuilt it around a clean tab bar, location-centric device tree, and sleek Apple-inspired settings pages. Prototyped, user-tested, and shipped the new flows with devs (TestFlight every Friday). Helped engineering stand up new APIs for multi-property support and real-time sensor feeds. Rolled out inline troubleshooting and contextual help so users solve 90% of issues without calling support.</p><p class="result-box"><strong>Result:</strong> 50% fewer taps to reach valve controls, 25% drop in support calls within beta cohort.</p></div><div class="responsibility-item with-image"><div><h4>2. Comprehensive Design System + Brand Guidelines</h4><p>Tokenized color, type, spacing, radius, opacity – delivered both primitive and semantic tokens so devs could ramp up fast. Built a starter component library (valve cards, alert chips, status pills, etc.) and coded Figma → Storybook hand-off docs. Co-authored the first brand guidelines doc with another designer: tone, imagery, and motion rules so marketing, support, and app feel like one product.</p><p class="why-box"><strong>Why?</strong> Dev handoff became plug-and-play. Instead of "pick any blue," engineers grabbed primary-600, shipped, done. Felt like stapling success into FloLogic\'s near future, not just polishing one flow.</p></div><img src="assets/images/projects/flologic/flologic wireframes.jpg" alt="FloLogic design system"/></div><div class="responsibility-item"><h4>3. Beta Feedback Integration</h4><p>Ran a 20-person beta (plumbers, retirees, property managers). Weekly surveys, guided Zoom walkthroughs, and "record your screen" tasks. Logged every friction point in Airtable, tagged by severity, pushed high-impact items straight to the sprint board. Closed the loop: emailed testers release notes and asked, "Did this fix it?"</p><p class="why-box"><strong>Why?</strong> Real houses, real water leaks. Lab tests can\'t mimic a crawl space router. Early truth bombs saved months of re-work.</p></div><div class="responsibility-item"><h4>4. Stakeholder Presentations on Hi-Fi Prototypes</h4><p>Hosted live Figma walkthroughs with CEO, hardware lead, support manager. Encouraged them to "break it" – every question captured in a running decision log. Used their feedback to kill scope creep and keep design debt visible before dev sprint planning.</p><p class="why-box"><strong>Why?</strong> With a vocal bunch that wants everything and nothing, regular show-and-tell kept me on the right path and surfaced blockers fast.</p></div><div class="responsibility-item"><h4>5. Project + Cross-Team Management</h4><p>Daily Slack stand-ups with devs, weekly sync with customer support, bi-weekly demo for execs. Published timeline in Notion – clear dates for design freeze, dev handoff, QA, and TestFlight. Acted as the glue between hardware quirks, marketing asks, and user pain points.</p></div></div>'
       },
       {
         type: 'text',
         heading: 'Building a New System Architecture',
-        content: '<p class="large-text">The transformation wasn\'t just about adding features—it required fundamentally rethinking how devices connect, communicate, and are controlled:</p><div class="side-by-side-panels"><div class="panel legacy-panel"><div class="panel-badge">LEGACY</div><h4 class="panel-title"><span class="icon-ui icon-signal"></span> Simple & Direct</h4><div class="panel-content"><div class="icon-bg icon-bg-device"></div><p>One standalone device connected directly to Wi-Fi, controlling the home\'s main water shutoff.</p></div></div><div class="panel new-panel"><div class="panel-badge">NEW ECOSYSTEM</div><h4 class="panel-title"><span class="icon-ui icon-hub"></span> Modular & Nested</h4><div class="panel-content"><div class="nested-list"><div><div class="icon-bg icon-bg-gateway"></div><div><strong>Gateway Hub</strong><span>Connects directly to router, manages network</span></div></div><ul><li><div><div class="icon-bg icon-bg-valve"></div><span>Thread-connected valves</span></div></li><li><div><div class="icon-bg icon-bg-sensor"></div><span>Environmental sensors</span></div></li><li><div><div class="icon-bg icon-bg-trigger"></div><span>Dry-contact triggers</span></div></li></ul></div></div></div></div>'
+        content: '<p class="large-text">The transformation wasn\'t just about adding features - it required fundamentally rethinking how devices connect, communicate, and are controlled:</p><div class="side-by-side-panels"><div class="panel legacy-panel"><div class="panel-badge">LEGACY</div><h4 class="panel-title"><span class="icon-ui icon-signal"></span> Simple & Direct</h4><div class="panel-content"><div class="icon-bg icon-bg-device"></div><p>One standalone device connected directly to Wi-Fi, controlling the home\'s main water shutoff.</p></div></div><div class="panel new-panel"><div class="panel-badge">NEW ECOSYSTEM</div><h4 class="panel-title"><span class="icon-ui icon-hub"></span> Modular & Nested</h4><div class="panel-content"><div class="nested-list"><div><div class="icon-bg icon-bg-gateway"></div><div><strong>Gateway Hub</strong><span>Connects directly to router, manages network</span></div></div><ul><li><div><div class="icon-bg icon-bg-valve"></div><span>Thread-connected valves</span></div></li><li><div><div class="icon-bg icon-bg-sensor"></div><span>Environmental sensors</span></div></li><li><div><div class="icon-bg icon-bg-trigger"></div><span>Dry-contact triggers</span></div></li></ul></div></div></div></div>'
       },
       {
         type: 'text',
         heading: 'Why the Legacy Interface Broke Down',
-        content: '<p class="large-text">The original UI was elegantly simple—because it only had to handle one scenario. But when we introduced the ecosystem approach, that simplicity became a liability:</p><div class="highlight-box error-box"><h4 class="box-title"><span class="icon-ui icon-warning"></span> Critical Gaps in the Legacy Model</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div><strong>No concept of device hierarchy</strong><span>Couldn\'t show parent/child relationships between Gateway → devices.</span></div></li><li><div class="bullet-icon"></div><div><strong>Every device assumed direct control</strong><span>No model for "monitoring-only" devices like Gateways or Extenders.</span></div></li><li><div class="bullet-icon"></div><div><strong>Mesh network dependencies invisible</strong><span>Users couldn\'t understand why Device A affected Device B.</span></div></li><li><div class="bullet-icon"></div><div><strong>Inconsistent notification patterns</strong><span>Different device types needed different alert and status displays.</span></div></li><li><div class="bullet-icon"></div><div><strong>Settings complexity explosion</strong><span>Each new device type required branching settings logic.</span></div></li></ul></div><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-target"></span> The Initial (Naive) Solution</h4><p>Our first instinct was to maintain visual consistency—make legacy Wi-Fi valves and new GConnect valves look identical in the interface. The thinking was that users would intuitively understand they offered the same control features, despite the new system\'s hierarchy.</p></div><p class="caption-text">Spoiler alert: This approach completely failed in beta testing.</p>'
+        content: '<p class="large-text">The original UI was elegantly simple - because it only had to handle one scenario. But when we introduced the ecosystem approach, that simplicity became a liability:</p><div class="highlight-box error-box"><h4 class="box-title"><span class="icon-ui icon-warning"></span> Critical Gaps in the Legacy Model</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div><strong>No concept of device hierarchy</strong><span>Couldn\'t show parent/child relationships between Gateways and devices.</span></div></li><li><div class="bullet-icon"></div><div><strong>Every device assumed direct control</strong><span>No model for "monitoring-only" devices like Gateways or Extenders.</span></div></li><li><div class="bullet-icon"></div><div><strong>Mesh network dependencies invisible</strong><span>Users couldn\'t understand why Device A affected Device B.</span></div></li><li><div class="bullet-icon"></div><div><strong>Inconsistent notification patterns</strong><span>Different device types needed different alert and status displays.</span></div></li><li><div class="bullet-icon"></div><div><strong>Settings complexity explosion</strong><span>Each new device type required branching settings logic.</span></div></li></ul></div><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-target"></span> The Initial (Naive) Solution</h4><p>Our first instinct was to maintain visual consistency - make legacy Wi-Fi valves and new GConnect valves look identical in the interface. The thinking was that users would intuitively understand they offered the same control features, despite the new system\'s hierarchy.</p></div><p class="caption-text">Spoiler alert: This approach completely failed in beta testing.</p>'
       },
       {
         type: 'full-image',
@@ -127,7 +122,6 @@ const projectData = {
       },
       {
         type: 'stats',
-        heading: 'impact & results',
         stats: [
           { value: '↓ 25%', label: 'Support call reduction', desc: 'Fewer confused users calling support' },
           { value: '30%', label: 'Faster implementation', desc: 'According to dev feedback' },
@@ -141,8 +135,13 @@ const projectData = {
       },
       {
         type: 'text',
-        heading: 'continuous evolution',
-        content: '<p>The current version of the FloLogic application is live in beta and continues to evolve with each new device firmware release and user feedback. The main change with the device hierarchy exists in production. FloLogic plans on slowly rolling out these changes over time as the dev team is able to implement them.</p>'
+        heading: 'Additional Work - Interactive Troubleshooting Guide',
+        content: '<p class="large-text">To reduce support burden and empower customers to resolve issues independently, I created an interactive LED and button troubleshooting guide for FloLogic\'s website. This comprehensive resource walks customers through common device states, LED patterns, and button interactions, helping them understand and resolve issues without needing to call support.</p><div class="figma-embed-container" style="margin: 2rem 0; border-radius: 12px; overflow: hidden; border: 1px solid rgba(110, 234, 255, 0.2);"><iframe style="border: none; width: 100%; height: 600px;" src="https://embed.figma.com/proto/XEEVXVWp0JV7Ht5V4vMMts/FloLogic-Interactive-User-Guide-Prototype?page-id=459%3A3167&node-id=557-3238&starting-point-node-id=466%3A4284&show-proto-sidebar=1&embed-host=share" allowfullscreen></iframe></div>'
+      },
+      {
+        type: 'text',
+        heading: 'Continuous Evolution',
+        content: '<p class="large-text" style="line-height: 1.8; margin: 0;">The current version of the FloLogic application is live in beta and continues to evolve with each new device firmware release and user feedback. The main change with the device hierarchy exists in production. FloLogic plans on slowly rolling out these changes over time as the dev team is able to implement them.</p>'
       }
     ],
     // Keep old structure for backward compatibility
@@ -173,6 +172,7 @@ const projectData = {
       'Sole Designer', 'AI App Design', 'Custom Animations', 'Mobile UI', 'Beta Program'
     ],
     tools: ['Illustrator', 'Rive', 'Animation', 'Prototyping'],
+    timeline: '2025',
     theme: {
       primary: '#8b5cf6',
       secondary: '#a855f7',
@@ -202,9 +202,52 @@ const projectData = {
         content: '<p class="large-text">The most critical strategic shift was in the onboarding. Initially, it functioned as a typical transactional gateway: "give us your information before we let you in." This felt completely at odds with the app\'s core philosophy.</p><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-lightbulb"></span> The Mental Model Shift</h4><div class="side-by-side-panels compact"><div class="panel error-panel-alt"><h5 class="panel-title"><span class="icon-ui icon-close"></span> Transactional Gateway</h5><p>"Give us your data, then you can use the app."</p><div class="panel-tag">Barrier to entry, feels like work</div></div><div class="panel success-panel-alt"><h5 class="panel-title"><span class="icon-ui icon-check"></span> Meditative Experience</h5><p>"Each question draws you in gently, like the start of a meditation."</p><div class="panel-tag">Part of the ritual, builds trust</div></div></div></div><div class="highlight-box quote-box compact"><h3 class="box-title"><span class="icon-ui icon-target"></span>The Design Philosophy</h3><div class="quote-content">"Onboarding should feel like<br/>the beginning of the ritual,<br/>not a barrier to it."</div><p>Every interaction was redesigned to invite, not interrogate.</p></div>'
       },
       {
-        type: 'text',
+        type: 'stacked-deliverables',
         heading: 'Deliverables',
-        content: '<div class="deliverables-grid"><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">01</div><div class="deliverable-text"><h4>Main Immersive UI Flows</h4><p>Mapped out complete user journeys from onboarding through daily ritual use, ensuring seamless transitions between states.</p></div></div><img src="assets/images/projects/circadia/dAXewvJ6lleBv4zSq76LKdQL9NE.webp" alt="Main immersive UI flows mapped out" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">02</div><div class="deliverable-text"><h4>Wireframing Flows</h4><p>Low-fidelity wireframes establishing information architecture and interaction patterns before visual design.</p></div></div><img src="assets/images/projects/circadia/sPG5Zmop1bG0Iyp3PNN0RwMSOE.webp" alt="Wireframing flows" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">03</div><div class="deliverable-text"><h4>Design System</h4><p>Minimal design system creation with 40+ tokens for consistency moving forward across all product flows.</p></div></div><img src="assets/images/projects/circadia/UGkyq0MnIHLRdSHmT3ERnDECA4.webp" alt="Minimal design system creation for consistency moving forward" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">04</div><div class="deliverable-text"><h4>Custom Illustrations</h4><p>Mudra illustrations crafted in Illustrator to enhance the spiritual and meditative aspects of the experience.</p></div></div><img src="assets/images/projects/circadia/Circadia Mudras.png" alt="Mudra illustrations made in Illustrator" loading="lazy"></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">05</div><div class="deliverable-text"><h4>RIVE Animations</h4><p>Custom animation created in RIVE – one of 15+ animations designed to guide users through the bedtime ritual with subtle, intentional microinteractions.</p></div></div><video controls loop muted playsinline><source src="assets/images/projects/circadia/Animation recording.mp4" type="video/mp4">Your browser does not support the video tag.</video></div><div class="deliverable-card"><div class="deliverable-card-content"><div class="deliverable-number">06</div><div class="deliverable-text"><h4>Final Product</h4><p>Circadia transforms bedtime routines into meaningful rituals through thoughtful design and lunar synchronization.</p></div></div><img src="assets/images/projects/circadia/circadia.avif" alt="Circadia app ecosystem showing various screens and moon phases" loading="lazy"></div></div>'
+        deliverables: [
+          {
+            number: '01',
+            title: 'Main Immersive UI Flows',
+            description: 'Mapped out complete user journeys from onboarding through daily ritual use, ensuring seamless transitions between states.',
+            image: 'assets/images/projects/circadia/dAXewvJ6lleBv4zSq76LKdQL9NE.webp',
+            alt: 'Main immersive UI flows mapped out'
+          },
+          {
+            number: '02',
+            title: 'Wireframing Flows',
+            description: 'Low-fidelity wireframes establishing information architecture and interaction patterns before visual design.',
+            image: 'assets/images/projects/circadia/sPG5Zmop1bG0Iyp3PNN0RwMSOE.webp',
+            alt: 'Wireframing flows'
+          },
+          {
+            number: '03',
+            title: 'Design System',
+            description: 'Minimal design system creation with 40+ tokens for consistency moving forward across all product flows.',
+            image: 'assets/images/projects/circadia/UGkyq0MnIHLRdSHmT3ERnDECA4.webp',
+            alt: 'Minimal design system creation for consistency moving forward'
+          },
+          {
+            number: '04',
+            title: 'Custom Illustrations',
+            description: 'Mudra illustrations crafted in Illustrator to enhance the spiritual and meditative aspects of the experience.',
+            image: 'assets/images/projects/circadia/Circadia Mudras.png',
+            alt: 'Mudra illustrations made in Illustrator'
+          },
+          {
+            number: '05',
+            title: 'RIVE Animations',
+            description: 'Custom animation created in RIVE – one of 15+ animations designed to guide users through the bedtime ritual with subtle, intentional microinteractions.',
+            video: 'assets/images/projects/circadia/Animation recording.mp4',
+            alt: 'Custom RIVE animation showcase'
+          },
+          {
+            number: '06',
+            title: 'Final Product',
+            description: 'Circadia transforms bedtime routines into meaningful rituals through thoughtful design and lunar synchronization.',
+            image: 'assets/images/projects/circadia/circadia.avif',
+            alt: 'Circadia app ecosystem showing various screens and moon phases'
+          }
+        ]
       },
       {
         type: 'quote',
@@ -252,32 +295,6 @@ const projectData = {
        { value: '73%', label: 'User Satisfaction', desc: 'Reported feeling less lonely' }
      ]
    },
-   // REMOVED: provisioning case study
-   /*
-   provisioning: {
-     title: 'End-to-End Provisioning Reimagined',
-     subtitle: 'Device provisioning process overhaul focusing on reliability, speed, and user clarity',
-     images: [
-       'assets/images/projects/flologic/showing the transformation from device-centric to location-centric.png'
-     ],
-     overviewTags: [
-       'Lead UX Designer', 'IoT Experience', 'Process Redesign', 'Cross-Platform'
-     ],
-     tools: ['Figma', 'Miro', 'Journey Mapping', 'Prototyping'],
-     sections: [
-       { heading: 'Problem', body: `The existing device provisioning process was a major source of customer frustration and support tickets. Users struggled with complex connection steps, unclear error messages, and lengthy setup times, leading to high abandonment rates and negative first impressions.` },
-       { heading: 'Objectives', body: `<ul><li>Redesign the entire provisioning flow to be more intuitive and error-resistant</li><li>Reduce customer confusion through clearer communication and visual feedback</li><li>Streamline backend communication to improve connection reliability</li><li>Future-proof the system to easily accommodate new hardware integrations</li></ul>` },
-       { heading: 'Research & Discovery', body: `Analyzed support ticket data to identify the most common failure points. Conducted user interviews with customers who had experienced provisioning issues. Collaborated with engineering to understand technical constraints and opportunities for improvement.` },
-       { heading: 'Design Solutions', body: `<ul><li>Created a step-by-step wizard with clear progress indicators and visual feedback</li><li>Implemented proactive error prevention with real-time validation and helpful error messages</li><li>Designed a unified flow that works consistently across different device types</li><li>Added diagnostic tools to help users troubleshoot connection issues independently</li></ul>` },
-       { heading: 'Results & Impact', body: `The redesigned provisioning process significantly improved the user experience and reduced support burden. Customer satisfaction increased dramatically, and the streamlined process enabled faster rollout of new device types.` }
-     ],
-     impacts: [
-       { value: '63%', label: 'Support Ticket Reduction', desc: 'Cut provisioning-related tickets within first month' },
-       { value: '42%', label: 'Connection Success Rate', desc: 'Improved first-time device connections' },
-       { value: '3.1min', label: 'Setup Time Reduction', desc: 'Reduced average time to full system setup' }
-     ]
-   },
-   */
    dashboard: {
      title: 'FloLogic Dashboard MVP',
      subtitle: 'Giving property managers instant clarity across devices and properties',
@@ -299,12 +316,12 @@ const projectData = {
       {
         type: 'text',
         heading: 'From Consumer to Commercial',
-        content: '<p style="line-height: 1.8;">When FloLogic expanded from consumer homes into commercial properties, our sales team needed something fast: a working MVP dashboard that made sense to property managers — not just engineers. I stepped in as the lead product designer to ship a clean, no-fluff user interface that brought value from day one.</p>'
+        content: '<p style="line-height: 1.8;">When FloLogic expanded from consumer homes into commercial properties, our sales team needed something fast: a working MVP dashboard that made sense to property managers - not just engineers. I stepped in as the lead product designer to ship a clean, no-fluff user interface that brought value from day one.</p>'
       },
       {
         type: 'text',
         heading: 'The Ask: "We just need something to show"',
-        content: '<p style="line-height: 1.8;">FloLogic\'s sales team was moving fast. With new B2B partnerships forming, we needed a working dashboard to demo — one that let stakeholders visualize devices across multiple properties without confusing or overwhelming them.</p><div style="margin: 2rem 0; padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 4px solid var(--color-primary);"><h4 style="color: var(--color-primary); margin-bottom: 1rem;">The Challenge</h4><ul style="line-height: 1.6; margin-bottom: 0;"><li><strong>No prior web dashboard existed</strong></li><li><strong>Needed MVP-level scope — fast</strong></li><li><strong>Minimal backend flexibility</strong> (MAUI - Telerik)</li><li><strong>Needed to work for both B2B and individual property managers</strong></li><li><strong>Data was device-heavy, but context-light</strong></li></ul></div>'
+        content: '<p style="line-height: 1.8;">FloLogic\'s sales team was moving fast. With new B2B partnerships forming, we needed a working dashboard to demo - one that let stakeholders visualize devices across multiple properties without confusing or overwhelming them.</p><div style="margin: 2rem 0; padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 4px solid var(--color-primary);"><h4 style="color: var(--color-primary); margin-bottom: 1rem;">The Challenge</h4><ul style="line-height: 1.6; margin-bottom: 0;"><li><strong>No prior web dashboard existed</strong></li><li><strong>Needed MVP-level scope - fast</strong></li><li><strong>Minimal backend flexibility</strong> (MAUI - Telerik)</li><li><strong>Needed to work for both B2B and individual property managers</strong></li><li><strong>Data was device-heavy, but context-light</strong></li></ul></div>'
       },
       {
         type: 'text',
@@ -329,7 +346,7 @@ const projectData = {
       {
         type: 'text',
         heading: 'My Role: Sole Designer, Full Product Ownership',
-        content: '<p style="line-height: 1.8;">I was the sole designer on the project. I led the product design from scratch — integrating what I knew about the current direction of the app I had designed and expanding upon their newly implemented design system.</p>'
+        content: '<p style="line-height: 1.8;">I was the sole designer on the project. I led the product design from scratch - integrating what I knew about the current direction of the app I had designed and expanding upon their newly implemented design system.</p>'
       },
       {
         type: 'text',
@@ -385,6 +402,133 @@ const projectData = {
     ]
   }
   */,
+   admintool: {
+    title: 'Internal Support Tool Redesign',
+    subtitle: 'Consolidating fragmented workflows into a single source of truth for Customer Service and Engineering',
+    images: [
+      'assets/images/projects/admintool/Main Card Photo mockup.png'
+    ],
+    overviewTags: [
+      'Lead Product Designer', 'Internal Tools', 'Workflow Optimization', 'AI Integration'
+    ],
+    tools: ['Blazor', 'Telerik', 'User Testing', 'Naturalistic Observation'],
+    contentBlocks: [
+      {
+        type: 'hero',
+        image: 'assets/images/projects/admintool/Main Card Photo mockup.png',
+        title: 'Internal Support Tool Redesign',
+        description: 'From scattered workflows to a unified hub for Customer Service and Engineering',
+        alt: 'AdminTool interface showing consolidated support workflow'
+      },
+      {
+        type: 'text',
+        heading: 'Overview',
+        content: '<p class="large-text">FloLogic\'s Customer Service (CS) team was reliant on Engineering for daily troubleshooting, reaching out via Teams chat over ten times a day. Workflows were scattered: ticket details lived in Freshdesk / Microsoft teams, and RMA protocols were handled manually across multiple windows.</p><p class="large-text">I led the redesign of AdminTool, the core internal tool, to consolidate these fragmented processes. The goal was to create a single source of truth that would reduce friction, simplify navigation, and introduce automation, empowering both CS and Engineering to work more efficiently.</p><div class="highlight-box info-box"><p><strong>⚠️ Can\'t cut out FreshDesk from the flow</strong>, but once the CS team moves over to AdminTool, they\'re able to stay there.</p></div>'
+      },
+      {
+        type: 'text',
+        heading: '1. The Challenge',
+        content: '<p class="large-text">The existing setup was a significant drain on time and resources for both departments. Customer Service agents needed to keep at least five different programs open just to handle a single customer troubleshooting call.</p><div class="highlight-box error-box"><h4 class="box-title"><span class="icon-ui icon-warning"></span> Key Pain Points:</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div><strong>Scattered Tools:</strong> Support staff juggled Freshdesk, Shopify, Teams, the Admin Dashboard, and historic reference tool (WooCommerce).</div></li><li><div class="bullet-icon"></div><div><strong>Workflow Friction:</strong> The handoff to Engineering was a manual copy-paste of long Freshdesk conversation, which Engineering (who were unfamiliar with Freshdesk) had to read in full to find the necessary data.</div></li><li><div class="bullet-icon"></div><div><strong>Ambiguous Protocols:</strong> The process for handling Customer Returns (RMAs), lost devices, and restocks was notoriously unclear and "up for interpretation," leading to inconsistent data and frequent escalations.</div></li></ul></div><div class="highlight-box secondary-box"><h4 class="box-title">Baseline KPIs (Starting Point):</h4><ul class="icon-list"><li><div class="list-icon icon-bg-time"></div><div><strong>Time per Ticket:</strong> ~1 hour for CS and ~1 hour for Engineering (if an RMA was involved).</div></li><li><div class="list-icon icon-bg-alert"></div><div><strong>Engineering Interruptions:</strong> ~10 pings per day from CS for troubleshooting assistance.</div></li></ul></div>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/admintool/Old AdminTool Design.png',
+        alt: 'Old AdminTool interface showing cluttered and fragmented layout',
+        caption: 'The original AdminTool interface: fragmented, device-ID based, and difficult to navigate'
+      },
+      {
+        type: 'text',
+        heading: '2. My Role & Approach',
+        content: '<div class="role-responsibilities"><div class="responsibility-item"><h4>My Role: Lead Product Designer</h4><p><strong>Team:</strong> 2 Engineers, Customer Service (for statistics and observation)</p><p><strong>Timeline:</strong> 3-month project, Q4 2025</p><p><strong>Tech Stack:</strong> Blazor server with Telerik components</p></div></div><p class="large-text">My approach was to first understand the <em>why</em> behind the fragmented workflows by observing the CS team directly and then use those insights to move toward AdminTool use as the central hub for all support and engineering tasks.</p>'
+      },
+      {
+        type: 'text',
+        heading: '3. Research & Discovery',
+        content: '<p class="large-text">I used a mix of qualitative and quantitative methods to identify the biggest opportunities for improvement.</p><div class="highlight-box info-box"><h4 class="box-title"><span class="icon-ui icon-search"></span> Research Methods:</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div><strong>Naturalistic Observation:</strong> I silently observed the CS team during live calls to see their genuine behavior and identify organic workarounds and friction points.</div></li><li><div class="bullet-icon"></div><div><strong>User Testing & Heatmapping:</strong> We analyzed click patterns and user tests on the existing AdminTool to see which features were most critical and what wasn\'t used.</div></li><li><div class="bullet-icon"></div><div><strong>Ticket Analysis:</strong> We reviewed Freshdesk ticket types and frequencies to pinpoint the most common and time-consuming issues.</div></li></ul></div>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/admintool/hotspots -admintoool.png',
+        alt: 'Heatmap showing user interaction patterns on AdminTool',
+        caption: 'Heatmap analysis revealing the most critical features and neglected areas'
+      },
+      {
+        type: 'text',
+        heading: 'Key Insights',
+        content: '<div class="key-findings-grid"><div class="finding-card"><h4>The "Location" Mental Model</h4><p>The most critical insight was that Support\'s workflow isn\'t device-ID based; it\'s <strong>location-based</strong>. They think "Who is this customer?" and "Where is this system?" This directly conflicted with the tool\'s ID-based architecture.</p></div><div class="finding-card"><h4>The "5 Window" Problem</h4><p>Observation confirmed that CS agents had multiple tools open at all times, leading to "context switching" that added significant time to each ticket.</p></div><div class="finding-card"><h4>The "Lost in Translation" Handoff</h4><p>Engineering didn\'t need the entire customer conversation from Freshdesk. They needed a distilled summary of the problem, the device, and the steps already taken. The current process wasted time for both teams.</p></div></div>'
+      },
+      {
+        type: 'text',
+        heading: '4. The Solutions: Driving Efficiency and Clarity',
+        content: '<p class="large-text">Based on these insights, we designed four core solutions to consolidate workflows and align the tool with the team\'s mental model.</p>'
+      },
+      {
+        type: 'stacked-deliverables',
+        heading: '',
+        deliverables: [
+          {
+            number: '01',
+            title: 'Location-Based Issue Layout & Multi-Column View',
+            description: '<div class="deliverable-table"><div class="deliverable-section"><h5>The Problem</h5><p>The original interface was structured around internal Device IDs, forcing the Support team to translate customer queries (based on location/address) into technical terms, slowing down troubleshooting.</p></div><div class="deliverable-section"><h5>The Action</h5><p>We completely restructured the entire issue view around the customer\'s address and location. The Information Hierarchy was realigned to surface the most critical live-call data (customer details, system status) first. We introduced a Multi-Column View based on usability testing, enabling agents to reference system details, ticket history, and warranty info simultaneously.</p></div><div class="deliverable-section"><h5>The Impact</h5><p>Immediately aligned the tool with the Support team\'s existing troubleshooting workflow, significantly reducing cognitive load and time-to-diagnosis on live calls.</p></div></div>',
+            image: 'assets/images/projects/admintool/solution1-placeholder.svg',
+            alt: 'Old vs new device detail view and device listing view'
+          },
+          {
+            number: '02',
+            title: 'AI-Powered Freshdesk Integration',
+            description: '<div class="deliverable-table"><div class="deliverable-section"><h5>The Problem</h5><p>Critical context and troubleshooting steps were "Lost in Translation" during the handoff from Customer Service\'s ticketing system (Freshdesk) to the Engineering team\'s internal AdminTool.</p></div><div class="deliverable-section"><h5>The Action</h5><p>We built a seamless workflow to pull Freshdesk ticket data directly into AdminTool. Whenever an issue is escalated or a ticket is created in the tool, it automatically runs an AI Ticket Parser to extract and organize key information for the engineering team.</p></div><div class="deliverable-section"><h5>The Impact</h5><p>Eliminated manual data entry and context-switching for engineers, providing them with immediate, structured data for faster resolution of escalated issues.</p></div></div>',
+            image: 'assets/images/projects/admintool/solution2-placeholder.svg',
+            alt: 'Create issue immediately imports information from Freshdesk'
+          },
+          {
+            number: '03',
+            title: 'Automated Warranty Processing',
+            description: '<div class="deliverable-table"><div class="deliverable-section"><h5>The Problem</h5><p>Ambiguous and time-consuming manual protocols for determining warranty status led to inconsistent customer experiences and wasted agent time.</p></div><div class="deliverable-section"><h5>The Action</h5><p>We automated the entire warranty process. The tool instantly checks if a device has been replaced and determines current warranty eligibility by referencing purchase data (WooCommerce) and customer type (Homeowner, Plumber) to apply the correct terms.</p></div><div class="deliverable-section"><h5>The Impact</h5><p>Fixed ambiguous protocols and provided an instant, transparent warranty decision, leading to faster resolutions and improved customer trust.</p></div></div>',
+            image: 'assets/images/projects/admintool/solution3-placeholder.svg',
+            alt: 'Warranty flow and button selection importing referenced information'
+          },
+          {
+            number: '04',
+            title: 'A Prioritized Engineering-Specific Workflow',
+            description: '<div class="deliverable-table"><div class="deliverable-section"><h5>The Problem</h5><p>Critical escalation conversations were happening ad-hoc in platforms like Teams, where they were easily lost, untracked, and lacked necessary context.</p></div><div class="deliverable-section"><h5>The Action</h5><p>I designed a dedicated, structured flow for all issues escalated to Engineering, moving critical conversations directly into the AdminTool where the work is tracked. Customer Service can now set Priority (e.g., "High Priority") and is prompted to add specific context. Engineering receives a Prioritized Dashboard surfacing the most critical tickets at the top. Additionally, QA and Engineering leads receive Automated Email Alerts for all new, critically-assigned tickets.</p></div><div class="deliverable-section"><h5>The Impact</h5><p>Cut down on direct, ad-hoc reach-outs and created a single source of truth for all engineering work, ensuring critical issues are never missed and are addressed in priority order.</p></div></div>',
+            image: 'assets/images/projects/admintool/solution4-placeholder.svg',
+            alt: 'Engineering dashboard with prioritized tickets'
+          }
+        ]
+      },
+      {
+        type: 'text',
+        heading: '5. Impact & Results',
+        content: '<p class="large-text">By centralizing workflows and introducing intelligent automation, we projected a significant reduction in cross-department friction and manual data entry.</p><div class="highlight-box success-box"><h4 class="box-title">Projected Improvements to KPIs:</h4><ul class="bullet-list"><li><div class="bullet-icon"></div><div><strong>Engineering Interruption Frequency:</strong> Reduced daily interruptions from 10+ pings to structured, asynchronous updates within AdminTool.</div></li><li><div class="bullet-icon"></div><div><strong>RMA Processing Time:</strong> Shortened RMA handling time by replacing five open programs with one unified interface.</div></li><li><div class="bullet-icon"></div><div><strong>Average Time to Resolve:</strong> Cleared visibility and AI summaries for Engineering are projected to reduce the time spent on escalated tickets.</div></li></ul></div>'
+      },
+      {
+        type: 'text',
+        heading: '6. Key Takeaways',
+        content: '<div style="margin-top: 1rem; display: grid; gap: 1rem;"><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px;"><p><strong>Design for Mental Models:</strong> The shift from a device-ID-based to a location-based layout was the most impactful change. Aligning the tool with the team\'s natural mental model created immediate clarity and efficiency.</p></div><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px;"><p><strong>Summarization as a Feature:</strong> For cross-functional tools, AI summarization isn\'t just a "nice to have"; it\'s a critical feature that translates context between teams (like CS and Engineering) who speak different "languages."</p></div><div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px;"><p><strong>A Single Source of Truth:</strong> By embedding consistent RMA and warranty workflows into the tool, both teams now operate from the same page. This saves time, reduces errors, and eliminates ambiguity.</p></div></div>'
+      },
+      {
+        type: 'text',
+        heading: 'Future Additions (In Progress)',
+        content: '<ul class="feature-list"><li><strong>Shopify Workflows:</strong> To generate AdminTool work orders for frequent replacements automatically.</li><li><strong>Internal RAG AI Bot:</strong> An AI helper embedded into AdminTool, trained on internal documentation to answer CS questions instantly.</li><li><strong>3rd Party Ticket API:</strong> An integration to allow Support to post responses back to Freshdesk directly from AdminTool, closing the loop.</li><li><strong>Engineering View Patterns:</strong> Reveals frequent patterns once a formal tagging system is used.</li></ul>'
+      },
+      {
+        type: 'text',
+        heading: 'Developer Handoff & Scalable Design System',
+        content: '<p class="large-text">A key constraint was that the engineering team was most comfortable implementing components using their established Blazor and Telerik framework. To bridge the gap between my high-fidelity prototypes and the final implementation, I directly utilized the Telerik ThemeBuilder.</p><p>Instead of a static handoff, I went into the ThemeBuilder and systematically adjusted the visual properties of all core components to align perfectly with the prototypes.</p><div class="highlight-box success-box"><h4>Result:</h4><p>This effort resulted in a standardized, web-based design system. This new theme not only streamlined the developer handoff for the AdminTool but was then adopted as the <strong>single source of truth</strong> for all of FloLogic\'s web-based tools. These include the Insurance Dashboard (an insurance carrier tool) and the User Dashboard (a property manager tool), ensuring a consistent UI and user experience across the entire product ecosystem.</p></div>'
+      },
+      {
+        type: 'full-image',
+        image: 'assets/images/projects/admintool/Main Card Photo mockup.png',
+        alt: 'Final AdminTool interface showing consolidated support workflow',
+        caption: 'The redesigned AdminTool: A single source of truth for Customer Service and Engineering'
+      }
+    ],
+    impacts: [
+      { value: '~10', label: 'Daily interruptions eliminated', desc: 'From Teams to structured workflow' },
+      { value: '5→1', label: 'Programs consolidated', desc: 'All workflows in one tool' },
+      { value: '~2hrs', label: 'Time saved per RMA ticket', desc: 'For CS and Engineering combined' }
+    ]
+  },
    loneliness: {
     title: 'Solving the Loneliness Epidemic',
     subtitle: 'Teamu transforms passive social interaction into meaningful collaboration through AI-driven project matching',
@@ -485,6 +629,64 @@ const projectData = {
       { value: 'YC', label: 'Finalist 2022', desc: 'Recognized by Y Combinator' },
       { value: '300+', label: 'MAU in the first month', desc: 'Successful user ramp-up' },
       { value: 'MVP', label: 'Shipped to App Store', desc: 'Launched on iOS' }
+    ]
+   },
+   provisioning: {
+    title: 'Gateway Connect Provisioning',
+    subtitle: 'Streamlining the setup experience for Gateway Connect devices',
+    images: [
+      'assets/images/projects/provisioning/provisioning New.png'
+    ],
+    overviewTags: [
+      'Lead UX Designer', 'IoT Experience', 'Flow Optimization'
+    ],
+    tools: ['Figma', 'User Testing', 'Flow Mapping'],
+    wip: true,
+    contentBlocks: [
+      {
+        type: 'hero',
+        image: 'assets/images/projects/provisioning/provisioning New.png',
+        title: 'Gateway Connect Provisioning',
+        description: 'Streamlining the setup experience for Gateway Connect devices',
+        alt: 'Gateway Connect provisioning interface'
+      },
+      {
+        type: 'text',
+        heading: 'Overview',
+        content: '<p class="large-text">A complete redesign of the Gateway Connect provisioning experience, focusing on reducing friction and improving success rates for first-time device setup.</p><p class="large-text" style="margin-top: 2rem; padding: 2rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 4px solid var(--color-primary);">📝 <strong>Work in Progress:</strong> Full case study coming soon. This project involved end-to-end redesign of the provisioning flow, reducing setup time and improving user confidence during the critical first-time setup experience.</p>'
+      }
+    ],
+    impacts: [
+      { value: 'WIP', label: 'Case Study', desc: 'Full details coming soon' }
+    ]
+   },
+   remoteio: {
+    title: 'Remote I/O Configuration',
+    subtitle: 'Simplifying complex industrial device setup',
+    images: [
+      'assets/images/projects/remote IO provisioning/remote IO main image.png'
+    ],
+    overviewTags: [
+      'Lead Product Designer', 'Industrial IoT', 'Configuration UX'
+    ],
+    tools: ['Figma', 'Technical Documentation', 'User Research'],
+    wip: true,
+    contentBlocks: [
+      {
+        type: 'hero',
+        image: 'assets/images/projects/remote IO provisioning/remote IO main image.png',
+        title: 'Remote I/O Configuration',
+        description: 'Simplifying complex industrial device setup',
+        alt: 'Remote I/O configuration interface'
+      },
+      {
+        type: 'text',
+        heading: 'Overview',
+        content: '<p class="large-text">Designed an intuitive interface for configuring industrial remote I/O devices, making complex technical setup accessible to field technicians without extensive training.</p><p class="large-text" style="margin-top: 2rem; padding: 2rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 4px solid var(--color-primary);">📝 <strong>Work in Progress:</strong> Full case study coming soon. This project focused on translating technical complexity into an intuitive visual interface for industrial device configuration.</p>'
+      }
+    ],
+    impacts: [
+      { value: 'WIP', label: 'Case Study', desc: 'Full details coming soon' }
     ]
    }
 };

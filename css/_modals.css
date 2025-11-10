@@ -35,6 +35,19 @@
   cursor: pointer;
 }
 
+/* Modal Progress Bar */
+.modal-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+  z-index: 10002;
+  transition: width 0.1s ease-out;
+  box-shadow: 0 0 10px rgba(110, 234, 255, 0.5);
+}
+
 /* Modal Content Container - Optimized */
 .project-modal-content {
   position: relative;
@@ -51,6 +64,25 @@
   flex-direction: column;
   transform: translateY(0);
   will-change: transform;
+  box-sizing: border-box;
+}
+
+/* Ensure all content respects container bounds */
+.project-modal-content * {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* Prevent images from breaking layout */
+.project-modal-content img,
+.project-modal-content video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.project-modal-content iframe {
+  max-width: 100%;
 }
 
 /* Back to Top Button */
@@ -577,9 +609,27 @@
 }
 
 /* Responsive Design */
+
+/* Large Desktop (1440px+) - Optimal viewing */
+@media (min-width: 1440px) {
+  .project-modal-content {
+    max-width: 1400px;
+  }
+}
+
+/* Standard Desktop/Laptop (1025px - 1439px) */
+@media (min-width: 1025px) and (max-width: 1439px) {
+  .project-modal-content {
+    max-width: calc(100vw - 100px);
+    width: 95%;
+  }
+}
+
+/* Tablet / Small Laptop (768px - 1024px) */
 @media (max-width: 1024px) {
   .project-modal-content {
     max-width: calc(100vw - 80px);
+    width: 92%;
     margin: 40px auto;
   }
   
@@ -591,8 +641,47 @@
   .content-block-two-col-text {
     padding-right: 0;
   }
+  
+  .breakthrough-grid,
+  .implementation-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  
+  .breakthrough-grid .highlight-box:nth-child(1),
+  .breakthrough-grid .highlight-box:nth-child(2),
+  .breakthrough-grid .highlight-box:nth-child(3),
+  .breakthrough-grid .highlight-box:nth-child(4) {
+    grid-column: 1 / 2;
+  }
+  
+  /* Gallery adapts to tablet */
+  .content-block-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Ensure modal body has proper padding */
+  .project-modal-body {
+    padding: 28px 40px 40px 40px;
+  }
+  
+  /* Hero content adjustments */
+  .content-block-hero {
+    height: 350px;
+  }
+  
+  .content-block-hero h2 {
+    font-size: 2.2rem;
+  }
+  
+  /* Full-width images maintain spacing */
+  .content-block-full-image {
+    margin: 40px -40px;
+  }
 }
 
+/* Mobile / Tablet Portrait (481px - 768px) */
 @media (max-width: 768px) {
   /* Make the entire modal scrollable on mobile */
   #project-modal-overlay {
@@ -625,6 +714,7 @@
   
   .project-modal-title {
     font-size: 1.8rem;
+    line-height: 1.3;
   }
   
   .project-modal-scrollable-header {
@@ -645,6 +735,11 @@
     padding: 32px;
   }
   
+  .content-block-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
   .project-modal-close {
     position: fixed;
     top: 17px;
@@ -658,10 +753,179 @@
   
   /* Back to top button mobile adjustments */
   .modal-back-to-top {
+    position: fixed;
     bottom: 16px;
     right: 16px;
     width: 44px;
     height: 44px;
+    z-index: 10001;
+    font-size: 22px;
+  }
+  
+  /* Ensure images don't overflow */
+  .content-block img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Stack grids on mobile */
+  .side-by-side-panels,
+  .breakthrough-grid,
+  .implementation-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .side-by-side-panels.video-panels {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Reset grid child spans */
+  .breakthrough-grid > *,
+  .implementation-grid > * {
+    grid-column: 1 / 2 !important;
+  }
+  
+  /* Ensure all gallery and content blocks are responsive */
+  .content-block-gallery {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  
+  .content-block-gallery-item {
+    height: 200px;
+  }
+  
+  /* Video panels stack on mobile */
+  .side-by-side-panels.video-panels {
+    gap: 1.25rem;
+  }
+  
+  /* Ensure text blocks have proper spacing */
+  .content-block-text p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  .content-block-text h3 {
+    font-size: 1.6rem;
+  }
+  
+  /* Stats grid responsive */
+  .content-block-stats-item {
+    padding: 24px;
+  }
+}
+
+/* Small Mobile (≤ 480px) - Portrait Phones */
+@media (max-width: 480px) {
+  .project-modal-header {
+    padding: 16px 20px 12px 20px;
+  }
+  
+  .project-modal-body {
+    padding: 20px 20px 28px 20px;
+  }
+  
+  .project-modal-title {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+  
+  .content-block-full-image {
+    margin: 24px -20px;
+  }
+  
+  .content-block-hero {
+    margin: -28px -20px 32px -20px;
+    height: 250px;
+  }
+  
+  .content-block-stats {
+    padding: 24px 20px;
+  }
+  
+  .panel {
+    padding: 1.25rem;
+  }
+  
+  .challenge-box {
+    padding: 1.5rem;
+  }
+  
+  .large-text {
+    font-size: 1rem;
+  }
+  
+  .project-modal-close {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  
+  .modal-back-to-top {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    z-index: 10001;
+  }
+  
+  /* Even tighter spacing on small screens */
+  .side-by-side-panels,
+  .breakthrough-grid,
+  .implementation-grid {
+    gap: 1rem;
+  }
+  
+  .mini-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem;
+  }
+  
+  /* Gallery items smaller on tiny screens */
+  .content-block-gallery-item {
+    height: 180px;
+  }
+  
+  /* Text sizing for readability */
+  .content-block-text p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .content-block-text h3 {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+  
+  /* Hero overlay text smaller */
+  .content-block-hero h2 {
+    font-size: 1.8rem;
+  }
+  
+  .content-block-hero p {
+    font-size: 1rem;
+  }
+  
+  /* Stats items more compact */
+  .content-block-stats-item {
+    padding: 20px 16px;
+  }
+  
+  /* Panels more compact */
+  .panel .panel-title {
+    font-size: 1.1rem;
+  }
+  
+  /* Video container responsive */
+  .video-panels video {
+    border-radius: 8px;
   }
 }
 
@@ -1562,12 +1826,6 @@
 .icon-bg-home::before { content: '🏠'; font-size: 1.2em; }
 .panel .icon-bg::before { color: inherit; }
 
-@media (max-width: 768px) {
-  .side-by-side-panels {
-    grid-template-columns: 1fr;
-  }
-}
-
 .caption-text {
   text-align: center;
   color: var(--text-muted);
@@ -2237,12 +2495,6 @@
 .icon-bg-person::before { content: '👴'; font-size: 1.2em; }
 .icon-bg-home::before { content: '🏠'; font-size: 1.2em; }
 .panel .icon-bg::before { color: inherit; }
-
-@media (max-width: 768px) {
-  .side-by-side-panels {
-    grid-template-columns: 1fr;
-  }
-}
 
 .side-by-side-panels.video-panels {
   max-width: 700px;

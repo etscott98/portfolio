@@ -8,7 +8,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('project');
 
 // Project order for "next project" navigation
-const projectOrder = ['flologic', 'circadia', 'loneliness', 'dashboard'];
+const projectOrder = ['flologic', 'admintool', 'circadia', 'loneliness', 'dashboard'];
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', () => {
@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initProgressBar();
   initCounters();
   initImageLightbox();
+  initStackedDeliverables();
+  initScrollToTop();
   
   // Update page title
   document.title = `${project.title} | Case Study | erin scott`;
@@ -153,7 +155,8 @@ function populateFromContentBlocks(blocks) {
         let cardClass = 'cs-problem-card';
         
         if (heading.includes('lesson') || heading.includes('reflect') || 
-            heading.includes('continuous') || heading.includes('evolution')) {
+            heading.includes('continuous') || heading.includes('evolution') ||
+            heading.includes('additional')) {
           targetSection = 'reflection';
           cardClass = 'cs-reflection-lesson';
         } else if (heading.includes('role') || heading.includes('responsibilities') || 
@@ -181,7 +184,13 @@ function populateFromContentBlocks(blocks) {
           cardClass = 'cs-solution-feature';
         }
         
-        const content = `
+        // Special handling for "Continuous Evolution" - no box wrapper
+        const content = heading === 'continuous evolution' ? `
+          <div style="transition-delay: ${index * 0.1}s; margin: 2rem 0;">
+            <h3 class="cs-problem-title">${block.heading}</h3>
+            <div class="cs-problem-desc">${block.content}</div>
+          </div>
+        ` : `
           <div class="${cardClass}" style="transition-delay: ${index * 0.1}s">
             <h3 class="cs-problem-title">${block.heading}</h3>
             <div class="cs-problem-desc">${block.content}</div>
@@ -237,6 +246,37 @@ function populateFromContentBlocks(blocks) {
         });
         galleryHTML += '</div>';
         solutionContent += galleryHTML;
+        break;
+        
+      case 'stacked-deliverables':
+        let stackedHTML = block.heading ? `<h3 class="cs-section-title">${block.heading}</h3>` : '';
+        stackedHTML += '<div class="deliverables-stack">';
+        block.deliverables.forEach((deliverable, delIndex) => {
+          stackedHTML += `
+            <section class="deliverable-panel panel-${delIndex + 1}" data-panel-index="${delIndex}">
+              <div class="deliverable-panel-inner">
+                <div class="deliverable-panel-content">
+                  <div class="deliverable-panel-number">${deliverable.number}</div>
+                  <div class="deliverable-panel-text">
+                    <h4>${deliverable.title}</h4>
+                    <p>${deliverable.description}</p>
+                  </div>
+                </div>
+                <div class="deliverable-panel-media">
+                  ${deliverable.video ? 
+                    `<video controls loop muted playsinline>
+                      <source src="${deliverable.video}" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>` :
+                    `<img src="${deliverable.image}" alt="${deliverable.alt}" loading="lazy" class="clickable-image" style="cursor: pointer;">`
+                  }
+                </div>
+              </div>
+            </section>
+          `;
+        });
+        stackedHTML += '</div>';
+        solutionContent += stackedHTML;
         break;
         
       case 'quote':
@@ -604,6 +644,11 @@ function animateCounter(element) {
  * UTILITY FUNCTIONS
  */
 function extractTimeline(project) {
+  // Check if project has explicit timeline field
+  if (project.timeline) {
+    return project.timeline;
+  }
+  
   // Try to extract timeline from content
   const timelinePatterns = [
     /\d{4}/,  // Year
@@ -618,7 +663,7 @@ function extractTimeline(project) {
     if (match) return match[0];
   }
   
-  return '2024';
+  return '2025';
 }
 
 function extractProcessSteps(content) {
@@ -638,6 +683,76 @@ function extractProcessSteps(content) {
       <p class="cs-process-desc">${step.desc}</p>
     </div>
   `).join('');
+}
+
+/**
+ * STACKED DELIVERABLES - GSAP ScrollTrigger
+ */
+function initStackedDeliverables() {
+  const panels = document.querySelectorAll(".deliverable-panel");
+  if (panels.length === 0) return;
+  
+  // Get scroll container (content column or window)
+  const contentColumn = document.querySelector('.cs-content-column');
+  const scrollContainer = contentColumn || window;
+  
+  // Create a custom scroll effect
+  const handleScroll = () => {
+    panels.forEach((panel, index) => {
+      const rect = panel.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      // Calculate how much of the panel is visible
+      const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+      const visibleRatio = Math.max(0, Math.min(1, visibleHeight / viewportHeight));
+      
+      // Calculate distance from center of viewport
+      const panelCenter = rect.top + rect.height / 2;
+      const viewportCenter = viewportHeight / 2;
+      const distanceFromCenter = Math.abs(panelCenter - viewportCenter);
+      const centerRatio = 1 - Math.min(1, distanceFromCenter / viewportHeight);
+      
+      // Apply transformations based on scroll position
+      if (rect.top < viewportHeight && rect.bottom > 0) {
+        // Panel is in viewport
+        panel.classList.add('in-view');
+        
+        // Simpler animation based on visibility
+        const scale = 0.98 + (visibleRatio * 0.02);
+        const opacity = 0.7 + (visibleRatio * 0.3);
+        const translateY = (1 - visibleRatio) * 20;
+        
+        panel.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+        panel.style.opacity = opacity;
+        panel.style.filter = 'none';
+        
+        // Subtle number animation
+        const number = panel.querySelector('.deliverable-panel-number');
+        if (number) {
+          number.style.opacity = 0.2 + (visibleRatio * 0.4);
+          number.style.transform = `translateX(${(1 - visibleRatio) * -10}px)`;
+        }
+      } else {
+        panel.classList.remove('in-view');
+        panel.style.transform = 'scale(0.98) translateY(20px)';
+        panel.style.opacity = '0.7';
+        panel.style.filter = 'none';
+      }
+    });
+  };
+  
+  // Add scroll listener to the appropriate container
+  if (contentColumn) {
+    contentColumn.addEventListener('scroll', handleScroll, { passive: true });
+  } else {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
+  
+  // Initial call to set up the initial state
+  handleScroll();
+  
+  // Add a slight delay to ensure DOM is ready
+  setTimeout(handleScroll, 100);
 }
 
 /**
@@ -682,8 +797,8 @@ function initImageLightbox() {
   
   // Add click listeners to all images
   const addImageClickListeners = () => {
-    // Case study images
-    const images = document.querySelectorAll('.cs-full-image img, .cs-gallery-item img, .deliverable-card img');
+    // Case study images - including new deliverable panels
+    const images = document.querySelectorAll('.cs-full-image img, .cs-gallery-item img, .deliverable-card img, .deliverable-panel-media img, .clickable-image');
     images.forEach(img => {
       img.addEventListener('click', () => {
         const figure = img.closest('figure');
@@ -708,6 +823,42 @@ function initImageLightbox() {
   
   // Initialize after a short delay to ensure content is loaded
   setTimeout(addImageClickListeners, 500);
+  
+  // Also re-initialize when deliverable panels are loaded
+  setTimeout(addImageClickListeners, 1000);
+}
+
+/**
+ * SCROLL TO TOP BUTTON
+ */
+function initScrollToTop() {
+  const scrollButton = document.getElementById('scrollToTop');
+  const contentColumn = document.querySelector('.cs-content-column');
+  
+  if (!scrollButton || !contentColumn) return;
+  
+  // Show/hide button based on scroll position
+  let scrollTimeout;
+  contentColumn.addEventListener('scroll', () => {
+    // Clear timeout to debounce
+    clearTimeout(scrollTimeout);
+    
+    scrollTimeout = setTimeout(() => {
+      if (contentColumn.scrollTop > 300) {
+        scrollButton.classList.add('visible');
+      } else {
+        scrollButton.classList.remove('visible');
+      }
+    }, 100);
+  });
+  
+  // Smooth scroll to top when clicked
+  scrollButton.addEventListener('click', () => {
+    contentColumn.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 }
 
 /**

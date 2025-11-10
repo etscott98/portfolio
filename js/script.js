@@ -647,7 +647,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroLine2 = document.querySelector('.hero-desc-line2');
   const heroLine3 = document.querySelector('.hero-desc-line3');
   const heroLocation = document.querySelector('.hero-desc-location');
-  const heroShabby = document.querySelector('.hero-desc-shabby');
 
   const typingSequence = [
     { element: heroName, text: "i'm erin", delay: 800 },
@@ -655,8 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { element: heroLine1, text: "i design to feel something,", delay: 800 },
     { element: heroLine2, text: "code to feel nothing,", delay: 600 },
     { element: heroLine3, text: "and live somewhere in between.", delay: 600 },
-    { element: heroLocation, text: "currently vibing in north carolina.", delay: 800 },
-    { element: heroShabby, text: "working to make you feel even 1% more human", delay: 600 }
+    { element: heroLocation, text: "working to make you feel 1% more human", delay: 800 }
   ];
 
   let currentSequence = 0;
@@ -668,7 +666,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (heroLine2) heroLine2.textContent = '';
   if (heroLine3) heroLine3.textContent = '';
   if (heroLocation) heroLocation.textContent = '';
-  if (heroShabby) heroShabby.textContent = '';
 
   // Modern Promise-based typing function with optimized DOM manipulation
   const typeText = async (element, text) => {
@@ -762,12 +759,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Start the typing sequence with a small delay to ensure DOM is ready
   setTimeout(() => {
-    if (heroName && heroTitle && heroLine1 && heroLine2 && heroLine3 && heroLocation && heroShabby) {
+    if (heroName && heroTitle && heroLine1 && heroLine2 && heroLine3 && heroLocation) {
       startNextSequence();
     } else {
       // Fallback: show content immediately if elements aren't found
       console.warn('Some hero elements not found, showing content immediately');
-      [heroName, heroTitle, heroLine1, heroLine2, heroLine3, heroLocation, heroShabby].forEach(el => {
+      [heroName, heroTitle, heroLine1, heroLine2, heroLine3, heroLocation].forEach(el => {
         if (el) {
           el.style.opacity = '1';
         }
@@ -1397,6 +1394,7 @@ const createProjectModal = (projectKey) => {
   overlay.id = 'project-modal-overlay';
   overlay.innerHTML = `
     <div class="project-modal-backdrop"></div>
+    <div class="modal-progress-bar"></div>
     <button class="modal-back-to-top" aria-label="Back to top">↑</button>
     <div class="project-modal-content">
       <button class="project-modal-close" aria-label="Close">&times;</button>
@@ -1605,45 +1603,66 @@ const createProjectModal = (projectKey) => {
     overlay.querySelector('.project-modal-close').onclick = closeModal;
     overlay.querySelector('.project-modal-backdrop').onclick = closeModal;
     
-    // Back to top button functionality
+    // Back to top button and progress bar functionality
     const backToTopBtn = overlay.querySelector('.modal-back-to-top');
-    const isMobile = window.innerWidth <= 768;
+    const progressBar = overlay.querySelector('.modal-progress-bar');
     
-    // Show/hide back to top button based on scroll
+    // Show/hide back to top button and update progress bar based on scroll
     handleScroll = (e) => {
+      const isMobile = window.innerWidth <= 768;
       let scrollTop = 0;
-      
-      // Try all possible scroll sources
+      let scrollHeight = 0;
+      let clientHeight = 0;
       const modalBody = overlay.querySelector('.project-modal-body');
       
-      // Check multiple sources for scroll position
-      if (e && e.target) {
-        scrollTop = e.target.scrollTop || 0;
-      }
-      
-      // Also check specific elements
-      if (!scrollTop && modalBody) {
-        scrollTop = modalBody.scrollTop || 0;
-      }
-      
-      if (!scrollTop) {
+      // On mobile, scroll happens on overlay
+      // On desktop, scroll happens on modal body
+      if (isMobile) {
+        // Mobile: check overlay scroll
         scrollTop = overlay.scrollTop || 0;
+        scrollHeight = overlay.scrollHeight || 0;
+        clientHeight = overlay.clientHeight || 0;
+        console.log('Mobile scroll detected:', { scrollTop, scrollHeight, clientHeight, percent: (scrollTop / (scrollHeight - clientHeight)) * 100 });
+      } else {
+        // Desktop: check modal body scroll
+        if (modalBody) {
+          scrollTop = modalBody.scrollTop || 0;
+          scrollHeight = modalBody.scrollHeight || 0;
+          clientHeight = modalBody.clientHeight || 0;
+          console.log('Desktop scroll detected:', { scrollTop, scrollHeight, clientHeight, percent: (scrollTop / (scrollHeight - clientHeight)) * 100 });
+        }
       }
       
-      if (!scrollTop) {
-        scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      // Calculate scroll progress percentage
+      const maxScroll = scrollHeight - clientHeight;
+      const scrollPercent = maxScroll > 0 ? (scrollTop / maxScroll) * 100 : 0;
+      
+      // Update progress bar
+      if (progressBar) {
+        progressBar.style.width = `${Math.min(scrollPercent, 100)}%`;
       }
       
-      // Show button after minimal scrolling
-      if (scrollTop > 5) {  // Even lower threshold
+      // Show button after scrolling more than 200px for better UX
+      if (scrollTop > 200) {
         backToTopBtn.classList.add('visible');
       } else {
         backToTopBtn.classList.remove('visible');
+      }
+      
+      // Add 'scrolled' class to modal body for showing left column text
+      if (modalBody) {
+        if (scrollTop > 50) {
+          modalBody.classList.add('scrolled');
+        } else {
+          modalBody.classList.remove('scrolled');
+        }
       }
     };
     
     // Scroll to top when button clicked
     backToTopBtn.onclick = () => {
+      const isMobile = window.innerWidth <= 768;
+      console.log('Back to top clicked, isMobile:', isMobile);
       if (isMobile) {
         overlay.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -1652,19 +1671,18 @@ const createProjectModal = (projectKey) => {
       }
     };
     
-    // Attach scroll listener to the correct element with passive option for better performance
-    if (isMobile) {
-      overlay.addEventListener('scroll', handleScroll, { passive: true });
-      // Also try window scroll on mobile
-      window.addEventListener('scroll', handleScroll, { passive: true });
-    } else {
-      const modalBody = overlay.querySelector('.project-modal-body');
-      if (modalBody) {
-        modalBody.addEventListener('scroll', handleScroll, { passive: true });
-        // Also add to overlay as backup
-        overlay.addEventListener('scroll', handleScroll, { passive: true });
-      }
+    // Always attach scroll listeners to both elements
+    // The handleScroll function will determine which one to read from
+    const modalBody = overlay.querySelector('.project-modal-body');
+    
+    overlay.addEventListener('scroll', handleScroll, { passive: true });
+    if (modalBody) {
+      modalBody.addEventListener('scroll', handleScroll, { passive: true });
     }
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Initial call to set progress bar and button state
+    handleScroll();
     
     // Check scroll state multiple times to ensure proper detection
     setTimeout(handleScroll, 50);

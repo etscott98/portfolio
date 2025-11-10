@@ -1,4 +1,4 @@
-// api/chat-history.js — Admin endpoint to view chat history
+// api/chat-history.js - Admin endpoint to view chat history
 
 const { createClient } = require('@supabase/supabase-js');
 

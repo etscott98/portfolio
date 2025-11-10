@@ -80,8 +80,7 @@
 .hero-desc-line1,
 .hero-desc-line2,
 .hero-desc-line3,
-.hero-desc-location,
-.hero-desc-shabby {
+.hero-desc-location {
   opacity: 0;
 }
 
@@ -90,8 +89,7 @@
 .hero-desc-line1.typing,
 .hero-desc-line2.typing,
 .hero-desc-line3.typing,
-.hero-desc-location.typing,
-.hero-desc-shabby.typing {
+.hero-desc-location.typing {
   opacity: 1;
 }
 
@@ -180,25 +178,6 @@
   opacity: 0.8;
   animation: fadeInBar 1.5s cubic-bezier(.77,0,.18,1);
   box-shadow: var(--glow-primary);
-}
-
-
-
-.hero-desc-shabby {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  font-style: italic;
-  opacity: 0.9;
-  letter-spacing: 0.01em;
-  margin-bottom: 0;
-  transition: all 0.4s cubic-bezier(.77,0,.18,1);
-}
-
-.hero-desc-shabby:hover {
-  opacity: 1;
-  color: var(--text-primary);
-  transform: translateY(-2px);
-  text-shadow: 0 4px 20px rgba(110, 234, 255, 0.3);
 }
 
 /* Enhanced section titles */

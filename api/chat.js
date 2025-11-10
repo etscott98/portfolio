@@ -1,4 +1,4 @@
-// api/chat.js — RAG-enabled chat API (Gemini + Postgres pgvector 768-dim) with chat history
+// api/chat.js - RAG-enabled chat API (Gemini + Postgres pgvector 768-dim) with chat history
 
 const { Pool } = require('pg');
 const { toSql } = require('pgvector/pg');
@@ -9,10 +9,10 @@ if (!process.env.DATABASE_URL) {
   console.warn('Missing DATABASE_URL (e.g., postgres://postgres:postgres@localhost:5433/kb)');
 }
 if (!process.env.GEMINI_API_KEY) {
-  console.warn('Missing GEMINI_API_KEY — RAG will not run.');
+  console.warn('Missing GEMINI_API_KEY - RAG will not run.');
 }
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-  console.warn('Missing SUPABASE_URL or SUPABASE_ANON_KEY — Chat history will not be saved.');
+  console.warn('Missing SUPABASE_URL or SUPABASE_ANON_KEY - Chat history will not be saved.');
 }
 
 // Single pool reused across invocations with SSL config for Supabase

@@ -307,12 +307,6 @@
   }
 
   .hero-desc-secondary,
-  .hero-desc-tertiary {
-    display: block !important;
-    margin: 10px 0 !important;
-    font-size: 0.85rem !important;
-    opacity: 0.8 !important;
-  }
 
   .profile-photo {
     display: flex !important;
@@ -531,10 +525,6 @@
   }
 
   .hero-desc-secondary,
-  .hero-desc-tertiary {
-    font-size: 0.8rem !important;
-    margin: 8px 0 !important;
-  }
 
   /* Profile photo alignment for small mobile */
   .profile-photo {
